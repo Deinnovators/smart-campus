@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { PersistenceModule } from 'src/persistance/persistance.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -7,6 +8,7 @@ describe('AppController', () => {
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
+      imports: [PersistenceModule],
       controllers: [AppController],
       providers: [AppService],
     }).compile();

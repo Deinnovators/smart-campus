@@ -1,0 +1,17 @@
+{
+  "name": "database",
+  "version": "0.0.0",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push --skip-generate",
+    "lint:staged": "lint-staged"
+  },
+  "dependencies": {
+    "@prisma/client": "latest"
+  },
+  "devDependencies": {
+    "prisma": "latest"
+  }
+}
