@@ -1,7 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { PersistenceModule } from 'src/persistance/persistance.module';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { appRunningStatus } from '@api/app.constant';
+import { PersistenceModule } from '@api/persistance/persistance.module';
+import { AppController } from '@api/app.controller';
+import { AppService } from '@api/app.service';
 
 describe('AppController', () => {
   let appController: AppController;
@@ -17,8 +18,8 @@ describe('AppController', () => {
   });
 
   describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
+    it(`should return "${appRunningStatus}"`, () => {
+      expect(appController.getHello()).toBe(appRunningStatus);
     });
   });
 });
