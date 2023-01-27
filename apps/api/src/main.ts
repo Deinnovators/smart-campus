@@ -1,6 +1,7 @@
 import { RequestMethod, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from '@api/app.module';
+import { PrismaClientExceptionFilter } from '@api/exceptions/prisma-client-exception/prisma-client-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -18,6 +19,13 @@ async function bootstrap() {
   app.setGlobalPrefix('api', {
     exclude: [{ path: '/', method: RequestMethod.GET }],
   });
+
+  /*
+   * Using Prisma exception filter to catch all know prisma errors
+   */
+  const httpAdapter = app.getHttpAdapter();
+  app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
+
   await app.listen(1337);
 }
 bootstrap();
