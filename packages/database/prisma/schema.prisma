@@ -12,6 +12,22 @@ datasource db {
 
 model User {
   id Int @id @default(autoincrement())
+  uid String @unique
   email String @unique
   name String
+  password String
+  role Role @default(student)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
+
+  @@map("user")
+}
+
+enum Role {
+  admin
+  student
+  teacher
+  stuff
+  beneficiary
 }
