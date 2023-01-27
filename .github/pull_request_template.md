@@ -4,15 +4,13 @@
 - [ ] New feature
 - [ ] Enhancement
 - [ ] Refactoring
-- [ ] Chore
-- [ ] Perf
 
 
 ## Motivation and Context
 <!--- Why is this change required? What problem does it solve? -->
 
 <!-- NB: not required if branch name is the same as task-id -->
-<!-- [Clickpu Link](https://app.clickup.com/t/{id}) -->
+<!-- [Clickup Link](https://app.clickup.com/t/{id}) -->
 
 
 ##  Description
