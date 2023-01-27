@@ -6,18 +6,8 @@ import { User, Prisma } from 'database';
 export class UsersService {
   constructor(private prisma: PrismaService) {}
 
-  async findOne({
-    id,
-    email,
-    uid,
-  }: {
-    id?: number;
-    email?: string;
-    uid?: string;
-  }): Promise<User> {
-    return this.prisma.user.findUniqueOrThrow({
-      where: { id, email, uid },
-    });
+  async findOne(args: Prisma.UserFindUniqueOrThrowArgs): Promise<User> {
+    return this.prisma.user.findUniqueOrThrow(args);
   }
 
   async create(data: Prisma.UserCreateInput): Promise<User> {
@@ -28,8 +18,8 @@ export class UsersService {
     return this.prisma.user.update({ where: { id }, data });
   }
 
-  async findMany(): Promise<User[]> {
-    return this.prisma.user.findMany();
+  async findMany(args?: Prisma.UserFindManyArgs): Promise<User[]> {
+    return this.prisma.user.findMany(args);
   }
 
   async deleteOne(id: number) {

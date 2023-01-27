@@ -21,7 +21,7 @@ export class UsersController {
 
   @Get(':id')
   async getUser(@Param() params): Promise<User> {
-    return this.service.findOne({ id: +params.id });
+    return this.service.findOne({ where: { id: params.id } });
   }
 
   @Patch(':id')
