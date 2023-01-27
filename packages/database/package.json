@@ -9,9 +9,9 @@
     "lint:staged": "lint-staged"
   },
   "dependencies": {
-    "@prisma/client": "latest"
+    "@prisma/client": "^4.9.0"
   },
   "devDependencies": {
-    "prisma": "latest"
+    "prisma": "^4.9.0"
   }
 }
