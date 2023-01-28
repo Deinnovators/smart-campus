@@ -1,6 +1,6 @@
+import { Public } from '@api/decorators/public.decorator';
 import { AuthService } from '@api/modules/auth/auth.service';
-import { JwtAuthGuard } from '@api/modules/auth/jwt-auth.guard';
-import { LocalAuthGuard } from '@api/modules/auth/local-auth.guard';
+import { LocalAuthGuard } from '@api/guards/local-auth.guard';
 import {
   Controller,
   Get,
@@ -16,13 +16,14 @@ import {
 })
 export class AuthController {
   constructor(private authService: AuthService) {}
+
+  @Public()
   @UseGuards(LocalAuthGuard)
   @Post('/login')
   async login(@Request() req) {
     return this.authService.login(req.user);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@Request() req) {
     return req.user;

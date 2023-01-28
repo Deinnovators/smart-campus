@@ -1,4 +1,3 @@
-import { JwtAuthGuard } from '@api/modules/auth/jwt-auth.guard';
 import { UsersService } from '@api/modules/users/users.service';
 import {
   Body,
@@ -6,14 +5,13 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
-  UseGuards,
 } from '@nestjs/common';
 import { Prisma, User } from 'database';
 
 @Controller('users')
-@UseGuards(JwtAuthGuard)
 export class UsersController {
   constructor(private service: UsersService) {}
 
@@ -23,8 +21,8 @@ export class UsersController {
   }
 
   @Get(':id')
-  async getUser(@Param() params): Promise<User> {
-    return this.service.findOne({ where: { id: params.id } });
+  async getUser(@Param('id', ParseIntPipe) id): Promise<User> {
+    return this.service.findOne({ where: { id: id } });
   }
 
   @Patch(':id')
