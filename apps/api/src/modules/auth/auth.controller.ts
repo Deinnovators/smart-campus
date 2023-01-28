@@ -2,6 +2,7 @@ import { Public } from '@api/decorators/public.decorator';
 import { AuthService } from '@api/modules/auth/auth.service';
 import { LocalAuthGuard } from '@api/guards/local-auth.guard';
 import {
+  Body,
   Controller,
   Get,
   Post,
@@ -9,6 +10,7 @@ import {
   UseGuards,
   VERSION_NEUTRAL,
 } from '@nestjs/common';
+import { Prisma } from 'database';
 
 @Controller({
   path: 'auth',
@@ -19,9 +21,15 @@ export class AuthController {
 
   @Public()
   @UseGuards(LocalAuthGuard)
-  @Post('/login')
+  @Post('login')
   async login(@Request() req) {
     return this.authService.login(req.user);
+  }
+
+  @Public()
+  @Post('register')
+  async register(@Body() body: Prisma.UserCreateInput) {
+    return this.authService.register(body);
   }
 
   @Get('profile')

@@ -1,7 +1,8 @@
 import { UsersService } from '@api/modules/users/users.service';
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { User } from 'database';
+import { Prisma, User } from 'database';
+import bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -12,15 +13,35 @@ export class AuthService {
 
   async validateUser(email: string, pass: string): Promise<any> {
     const user = await this.usersService.findOne({ where: { email } });
-    if (user && user.password === pass) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { password, ...result } = user;
-      return result;
+    if (!user) return null;
+    const { password, ...result } = user;
+    const passwordValid = await bcrypt.compare(pass, password);
+    if (!passwordValid) {
+      throw new UnauthorizedException({
+        statusCode: HttpStatus.UNAUTHORIZED,
+        message: 'Password is not valid',
+      });
     }
-    return null;
+    return result;
   }
 
   async login(user: User) {
+    return {
+      jwt: this.jwtService.sign({ user }),
+      user,
+    };
+  }
+
+  async register(data: Prisma.UserCreateInput) {
+    const { password, ...rest } = data;
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(password, salt);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password: _, ...user } = await this.usersService.create({
+      ...rest,
+      password: hashedPassword,
+    });
+
     return {
       jwt: this.jwtService.sign({ user }),
       user,
