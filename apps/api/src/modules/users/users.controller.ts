@@ -1,3 +1,4 @@
+import { JwtAuthGuard } from '@api/modules/auth/jwt-auth.guard';
 import { UsersService } from '@api/modules/users/users.service';
 import {
   Body,
@@ -7,10 +8,12 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { Prisma, User } from 'database';
 
 @Controller('users')
+@UseGuards(JwtAuthGuard)
 export class UsersController {
   constructor(private service: UsersService) {}
 

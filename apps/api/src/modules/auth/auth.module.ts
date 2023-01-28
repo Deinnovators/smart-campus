@@ -4,7 +4,7 @@ import { LocalStrategy } from '@api/modules/auth/local.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { UsersModule } from '@api/modules/users/users.module';
 import { JwtModule } from '@nestjs/jwt';
-import { jwtConstants } from '@api/modules/auth/auth.constants';
+import { jwtConstants } from '@api/modules/auth/auth.constant';
 import { JwtStrategy } from '@api/modules/auth/jwt.strategy';
 import { AuthController } from './auth.controller';
 

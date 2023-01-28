@@ -1,4 +1,4 @@
-import { jwtConstants } from '@api/modules/auth/auth.constants';
+import { jwtConstants } from '@api/modules/auth/auth.constant';
 import { AuthController } from '@api/modules/auth/auth.controller';
 import { JwtStrategy } from '@api/modules/auth/jwt.strategy';
 import { LocalStrategy } from '@api/modules/auth/local.strategy';
