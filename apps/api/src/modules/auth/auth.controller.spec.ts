@@ -1,8 +1,8 @@
-import { jwtConstants } from '@api/auth/auth.constants';
-import { AuthService } from '@api/auth/auth.service';
-import { JwtStrategy } from '@api/auth/jwt.strategy';
-import { LocalStrategy } from '@api/auth/local.strategy';
-import { UsersModule } from '@api/users/users.module';
+import { jwtConstants } from '@api/modules/auth/auth.constants';
+import { AuthService } from '@api/modules/auth/auth.service';
+import { JwtStrategy } from '@api/modules/auth/jwt.strategy';
+import { LocalStrategy } from '@api/modules/auth/local.strategy';
+import { UsersModule } from '@api/modules/users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { Test, TestingModule } from '@nestjs/testing';

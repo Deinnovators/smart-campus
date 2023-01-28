@@ -1,5 +1,5 @@
-import { PersistenceModule } from '@api/persistance/persistance.module';
-import { UsersService } from '@api/users/users.service';
+import { PersistenceModule } from '@api/modules/persistance/persistance.module';
+import { UsersService } from '@api/modules/users/users.service';
 import { Test, TestingModule } from '@nestjs/testing';
 
 describe('UsersService', () => {

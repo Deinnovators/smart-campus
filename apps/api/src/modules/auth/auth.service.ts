@@ -1,4 +1,4 @@
-import { UsersService } from '@api/users/users.service';
+import { UsersService } from '@api/modules/users/users.service';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User } from 'database';

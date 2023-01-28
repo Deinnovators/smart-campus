@@ -1,6 +1,6 @@
-import { AuthService } from '@api/auth/auth.service';
-import { JwtAuthGuard } from '@api/auth/jwt-auth.guard';
-import { LocalAuthGuard } from '@api/auth/local-auth.guard';
+import { AuthService } from '@api/modules/auth/auth.service';
+import { JwtAuthGuard } from '@api/modules/auth/jwt-auth.guard';
+import { LocalAuthGuard } from '@api/modules/auth/local-auth.guard';
 import {
   Controller,
   Get,

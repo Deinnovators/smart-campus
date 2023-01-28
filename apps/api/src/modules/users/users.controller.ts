@@ -1,4 +1,4 @@
-import { UsersService } from '@api/users/users.service';
+import { UsersService } from '@api/modules/users/users.service';
 import {
   Body,
   Controller,

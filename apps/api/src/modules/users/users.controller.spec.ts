@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UsersController } from '@api/users/users.controller';
-import { PersistenceModule } from '@api/persistance/persistance.module';
-import { UsersService } from '@api/users/users.service';
+import { UsersController } from '@api/modules/users/users.controller';
+import { PersistenceModule } from '@api/modules/persistance/persistance.module';
+import { UsersService } from '@api/modules/users/users.service';
 
 describe('UsersController', () => {
   let controller: UsersController;

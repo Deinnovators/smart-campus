@@ -1,4 +1,4 @@
-import { PrismaService } from '@api/persistance/prisma/prisma.service';
+import { PrismaService } from '@api/modules/persistance/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { User, Prisma } from 'database';
 

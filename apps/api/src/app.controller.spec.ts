@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { appRunningStatus } from '@api/app.constant';
-import { PersistenceModule } from '@api/persistance/persistance.module';
+import { PersistenceModule } from '@api/modules/persistance/persistance.module';
 import { AppController } from '@api/app.controller';
 import { AppService } from '@api/app.service';
 
