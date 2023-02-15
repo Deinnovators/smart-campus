@@ -1,114 +1,70 @@
-import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/lab/LoadingButton';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { useAppTheme } from '@dashboard/libs/hooks/theme.hooks';
-import { ThemeToggler } from '@dashboard/components';
+import React, { ReactElement } from 'react';
+import { PageWrapper } from '@dashboard/components';
+import {
+  Avatar,
+  Box,
+  Card,
+  Container,
+  IconButton,
+  Tooltip,
+  Typography,
+} from '@mui/material';
+import { useCurrentUser, useLogout } from '@dashboard/libs/hooks';
+import Image from 'next/image';
+import { Edit, Logout } from '@mui/icons-material';
 
-function Copyright(props: any) {
-  return (
-    <Typography
-      variant='body2'
-      color='text.secondary'
-      align='center'
-      {...props}>
-      {'Copyright © '}
-      <Link color='inherit' href='https://mui.com/'>
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
-export function getServerSideProps() {
-  return {
-    props: {},
-  };
-}
-
-export default function SignIn() {
-  const { mode, toggleTheme } = useAppTheme();
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-  };
+export default function Dashboard() {
+  const user = useCurrentUser();
+  const logout = useLogout();
 
   return (
-    <Container component='main' maxWidth='xs'>
-      <Box
-        sx={{
-          marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}>
-        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component='h1' variant='h5'>
-          Sign in
-        </Typography>
-        <Box component='form' onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-          <TextField
-            margin='normal'
-            required
-            fullWidth
-            id='email'
-            label='Email Address'
-            name='email'
-            autoComplete='email'
-            autoFocus
-          />
-          <TextField
-            margin='normal'
-            required
-            fullWidth
-            name='password'
-            label='Password'
-            type='password'
-            id='password'
-            autoComplete='current-password'
-          />
-          <FormControlLabel
-            control={<Checkbox value='remember' color='primary' />}
-            label='Remember me'
-          />
-          <Button
-            type='submit'
-            fullWidth
-            variant='contained'
-            className='text-white'
-            sx={{ mt: 3, mb: 2 }}>
-            Sign In
-          </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href='#' variant='body2'>
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href='#' variant='body2'>
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
+    <Container>
+      <Card sx={{ padding: 2 }}>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'flex-start',
+            flexDirection: { xs: 'column', sm: 'row' },
+          }}>
+          <Box sx={{ display: 'flex', flex: 1 }}>
+            <Avatar
+              variant='rounded'
+              sx={{ height: 100, width: 100, marginRight: 2 }}>
+              <Image
+                src={user?.avatar ?? 'https://picsum.photos/200'}
+                height={100}
+                width={100}
+                alt='user avatar'
+              />
+            </Avatar>
+            <Box>
+              <Typography variant='h5'>{user?.name}</Typography>
+              <Typography variant='subtitle2'>ID: {user?.uid}</Typography>
+              <Typography variant='subtitle2'>{user?.email}</Typography>
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              alignSelf: { xs: 'flex-end', sm: 'flex-start' },
+            }}>
+            <Tooltip title='Edit Profile'>
+              <IconButton>
+                <Edit />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title='Logout'>
+              <IconButton onClick={logout}>
+                <Logout />
+              </IconButton>
+            </Tooltip>
+          </Box>
         </Box>
-      </Box>
-      <div className=' absolute top-6 right-6'>
-        <ThemeToggler />
-      </div>
-      <Copyright sx={{ mt: 8, mb: 4 }} />
+      </Card>
     </Container>
   );
 }
+
+Dashboard.getLayout = (page: ReactElement) => (
+  <PageWrapper showUserAvatar={false}>{page}</PageWrapper>
+);

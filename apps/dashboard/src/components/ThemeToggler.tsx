@@ -1,20 +1,24 @@
 import { useAppTheme } from '@dashboard/libs/hooks/theme.hooks';
 import { DarkMode, LightMode } from '@mui/icons-material';
-import { IconButton } from '@mui/material';
-import React from 'react';
+import { IconButton, Tooltip } from '@mui/material';
+import React, { FC } from 'react';
 
-export const ThemeToggler = () => {
+export const ThemeToggler: FC = () => {
   const { mode, toggleTheme } = useAppTheme();
   if (mode === 'light') {
     return (
-      <IconButton onClick={toggleTheme}>
-        <LightMode className=' text-4xl' />
-      </IconButton>
+      <Tooltip title='Toggle Light/Dark'>
+        <IconButton onClick={toggleTheme}>
+          <LightMode />
+        </IconButton>
+      </Tooltip>
     );
   }
   return (
-    <IconButton onClick={toggleTheme}>
-      <DarkMode className=' text-4xl' />
-    </IconButton>
+    <Tooltip title='Toggle Light/Dark'>
+      <IconButton onClick={toggleTheme}>
+        <DarkMode />
+      </IconButton>
+    </Tooltip>
   );
 };

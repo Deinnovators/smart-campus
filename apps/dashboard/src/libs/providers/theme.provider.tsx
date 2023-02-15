@@ -11,9 +11,11 @@ import {
 import { CssBaseline } from '@mui/material';
 import { green } from '@mui/material/colors';
 
+const fontFamily = 'var(--font-inter)';
+
 const baseTheme = createTheme({
   typography: {
-    fontFamily: 'var(--font-inter)',
+    fontFamily,
   },
 });
 
@@ -21,7 +23,10 @@ const lightTheme = createTheme({
   ...baseTheme,
   palette: {
     mode: 'light',
-    primary: green,
+    primary: {
+      ...green,
+      contrastText: 'white',
+    },
   },
 });
 
@@ -29,7 +34,10 @@ const darkTheme = createTheme({
   ...baseTheme,
   palette: {
     mode: 'dark',
-    primary: green,
+    primary: {
+      ...green,
+      contrastText: 'white',
+    },
     background: {
       default: '#0A1829',
       paper: '#0A1829',
