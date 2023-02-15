@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useLogin } from '@dashboard/libs/hooks/auth.hooks';
 import { PageWrapper } from '@dashboard/components';
+import Head from 'next/head';
 
 export default function Login() {
   const [email, setEmail] = useState<string>('');
@@ -23,6 +24,9 @@ export default function Login() {
 
   return (
     <Container maxWidth='xs'>
+      <Head>
+        <title>Login::HSTU Portal</title>
+      </Head>
       <Box
         sx={{
           display: 'flex',

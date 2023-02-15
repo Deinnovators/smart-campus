@@ -12,6 +12,7 @@ import {
 import { useCurrentUser, useLogout } from '@dashboard/libs/hooks';
 import Image from 'next/image';
 import { Edit, Logout } from '@mui/icons-material';
+import Head from 'next/head';
 
 export default function Dashboard() {
   const user = useCurrentUser();
@@ -19,6 +20,9 @@ export default function Dashboard() {
 
   return (
     <Container>
+      <Head>
+        <title>HSTU Portal</title>
+      </Head>
       <Card sx={{ padding: 2 }}>
         <Box
           sx={{
