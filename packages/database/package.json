@@ -3,9 +3,16 @@
   "version": "0.0.0",
   "main": "index.js",
   "types": "index.d.ts",
+  "prisma": {
+    "seed": "node ./seed.js"
+  },
   "scripts": {
     "db:generate": "prisma generate",
     "db:push": "prisma db push --skip-generate",
+    "db:seed": "prisma db seed",
+    "db:studio": "prisma studio",
+    "db:reset": "prisma db push --accept-data-loss --schema=./reset/reset.prisma; prisma db push --accept-data-loss",
+    "format": "prisma format",
     "lint:staged": "lint-staged"
   },
   "dependencies": {
@@ -13,6 +20,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^7.6.0",
+    "bd-geojs": "^1.0.0",
     "prisma": "^4.9.0"
   }
 }

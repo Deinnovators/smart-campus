@@ -11,18 +11,23 @@ datasource db {
 }
 
 model User {
-  id Int @id @default(autoincrement())
-  uid String @unique
-  email String @unique
-  avatar String?
-  name String
-  password String
-  role Roles @default(student)
-  sex Sex @default(male)
-  dateOfBirth DateTime
+  id              Int                  @id @default(autoincrement())
+  uid             String               @unique
+  email           String               @unique
+  avatar          String?
+  name            String
+  password        String
+  role            Roles                @default(student)
+  sex             Sex                  @default(male)
+  dateOfBirth     DateTime
+  mobile          String
+  address         Address?
+  nationality     String               @default("Bangladeshi")
+  nationalityType UserNationalityTypes @default(native)
+  foreignAddress  ForeignAddress?
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now()) @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
   @@map("user")
 }
@@ -33,6 +38,11 @@ enum Sex {
   other
 }
 
+enum UserNationalityTypes {
+  native
+  foreign
+}
+
 enum Roles {
   superadmin
   admin
@@ -41,4 +51,34 @@ enum Roles {
   stuff
   beneficiary
   alumni
+}
+
+model Address {
+  id       Int    @id @default(autoincrement())
+  village  String
+  division String
+  district String
+  upazilla String
+  union    String
+  zip      Int
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int  @unique
+
+  @@map("address")
+}
+
+model ForeignAddress {
+  id      Int    @id @default(autoincrement())
+  street  String
+  city    String
+  state   String
+  country String
+  zip     String
+  mobile  String
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int  @unique
+
+  @@map("foreign_address")
 }
