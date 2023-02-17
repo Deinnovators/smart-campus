@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { ThemeToggler } from '@dashboard/components';
 import {
   AppBar,
@@ -40,8 +40,8 @@ export const Navbar: FC<NavbarProps> = ({ showUserAvatar = true }) => {
           HSTU Portal
         </Typography>
         <ThemeToggler />
-        {showUserAvatar ? (
-          <div className='ml-4'>
+        {showUserAvatar || true ? (
+          <Box sx={{ marginLeft: 1 }}>
             <Tooltip title='Open settings'>
               <Box
                 onClick={handleMenu}
@@ -84,7 +84,7 @@ export const Navbar: FC<NavbarProps> = ({ showUserAvatar = true }) => {
                 Logout
               </MenuItem>
             </Menu>
-          </div>
+          </Box>
         ) : null}
       </Toolbar>
     </AppBar>
