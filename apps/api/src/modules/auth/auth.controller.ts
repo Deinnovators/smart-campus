@@ -8,14 +8,10 @@ import {
   Post,
   Request,
   UseGuards,
-  VERSION_NEUTRAL,
 } from '@nestjs/common';
 import { Prisma } from 'database';
 
-@Controller({
-  path: 'auth',
-  version: VERSION_NEUTRAL,
-})
+@Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 

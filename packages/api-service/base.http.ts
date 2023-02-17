@@ -12,9 +12,9 @@ export interface PostRequest<T> {
 }
 
 abstract class BaseHttp {
-  private _instance: AxiosInstance;
+  private readonly _instance: AxiosInstance;
 
-  constructor(instance: AxiosInstance) {
+  constructor(readonly instance: AxiosInstance) {
     this._instance = instance;
   }
 
