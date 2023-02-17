@@ -1,4 +1,4 @@
-import { AppThemeContext } from '@dashboard/libs/contexts/theme.context';
+import { AppThemeContext } from '@webportal/libs/contexts/theme.context';
 import { useContext } from 'react';
 
 export const useAppTheme = () => useContext(AppThemeContext);

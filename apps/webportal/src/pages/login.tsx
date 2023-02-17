@@ -8,8 +8,8 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { useLogin } from '@dashboard/libs/hooks/auth.hooks';
-import { PageWrapper } from '@dashboard/components';
+import { useLogin } from '@webportal/libs/hooks/auth.hooks';
+import { PageWrapper } from '@webportal/components';
 import Head from 'next/head';
 
 export default function Login() {

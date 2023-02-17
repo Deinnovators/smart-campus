@@ -1,4 +1,4 @@
-import { useAppTheme } from '@dashboard/libs/hooks/theme.hooks';
+import { useAppTheme } from '@webportal/libs/hooks/theme.hooks';
 import { DarkMode, LightMode } from '@mui/icons-material';
 import { IconButton, Tooltip } from '@mui/material';
 import React, { FC } from 'react';

@@ -1,4 +1,4 @@
-import { publicRoutes, publicRoutesArray } from '@dashboard/constants';
+import { publicRoutes, publicRoutesArray } from '@webportal/constants';
 import { NextRequest, NextResponse } from 'next/server';
 
 export function middleware(request: NextRequest) {
@@ -6,6 +6,7 @@ export function middleware(request: NextRequest) {
   const token = request.cookies.get('token');
   const isPublicRoute = publicRoutesArray.includes(path);
 
+  if (path.includes('/api')) return;
   if (token && isPublicRoute) {
     return NextResponse.redirect(new URL('/', request.url));
   }

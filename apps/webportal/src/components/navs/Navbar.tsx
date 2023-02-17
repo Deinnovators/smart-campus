@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { ThemeToggler } from '@dashboard/components';
+import { ThemeToggler } from '@webportal/components';
 import {
   AppBar,
   Avatar,
@@ -11,7 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 import Image from 'next/image';
-import { useCurrentUser, useLogout } from '@dashboard/libs/hooks';
+import { useCurrentUser, useLogout } from '@webportal/libs/hooks';
 import { Box } from '@mui/system';
 
 export interface NavbarProps {
@@ -40,7 +40,7 @@ export const Navbar: FC<NavbarProps> = ({ showUserAvatar = true }) => {
           HSTU Portal
         </Typography>
         <ThemeToggler />
-        {showUserAvatar || true ? (
+        {showUserAvatar ? (
           <Box sx={{ marginLeft: 1 }}>
             <Tooltip title='Open settings'>
               <Box

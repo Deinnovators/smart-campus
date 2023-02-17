@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
-import { api, cookieService } from '@dashboard/services';
+import { api, cookieService } from '@webportal/services';
 import { User } from 'database';
 import { useRouter } from 'next/router';
-import { publicRoutes } from '@dashboard/constants';
+import { publicRoutes } from '@webportal/constants';
 
 export const useLogin = () => {
   const route = useRouter();

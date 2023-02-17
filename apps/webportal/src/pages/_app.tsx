@@ -1,6 +1,6 @@
-import { PageWrapper } from '@dashboard/components';
-import { AppThemeProvider } from '@dashboard/libs/providers/theme.provider';
-import '@dashboard/styles/globals.css';
+import { PageWrapper } from '@webportal/components';
+import { AppThemeProvider } from '@webportal/libs/providers/theme.provider';
+import '@webportal/styles/globals.css';
 import { Inter } from '@next/font/google';
 import { ReactElement, useEffect } from 'react';
 

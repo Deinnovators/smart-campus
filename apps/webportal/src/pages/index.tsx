@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { PageWrapper } from '@dashboard/components';
+import { PageWrapper } from '@webportal/components';
 import {
   Avatar,
   Box,
@@ -9,7 +9,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import { useCurrentUser, useLogout } from '@dashboard/libs/hooks';
+import { useCurrentUser, useLogout } from '@webportal/libs/hooks';
 import Image from 'next/image';
 import { Edit, Logout } from '@mui/icons-material';
 import Head from 'next/head';

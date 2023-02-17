@@ -1,9 +1,9 @@
 import { FC, ReactNode } from 'react';
 import Container, { ContainerProps } from '@mui/material/Container';
-import { NavbarProps, Navbar } from '@dashboard/components/navs/Navbar';
+import { NavbarProps, Navbar } from '@webportal/components/navs/Navbar';
 import { createStyles, Link, Typography } from '@mui/material';
 import NextLink from 'next/link';
-import { useAppCurrentTheme } from '@dashboard/libs/hooks';
+import { useAppCurrentTheme } from '@webportal/libs/hooks';
 import { Box } from '@mui/material';
 
 interface PageWrapperProps extends NavbarProps {

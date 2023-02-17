@@ -7,7 +7,7 @@ import { Theme } from '@mui/system';
 import {
   AppThemeContext,
   AppThemeMode,
-} from '@dashboard/libs/contexts/theme.context';
+} from '@webportal/libs/contexts/theme.context';
 import { CssBaseline } from '@mui/material';
 import { green } from '@mui/material/colors';
 
