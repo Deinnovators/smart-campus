@@ -82,3 +82,21 @@ model ForeignAddress {
 
   @@map("foreign_address")
 }
+
+enum ModuleStatus {
+  active
+  inactive
+}
+
+model ModuleRegistry {
+  id Int @id @default(autoincrement())
+  accessToRoles Roles[]
+  parentId Int?
+  name String
+  url String
+  customIcon Boolean? @default(false)
+  icon String
+  status ModuleStatus @default(active)
+
+  @@map("module_registry")
+}
