@@ -100,3 +100,9 @@ model ModuleRegistry {
 
   @@map("module_registry")
 }
+
+
+model Faculty {
+  id              Int                  @id @default(autoincrement())
+  name            String               @unique
+}
