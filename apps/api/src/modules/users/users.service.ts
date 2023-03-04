@@ -1,9 +1,10 @@
 import { PrismaService } from '@api/modules/persistance/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { User, Prisma } from 'database';
+import { Prisma, User } from 'database';
 
 @Injectable()
 export class UsersService {
+  // eslint-disable-next-line prettier/prettier
   constructor(private prisma: PrismaService) {}
 
   async findOne(args: Prisma.UserFindUniqueOrThrowArgs): Promise<User> {
