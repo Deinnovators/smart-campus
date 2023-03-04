@@ -5,8 +5,7 @@ import { FacultyService } from './faculty.service';
 export class FacultyController {
   // eslint-disable-next-line prettier/prettier
   constructor(private service: FacultyService) {}
-
-  @Get('/all')
+  @Get()
   async getFaculties() {
     return this.service.getFaculties();
   }
