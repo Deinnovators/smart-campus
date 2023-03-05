@@ -7,10 +7,17 @@ import { FacultyModule } from '@api/modules/faculty/faculty.module';
 import { UsersModule } from '@api/modules/users/users.module';
 import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
+import { DepartmentModule } from './modules/department/department.module';
 import { ModuleRegistryModule } from './modules/module-registry/module-registry.module';
 
 @Module({
-  imports: [UsersModule, AuthModule, ModuleRegistryModule, FacultyModule],
+  imports: [
+    UsersModule,
+    AuthModule,
+    ModuleRegistryModule,
+    FacultyModule,
+    DepartmentModule,
+  ],
   controllers: [AppController],
   providers: [
     AppService,

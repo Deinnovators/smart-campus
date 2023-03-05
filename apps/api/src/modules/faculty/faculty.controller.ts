@@ -17,13 +17,8 @@ export class FacultyController {
   // eslint-disable-next-line prettier/prettier
   constructor(private service: FacultyService) {}
 
-  // @Get()
-  // async getFaculties() {
-  //   return this.service.getFaculties();
-  // }
-
   @Get()
-  async getUsers() {
+  async getFaculties() {
     return this.service.findMany();
   }
 
@@ -33,7 +28,7 @@ export class FacultyController {
   }
 
   @Patch(':id')
-  async updateUser(
+  async updateFaculty(
     @Param() params,
     @Body() data: Prisma.FacultyCreateInput,
   ): Promise<Faculty> {
@@ -41,7 +36,7 @@ export class FacultyController {
   }
 
   @Delete(':id')
-  async deleteUser(@Param() params) {
+  async deleteFaculty(@Param() params) {
     return this.service.deleteOne(+params.id);
   }
 
