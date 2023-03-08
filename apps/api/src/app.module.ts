@@ -1,15 +1,23 @@
-import { Module } from '@nestjs/common';
 import { AppController } from '@api/app.controller';
 import { AppService } from '@api/app.service';
-import { UsersModule } from '@api/modules/users/users.module';
-import { AuthModule } from '@api/modules/auth/auth.module';
-import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from '@api/guards/jwt-auth.guard';
 import { RolesGuard } from '@api/guards/roles.guard';
+import { AuthModule } from '@api/modules/auth/auth.module';
+import { FacultyModule } from '@api/modules/faculty/faculty.module';
+import { UsersModule } from '@api/modules/users/users.module';
+import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
+import { DepartmentModule } from './modules/department/department.module';
 import { ModuleRegistryModule } from './modules/module-registry/module-registry.module';
 
 @Module({
-  imports: [UsersModule, AuthModule, ModuleRegistryModule],
+  imports: [
+    UsersModule,
+    AuthModule,
+    ModuleRegistryModule,
+    FacultyModule,
+    DepartmentModule,
+  ],
   controllers: [AppController],
   providers: [
     AppService,
@@ -17,4 +25,5 @@ import { ModuleRegistryModule } from './modules/module-registry/module-registry.
     { provide: APP_GUARD, useClass: RolesGuard },
   ],
 })
+// eslint-disable-next-line prettier/prettier
 export class AppModule {}
