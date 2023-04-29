@@ -4,6 +4,11 @@ export const endpoints = {
     login: '/auth/login',
     register: '/auth/register',
   },
+  modules: {
+    base: '/modules',
+    parents: '/modules/parents',
+    children: '/modules/children',
+  },
 };
 
 export type Endpoints = typeof endpoints;

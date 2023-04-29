@@ -25,14 +25,14 @@ export class ModuleRegistryService {
           has: role,
         },
         status: 'active',
-        parentId: null,
+        parentUrl: null,
       },
     });
   }
 
-  async getModulesByParent(parentId: number, role: Roles) {
+  async getModulesByParent(parentUrl: string, role: Roles) {
     return this.prisma.moduleRegistry.findMany({
-      where: { parentId, accessToRoles: { has: role }, status: 'active' },
+      where: { parentUrl, accessToRoles: { has: role }, status: 'active' },
     });
   }
 

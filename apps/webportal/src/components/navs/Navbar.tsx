@@ -9,10 +9,12 @@ import {
   Toolbar,
   Tooltip,
   Typography,
+  useTheme,
 } from '@mui/material';
 import Image from 'next/image';
 import { useCurrentUser, useLogout } from '@webportal/libs/hooks';
 import { Box } from '@mui/system';
+import Link from 'next/link';
 
 export interface NavbarProps {
   showUserAvatar?: boolean;
@@ -22,7 +24,7 @@ export const Navbar: FC<NavbarProps> = ({ showUserAvatar = true }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const user = useCurrentUser();
   const logout = useLogout();
-
+  const theme = useTheme();
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -36,7 +38,12 @@ export const Navbar: FC<NavbarProps> = ({ showUserAvatar = true }) => {
   return (
     <AppBar elevation={3}>
       <Toolbar>
-        <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
+        <Typography
+          variant='h6'
+          component={Link}
+          color={theme.palette.text.primary}
+          href='/'
+          sx={{ flexGrow: 1 }}>
           HSTU Portal
         </Typography>
         <ThemeToggler />
