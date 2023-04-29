@@ -91,7 +91,7 @@ enum ModuleStatus {
 model ModuleRegistry {
   id Int @id @default(autoincrement())
   accessToRoles Roles[]
-  parentId Int?
+  parentUrl String?
   name String
   url String
   customIcon Boolean? @default(false)

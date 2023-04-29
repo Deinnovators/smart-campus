@@ -14,7 +14,7 @@ import {
 } from '@nestjs/common';
 import { Prisma, Roles } from 'database';
 
-@Controller('module')
+@Controller('modules')
 export class ModuleRegistryController {
   constructor(private readonly service: ModuleRegistryService) {}
 
@@ -23,12 +23,9 @@ export class ModuleRegistryController {
     return this.service.getParentModules(role);
   }
 
-  @Get('/children/:id')
-  getChildModules(
-    @Param('id', ParseIntPipe) id: number,
-    @CurrentUserRole() role: Roles,
-  ) {
-    return this.service.getModulesByParent(id, role);
+  @Get('/children/:url')
+  getChildModules(@Param('url') url: string, @CurrentUserRole() role: Roles) {
+    return this.service.getModulesByParent(url, role);
   }
 
   @AccessRoles('superadmin', 'admin')

@@ -1,10 +1,12 @@
 import React, { ReactElement } from 'react';
-import { PageWrapper } from '@webportal/components';
+import { ModuleCard, PageWrapper } from '@webportal/components';
 import {
   Avatar,
   Box,
   Card,
   Container,
+  Divider,
+  Grid,
   IconButton,
   Tooltip,
   Typography,
@@ -13,8 +15,31 @@ import { useCurrentUser, useLogout } from '@webportal/libs/hooks';
 import Image from 'next/image';
 import { Edit, Logout } from '@mui/icons-material';
 import Head from 'next/head';
+import { api } from '@webportal/services';
+import { ModuleRegistry } from 'database';
+import { GetServerSideProps } from 'next';
 
-export default function Dashboard() {
+export const getServerSideProps: GetServerSideProps = async ctx => {
+  try {
+    const modules = await api.modules.getParents({
+      headers: {
+        [api.authHeaderKey]: `${api.authTokenType} ${ctx.req.cookies.token}`,
+      },
+    });
+    return {
+      props: {
+        modules,
+      },
+    };
+  } catch (error) {
+    return {
+      props: {
+        modules: [],
+      },
+    };
+  }
+};
+export default function Dashboard(props: { modules: ModuleRegistry[] }) {
   const user = useCurrentUser();
   const logout = useLogout();
 
@@ -65,6 +90,18 @@ export default function Dashboard() {
           </Box>
         </Box>
       </Card>
+
+      <Divider style={{ margin: '1rem 0' }} />
+
+      <Grid container spacing={4}>
+        {props.modules.map(module => {
+          return (
+            <Grid item xs={6} sm={4} md={3} key={module.id}>
+              <ModuleCard module={module} />
+            </Grid>
+          );
+        })}
+      </Grid>
     </Container>
   );
 }
