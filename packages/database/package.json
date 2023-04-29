@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^7.6.0",
-    "bd-geojs": "^1.0.0",
+    "bd-geojs": "^1.0.1",
     "prisma": "^4.10.1"
   }
 }

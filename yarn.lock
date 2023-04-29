@@ -2357,10 +2357,10 @@ bcrypt@^5.1.0:
     "@mapbox/node-pre-gyp" "^1.0.10"
     node-addon-api "^5.0.0"
 
-bd-geojs@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/bd-geojs/-/bd-geojs-1.0.0.tgz#32efc6a60018124bedbcf5c0e0d638b643afc21c"
-  integrity sha512-OeIhq3BqvpmloLeDyjVYeIQ4dHdSetP73bKluPM4gphxpxSEFddN/oPbJt9rblya2xNTESWSZxWCoCBdXwcyhg==
+bd-geojs@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/bd-geojs/-/bd-geojs-1.0.1.tgz#0befb5e98e9dddeab644608f1f19deef749ffbc6"
+  integrity sha512-nEweukqscIMkTvm5z94qsZcVxYrdf1re3tNE5JrhuORQGq5xvXjtqnQzOvRqcZ94/peAQpzCm8tKVzWpK0M1PA==
 
 binary-extensions@^2.0.0:
   version "2.2.0"
