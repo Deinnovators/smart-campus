@@ -1,31 +1,39 @@
+import { PrismaService } from '@api/modules/persistance/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { Faculty, Prisma } from 'database';
-import { PrismaService } from '../persistance/prisma/prisma.service';
+import { Faculty, Prisma } from '@prisma/client';
 
 @Injectable()
 export class FacultyService {
-  // eslint-disable-next-line prettier/prettier
-  constructor(private prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) {}
 
-  async findOne(args: Prisma.UserFindUniqueOrThrowArgs): Promise<Faculty> {
-    return this.prisma.faculty.findUniqueOrThrow({
-      where: { id: args.where.id },
+  async create(data: Prisma.FacultyCreateInput): Promise<Faculty> {
+    return this.prisma.faculty.create({
+      data,
     });
   }
 
-  async create(data: Prisma.FacultyCreateInput): Promise<Faculty> {
-    return this.prisma.faculty.create({ data });
+  async findAll(): Promise<Faculty[]> {
+    const faculties = await this.prisma.faculty.findMany({
+      orderBy: { id: 'asc' }, // Sort by id in ascending order
+    });
+
+    return faculties;
   }
 
-  async update(id: number, data: Prisma.FacultyUpdateInput) {
-    return this.prisma.faculty.update({ where: { id }, data });
+  async findOne(id: number): Promise<Faculty> {
+    return this.prisma.faculty.findUnique({ where: { id } });
   }
 
-  async findMany(args?: Prisma.FacultyFindManyArgs): Promise<Faculty[]> {
-    return this.prisma.faculty.findMany(args);
+  async update(id: number, data: Prisma.FacultyUpdateInput): Promise<Faculty> {
+    const faculty = await this.prisma.faculty.update({
+      where: { id },
+      data,
+    });
+
+    return faculty;
   }
 
-  async deleteOne(id: number) {
-    return this.prisma.faculty.delete({ where: { id } });
+  async remove(id: number): Promise<void> {
+    await this.prisma.faculty.delete({ where: { id } });
   }
 }

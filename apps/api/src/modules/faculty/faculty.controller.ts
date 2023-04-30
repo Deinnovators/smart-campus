@@ -1,49 +1,47 @@
+import { Prisma } from 'database';
 import {
-  Body,
   Controller,
-  Delete,
   Get,
-  Param,
-  ParseIntPipe,
-  Patch,
-  // eslint-disable-next-line prettier/prettier
   Post,
+  Put,
+  Delete,
+  Body,
+  Param,
 } from '@nestjs/common';
-import { Faculty, Prisma } from 'database';
 import { FacultyService } from './faculty.service';
+import { AccessRoles } from '@api/decorators/roles.decorator';
 
-@Controller('faculties')
+@Controller('faculty')
 export class FacultyController {
-  // eslint-disable-next-line prettier/prettier
-  constructor(private service: FacultyService) {}
+  constructor(private readonly facultyService: FacultyService) {}
 
-  @Get()
-  async getFaculties() {
-    return this.service.findMany();
-  }
-
-  @Get(':id')
-  async getFaculty(@Param('id', ParseIntPipe) id): Promise<Faculty> {
-    return this.service.findOne({ where: { id: id } });
-  }
-
-  @Patch(':id')
-  async updateFaculty(
-    @Param() params,
-    @Body() data: Prisma.FacultyCreateInput,
-  ): Promise<Faculty> {
-    return this.service.update(+params.id, data);
-  }
-
-  @Delete(':id')
-  async deleteFaculty(@Param() params) {
-    return this.service.deleteOne(+params.id);
-  }
-
+  @AccessRoles('superadmin', 'admin')
   @Post('/create')
-  async createFaculty(
-    @Body() data: Prisma.FacultyCreateInput,
-  ): Promise<Faculty> {
-    return this.service.create(data);
+  create(@Body() data: Prisma.FacultyCreateInput) {
+    return this.facultyService.create(data);
+  }
+
+  @AccessRoles('superadmin', 'admin')
+  @Get()
+  findAll() {
+    return this.facultyService.findAll();
+  }
+
+  @AccessRoles('superadmin', 'admin')
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.facultyService.findOne(+id);
+  }
+
+  @AccessRoles('superadmin', 'admin')
+  @Put(':id')
+  update(@Param('id') id: string, @Body() data: Prisma.FacultyUpdateInput) {
+    return this.facultyService.update(+id, data);
+  }
+
+  @AccessRoles('superadmin', 'admin')
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.facultyService.remove(+id);
   }
 }
