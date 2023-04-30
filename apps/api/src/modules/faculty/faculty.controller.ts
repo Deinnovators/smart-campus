@@ -3,15 +3,18 @@ import {
   Controller,
   Get,
   Post,
-  Put,
   Delete,
   Body,
   Param,
+  UseFilters,
+  Patch,
 } from '@nestjs/common';
 import { FacultyService } from './faculty.service';
 import { AccessRoles } from '@api/decorators/roles.decorator';
+import { GlobalExceptionFilter } from '@api/exceptions/exception-filter';
 
 @Controller('faculty')
+@UseFilters(GlobalExceptionFilter)
 export class FacultyController {
   constructor(private readonly facultyService: FacultyService) {}
 
@@ -34,13 +37,13 @@ export class FacultyController {
   }
 
   @AccessRoles('superadmin', 'admin')
-  @Put(':id')
+  @Patch('update/:id')
   update(@Param('id') id: string, @Body() data: Prisma.FacultyUpdateInput) {
     return this.facultyService.update(+id, data);
   }
 
   @AccessRoles('superadmin', 'admin')
-  @Delete(':id')
+  @Delete('delete/:id')
   remove(@Param('id') id: string) {
     return this.facultyService.remove(+id);
   }

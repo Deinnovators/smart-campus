@@ -6,12 +6,15 @@ import {
   Param,
   Delete,
   Patch,
+  UseFilters,
 } from '@nestjs/common';
 import { DepartmentService } from './department.service';
 import { Department, Prisma } from '@prisma/client';
 import { AccessRoles } from '@api/decorators/roles.decorator';
+import { GlobalExceptionFilter } from '@api/exceptions/exception-filter';
 
 @Controller('departments')
+@UseFilters(GlobalExceptionFilter)
 export class DepartmentController {
   constructor(private readonly departmentService: DepartmentService) {}
 
@@ -36,7 +39,7 @@ export class DepartmentController {
   }
 
   @AccessRoles('superadmin', 'admin')
-  @Patch(':id')
+  @Patch('update/:id')
   async updateDepartment(
     @Param('id') id: string,
     @Body() data: Prisma.DepartmentUpdateInput,
@@ -45,7 +48,7 @@ export class DepartmentController {
   }
 
   @AccessRoles('superadmin', 'admin')
-  @Delete(':id')
+  @Delete('delete/:id')
   async deleteDepartment(@Param('id') id: string): Promise<Department> {
     return this.departmentService.deleteDepartment(Number(id));
   }
