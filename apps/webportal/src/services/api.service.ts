@@ -1,4 +1,4 @@
-import { AuthHeaderKey, getApiUrlOfVersion } from '@webportal/constants';
+import { getApiUrlOfVersion } from '@webportal/constants';
 import { cookieService } from '@webportal/services/cookies.service';
 import { ApiService } from 'api-service';
 import axios, { InternalAxiosRequestConfig } from 'axios';
