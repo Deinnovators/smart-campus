@@ -132,5 +132,5 @@ model Department {
 
   // Faculty that this department belongs to
   faculty   Faculty? @relation(fields: [facultyId], references: [id])
-  facultyId Int?
+  facultyId Int
 }

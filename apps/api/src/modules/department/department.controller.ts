@@ -1,49 +1,52 @@
 import {
-  Body,
   Controller,
-  Delete,
   Get,
-  Param,
-  ParseIntPipe,
-  Patch,
-  // eslint-disable-next-line prettier/prettier
   Post,
+  Body,
+  Param,
+  Delete,
+  Patch,
 } from '@nestjs/common';
-import { Department, Prisma } from 'database';
 import { DepartmentService } from './department.service';
+import { Department, Prisma } from '@prisma/client';
+import { AccessRoles } from '@api/decorators/roles.decorator';
 
 @Controller('departments')
 export class DepartmentController {
-  // eslint-disable-next-line prettier/prettier
-  constructor(private service: DepartmentService) {}
+  constructor(private readonly departmentService: DepartmentService) {}
 
-  // @Get()
-  // async getDepartments() {
-  //   return this.service.findMany();
-  // }
+  @AccessRoles('superadmin', 'admin')
+  @Get()
+  async getAllDepartments(): Promise<Department[]> {
+    return this.departmentService.getAllDepartments();
+  }
 
-  // @Get(':id')
-  // async getDepartment(@Param('id', ParseIntPipe) id): Promise<Department> {
-  //   return this.service.findOne({ where: { id: id } });
-  // }
+  @AccessRoles('superadmin', 'admin')
+  @Get(':id')
+  async getDepartmentById(@Param('id') id: string): Promise<Department> {
+    return this.departmentService.getDepartmentById(Number(id));
+  }
 
-  // @Patch(':id')
-  // async updateDepartment(
-  //   @Param() params,
-  //   @Body() data: Prisma.DepartmentCreateInput,
-  // ): Promise<Department> {
-  //   return this.service.update(+params.id, data);
-  // }
+  @AccessRoles('superadmin', 'admin')
+  @Post('create')
+  async createDepartment(
+    @Body() data: Prisma.DepartmentCreateInput,
+  ): Promise<Department> {
+    return this.departmentService.createDepartment(data);
+  }
 
-  // @Delete(':id')
-  // async deleteDepartment(@Param() params) {
-  //   return this.service.deleteOne(+params.id);
-  // }
+  @AccessRoles('superadmin', 'admin')
+  @Patch(':id')
+  async updateDepartment(
+    @Param('id') id: string,
+    @Body() data: Prisma.DepartmentUpdateInput,
+  ): Promise<Department> {
+    return this.departmentService.updateDepartment(Number(id), data);
+  }
 
-  // @Post('/create')
-  // async createDepartment(
-  //   @Body() data: Prisma.DepartmentCreateInput,
-  // ): Promise<Department> {
-  //   return this.service.create(data);
-  // }
+  @AccessRoles('superadmin', 'admin')
+  @Delete(':id')
+  async deleteDepartment(@Param('id') id: string): Promise<Department> {
+    return this.departmentService.deleteDepartment(Number(id));
+  }
 }
