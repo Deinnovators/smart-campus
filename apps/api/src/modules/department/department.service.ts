@@ -9,7 +9,8 @@ export class DepartmentService {
   async getAllDepartments(): Promise<Department[]> {
     try {
       const departments = await this.prisma.department.findMany({
-        orderBy: { id: 'asc' }, // Sort by id in ascending order
+        orderBy: { id: 'asc' },
+        include: { members: true, faculty: true },
       });
       return departments;
     } catch (error) {
@@ -21,6 +22,7 @@ export class DepartmentService {
     try {
       const department = await this.prisma.department.findUnique({
         where: { id },
+        include: { members: true, faculty: true },
       });
 
       if (!department) {

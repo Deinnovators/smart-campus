@@ -1,6 +1,6 @@
 import { PrismaService } from '@api/modules/persistance/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { Faculty, Prisma } from '@prisma/client';
+import { Faculty, Prisma, Department } from '@prisma/client';
 
 @Injectable()
 export class FacultyService {
@@ -22,7 +22,8 @@ export class FacultyService {
   async findAll(): Promise<Faculty[]> {
     try {
       const faculties = await this.prisma.faculty.findMany({
-        orderBy: { id: 'asc' }, // Sort by id in ascending order
+        orderBy: { id: 'asc' },
+        include: { departments: true },
       });
 
       return faculties;
@@ -35,6 +36,7 @@ export class FacultyService {
     try {
       const faculty = await this.prisma.faculty.findUnique({
         where: { id },
+        include: { departments: true },
       });
 
       if (!faculty) {
