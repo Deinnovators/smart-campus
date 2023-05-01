@@ -8,6 +8,7 @@ export const endpoints = {
     base: '/modules',
     parents: '/modules/parents',
     children: '/modules/children',
+    all: '/modules/all',
   },
 };
 
