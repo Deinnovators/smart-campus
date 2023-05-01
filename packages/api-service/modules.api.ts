@@ -18,4 +18,12 @@ export class ModulesApi extends BaseHttp {
     });
     return res.data;
   }
+
+  async getAllModules(config?: AxiosRequestConfig): Promise<ModuleRegistry[]> {
+    const res = await this.get({
+      endpoint: this.endpoints.modules.all,
+      config,
+    });
+    return res.data;
+  }
 }
