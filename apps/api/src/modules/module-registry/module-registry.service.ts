@@ -18,15 +18,21 @@ export class ModuleRegistryService {
     return this.prisma.moduleRegistry.delete({ where: { id } });
   }
 
-  async getParentModules(role: Roles) {
+  async getParentModules(
+    role: Roles,
+    args: Prisma.ModuleRegistryFindManyArgs = {},
+  ) {
     return this.prisma.moduleRegistry.findMany({
+      ...args,
       where: {
         accessToRoles: {
           has: role,
         },
         status: 'active',
         parentUrl: null,
+        ...args?.where,
       },
+      take: args?.take ? +args.take : undefined,
     });
   }
 

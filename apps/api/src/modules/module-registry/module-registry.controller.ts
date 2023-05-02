@@ -11,16 +11,22 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { Prisma, Roles } from 'database';
+import QueryString from 'qs';
 
 @Controller('modules')
 export class ModuleRegistryController {
   constructor(private readonly service: ModuleRegistryService) {}
 
   @Get('/parents')
-  getParentModules(@CurrentUserRole() role: Roles) {
-    return this.service.getParentModules(role);
+  getParentModules(@CurrentUserRole() role: Roles, @Query() query: string) {
+    let args;
+    if (query) {
+      args = QueryString.parse(query);
+    }
+    return this.service.getParentModules(role, args);
   }
 
   @Get('/children/:url')
