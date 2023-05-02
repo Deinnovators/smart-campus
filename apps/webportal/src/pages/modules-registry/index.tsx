@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   Box,
+  Button,
+  Card,
   Container,
   IconButton,
+  Modal,
   Table,
   TableBody,
   TableCell,
@@ -16,6 +19,8 @@ import { ModuleRegistry } from 'database';
 import { GetServerSideProps } from 'next';
 import { Edit, Delete } from '@mui/icons-material';
 import Image from 'next/image';
+import { AddModuleForm } from '@webportal/libs/forms';
+import ModuleAction from '@webportal/features/module-registry/ModuleAction';
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
   const modules = await api.modules.getAllModules({
@@ -30,18 +35,41 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
   };
 };
 
-export default function ModulesRegistry({
-  modules,
-}: {
-  modules: ModuleRegistry[];
-}) {
+export default function ModulesRegistry(props: { modules: ModuleRegistry[] }) {
+  const [modules, setModules] = useState<ModuleRegistry[]>(props.modules);
+
+  const [isAddModalVisible, setIsAddModalVisible] = useState<boolean>(false);
+
+  const onModuleAddSuccess = useCallback((module: ModuleRegistry) => {
+    setModules(prev => [...prev, module]);
+    setIsAddModalVisible(false);
+  }, []);
+
+  const onDeleteSuccess = useCallback((id: number) => {
+    setModules(prev => {
+      const ms = [...prev];
+      const index = ms.findIndex(m => m.id === id);
+      if (index > -1) {
+        ms.splice(index, 1);
+      }
+      return ms;
+    });
+  }, []);
+
   return (
     <Container>
       <Head>
         <title>Modules Registry</title>
       </Head>
-      <Box display='flex' justifyContent='center' alignItems='center' py={4}>
+      <Box
+        display='flex'
+        justifyContent='space-between'
+        alignItems='center'
+        py={4}>
         <Typography variant='h4'>Modules</Typography>
+        <Button onClick={() => setIsAddModalVisible(true)} variant='contained'>
+          Add New
+        </Button>
       </Box>
       <Table>
         <TableHead>
@@ -69,20 +97,31 @@ export default function ModulesRegistry({
                 </TableCell>
                 <TableCell>{module.status}</TableCell>
                 <TableCell>
-                  <Box>
-                    <IconButton>
-                      <Edit />
-                    </IconButton>
-                    <IconButton>
-                      <Delete />
-                    </IconButton>
-                  </Box>
+                  <ModuleAction
+                    moduleId={module.id}
+                    onDeleteSuccess={onDeleteSuccess}
+                  />
                 </TableCell>
               </TableRow>
             );
           })}
         </TableBody>
       </Table>
+      <Modal
+        open={isAddModalVisible}
+        onClose={() => setIsAddModalVisible(false)}>
+        <Box
+          position='absolute'
+          top='50%'
+          left={'50%'}
+          sx={{ transform: 'translate(-50%, -50%)' }}
+          width={500}>
+          <Card sx={{ padding: 4 }}>
+            <Typography variant='h6'>Add New Module</Typography>
+            <AddModuleForm onSuccess={onModuleAddSuccess} />
+          </Card>
+        </Box>
+      </Modal>
     </Container>
   );
 }
