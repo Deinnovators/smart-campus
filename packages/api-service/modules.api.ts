@@ -1,6 +1,6 @@
 import { AxiosInstance, AxiosRequestConfig } from 'axios';
 import BaseHttp from './base.http';
-import { ModuleRegistry } from 'database';
+import { ModuleRegistry, Prisma } from 'database';
 import { Endpoints } from './constants/endpoints';
 
 export class ModulesApi extends BaseHttp {
@@ -22,6 +22,27 @@ export class ModulesApi extends BaseHttp {
   async getAllModules(config?: AxiosRequestConfig): Promise<ModuleRegistry[]> {
     const res = await this.get({
       endpoint: this.endpoints.modules.all,
+      config,
+    });
+    return res.data;
+  }
+  async createModule(
+    data: Prisma.ModuleRegistryCreateArgs,
+    config?: AxiosRequestConfig,
+  ): Promise<ModuleRegistry> {
+    const res = await this.post({
+      endpoint: this.endpoints.modules.base,
+      data,
+      config,
+    });
+    return res.data;
+  }
+  async deleteModule(
+    id: number,
+    config?: AxiosRequestConfig,
+  ): Promise<ModuleRegistry> {
+    const res = await this.delete({
+      endpoint: this.endpoints.modules.base + '/' + id,
       config,
     });
     return res.data;

@@ -21,11 +21,13 @@
     "@next/font": "13.1.5",
     "api-service": "*",
     "axios": "^1.3.3",
+    "formik": "^2.2.9",
     "js-cookie": "^3.0.1",
     "next": "13.1.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "ui": "*"
+    "ui": "*",
+    "yup": "^1.1.1"
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.2",
