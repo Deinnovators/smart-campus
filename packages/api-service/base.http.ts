@@ -1,4 +1,5 @@
 import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import qs from 'qs';
 
 export interface Request {
   endpoint: string;
@@ -54,6 +55,12 @@ abstract class BaseHttp {
     config,
   }: PostRequest<T>): Promise<AxiosResponse<R>> {
     return this._instance.patch(endpoint, data, config);
+  }
+  protected getQueryString(query: any) {
+    if (!query) {
+      return '';
+    }
+    return qs.stringify(query);
   }
 }
 

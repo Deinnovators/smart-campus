@@ -75,6 +75,7 @@ export default function ModulesRegistry(props: { modules: ModuleRegistry[] }) {
         <TableHead>
           <TableCell>ID</TableCell>
           <TableCell>Name</TableCell>
+          <TableCell>Url</TableCell>
           <TableCell>Parent Url</TableCell>
           <TableCell>Image</TableCell>
           <TableCell>Status</TableCell>
@@ -86,6 +87,7 @@ export default function ModulesRegistry(props: { modules: ModuleRegistry[] }) {
               <TableRow key={module.id}>
                 <TableCell>{module.id}</TableCell>
                 <TableCell>{module.name}</TableCell>
+                <TableCell>{module.url ?? 'null'}</TableCell>
                 <TableCell>{module.parentUrl ?? 'null'}</TableCell>
                 <TableCell>
                   <Image

@@ -2,6 +2,7 @@ import { AxiosInstance } from 'axios';
 import { endpoints } from './constants/endpoints';
 import { AuthApi } from './auth.api';
 import { ModulesApi } from './modules.api';
+import qs from 'qs';
 export class ApiService {
   private instance: AxiosInstance;
   auth: AuthApi;

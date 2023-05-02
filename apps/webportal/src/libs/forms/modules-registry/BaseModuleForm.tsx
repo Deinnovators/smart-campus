@@ -15,6 +15,7 @@ import {
 import { addModuleValidationSchema } from '@webportal/libs/validation-schemas/moduleRegistrySchemas';
 import { useFormik } from 'formik';
 import { Prisma } from 'database';
+import ModuleParentField from '@webportal/libs/forms/modules-registry/ModuleParentField';
 
 export interface BaseModuleFormProps {
   onSubmit: (value: Prisma.ModuleRegistryCreateInput) => void;
@@ -86,6 +87,16 @@ export const BaseModuleForm: React.FC<BaseModuleFormProps> = ({
           helperText={touched.url && errors.url}
         />
       </FormControl>
+      <ModuleParentField
+        placeholder='Type to search parent'
+        label='Parent'
+        variant='outlined'
+        value={values.parentUrl}
+        onBlur={handleBlur('parentUrl')}
+        onSelectParent={handleChange('parentUrl') as any}
+        error={Boolean(touched.parentUrl && errors.parentUrl)}
+        helperText={touched.parentUrl && errors.parentUrl}
+      />
       <FormControl variant='outlined' fullWidth margin='normal'>
         <InputLabel id='roles-select-label'>Access Roles</InputLabel>
         <Select

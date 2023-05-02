@@ -11,9 +11,13 @@ export class ModulesApi extends BaseHttp {
     this.endpoints = ep;
   }
 
-  async getParents(config?: AxiosRequestConfig): Promise<ModuleRegistry[]> {
+  async getParents(
+    args?: Prisma.ModuleRegistryFindManyArgs,
+    config?: AxiosRequestConfig,
+  ): Promise<ModuleRegistry[]> {
+    const query = this.getQueryString(args);
     const res = await this.get({
-      endpoint: this.endpoints.modules.parents,
+      endpoint: `${this.endpoints.modules.parents}${query ? '?' + query : ''}`,
       config,
     });
     return res.data;
