@@ -2,14 +2,31 @@ import { PageWrapper } from '@webportal/components';
 import { AppThemeProvider } from '@webportal/libs/providers/theme.provider';
 import '@webportal/styles/globals.css';
 import { Inter } from '@next/font/google';
-import { ReactElement, useEffect } from 'react';
+import { ReactElement, ReactNode, useEffect } from 'react';
+import App, { AppInitialProps, AppProps } from 'next/app';
+import { AppThemeMode } from '@webportal/libs/contexts/theme.context';
+import { NextPage } from 'next';
 
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
 });
 
-export default function App({ Component, pageProps }: any) {
+interface MyAppProps {
+  themeMode: AppThemeMode;
+}
+
+type CustomAppProps = AppProps & {
+  Component: NextPage & {
+    getLayout: (page: ReactElement) => ReactNode;
+  };
+};
+
+export default function MyApp({
+  Component,
+  pageProps,
+  themeMode,
+}: MyAppProps & CustomAppProps) {
   useEffect(() => {
     if (document !== undefined) {
       document.body.className = `${inter.variable} font-sans`;
@@ -19,8 +36,18 @@ export default function App({ Component, pageProps }: any) {
     Component.getLayout ||
     ((page: ReactElement) => <PageWrapper>{page}</PageWrapper>);
   return (
-    <AppThemeProvider>
+    <AppThemeProvider themeMode={themeMode}>
       {getLayout(<Component {...pageProps} />)}
     </AppThemeProvider>
   );
 }
+
+MyApp.getInitialProps = async (
+  context: any,
+): Promise<MyAppProps & AppInitialProps> => {
+  const mainContext = await App.getInitialProps(context);
+  const { ctx } = context;
+  const themeMode = ctx?.req?.cookies?.themeMode ?? 'dark';
+
+  return { ...mainContext, themeMode };
+};
