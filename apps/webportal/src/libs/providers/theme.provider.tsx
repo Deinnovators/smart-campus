@@ -1,4 +1,4 @@
-import { useState, FC, useCallback, useEffect } from 'react';
+import { useState, FC, useCallback, ReactNode } from 'react';
 import {
   ThemeProvider as MuiThemeProvider,
   createTheme,
@@ -10,6 +10,7 @@ import {
 } from '@webportal/libs/contexts/theme.context';
 import { CssBaseline } from '@mui/material';
 import { green } from '@mui/material/colors';
+import { cookieService } from '@webportal/services';
 
 const fontFamily = 'var(--font-inter)';
 
@@ -47,28 +48,24 @@ const darkTheme = createTheme({
 
 const localThemeKey = 'themeMode';
 
-export const AppThemeProvider: FC<any> = ({ children }) => {
-  const [theme, setTheme] = useState<Theme>(lightTheme);
-  const [mode, setMode] = useState<AppThemeMode>('light');
-
-  useEffect(() => {
-    const localThemeMode = localStorage.getItem(localThemeKey);
-    if (!localThemeMode) {
-      return;
-    }
-    setTheme(localThemeMode === 'dark' ? darkTheme : lightTheme);
-    setMode(localThemeMode as AppThemeMode);
-  }, []);
+export const AppThemeProvider: FC<{
+  themeMode?: AppThemeMode;
+  children: ReactNode;
+}> = ({ children, themeMode }) => {
+  const [mode, setMode] = useState<AppThemeMode>(themeMode ?? 'dark');
+  const [theme, setTheme] = useState<Theme>(
+    mode === 'light' ? lightTheme : darkTheme,
+  );
 
   const toggleTheme = useCallback(() => {
     if (mode === 'dark') {
       setMode('light');
       setTheme(lightTheme);
-      localStorage.setItem(localThemeKey, 'light');
+      cookieService.set(localThemeKey, 'light');
     } else {
       setMode('dark');
       setTheme(darkTheme);
-      localStorage.setItem(localThemeKey, 'dark');
+      cookieService.set(localThemeKey, 'dark');
     }
   }, [mode]);
 

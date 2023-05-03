@@ -21,11 +21,14 @@ import { GetServerSideProps } from 'next';
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
   try {
-    const modules = await api.modules.getParents({
-      headers: {
-        [api.authHeaderKey]: `${api.authTokenType} ${ctx.req.cookies.token}`,
+    const modules = await api.modules.getParents(
+      {},
+      {
+        headers: {
+          [api.authHeaderKey]: `${api.authTokenType} ${ctx.req.cookies.token}`,
+        },
       },
-    });
+    );
     return {
       props: {
         modules,
