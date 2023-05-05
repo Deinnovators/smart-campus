@@ -33,8 +33,9 @@ model User {
   department   Department? @relation("DepartmentMembers", fields: [departmentId], references: [id])
   departmentId Int?        @unique
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @default(now()) @updatedAt
+  CourseOffering CourseOffering[]
 
   @@map("user")
 }
@@ -133,4 +134,91 @@ model Department {
   // Faculty that this department belongs to
   faculty   Faculty? @relation(fields: [facultyId], references: [id])
   facultyId Int
+
+  courses             Course[]
+  courseDistributions CourseDistribution[]
+  classRoutines       ClassRoutine[]
+}
+
+model Course {
+  id          Int        @id @default(autoincrement())
+  name        String
+  code        String     @unique
+  credit      Float
+  description String?
+  type        CourseType
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @default(now()) @updatedAt
+
+  department       Department         @relation(fields: [departmentId], references: [id])
+  departmentId     Int
+  CourseOffering   CourseOffering[]
+  CourseCurriculum CourseCurriculum[]
+}
+
+model CourseDistribution {
+  id              Int              @id @default(autoincrement())
+  academicYear    String
+  semester        Semester
+  section         Section
+  courseOfferings CourseOffering[]
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @default(now()) @updatedAt
+
+  department   Department @relation(fields: [departmentId], references: [id])
+  departmentId Int
+}
+
+model CourseOffering {
+  id        Int      @id @default(autoincrement())
+  courseId  Int
+  teacherId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  course Course @relation(fields: [courseId], references: [id])
+
+  teacher User @relation(fields: [teacherId], references: [id])
+
+  CourseDistribution   CourseDistribution? @relation(fields: [courseDistributionId], references: [id])
+  courseDistributionId Int?
+}
+
+model CourseCurriculum {
+  id         Int      @id @default(autoincrement())
+  courseId   Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
+  curriculum Json
+  course     Course   @relation(fields: [courseId], references: [id])
+}
+
+model ClassRoutine {
+  id           Int      @id @default(autoincrement())
+  academicYear String
+  semester     Semester
+  section      Section
+  routine      Json
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now()) @updatedAt
+
+  department   Department @relation(fields: [departmentId], references: [id])
+  departmentId Int
+}
+
+enum Semester {
+  one
+  two
+}
+
+enum Section {
+  a
+  b
+  c
+}
+
+enum CourseType {
+  theory
+  sessional
+  others
 }
