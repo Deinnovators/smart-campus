@@ -26,6 +26,13 @@ model User {
   nationalityType UserNationalityTypes @default(native)
   foreignAddress  ForeignAddress?
 
+  bio String?
+
+  faculty      Faculty?
+  chairman     Department? @relation("DepartmentChairman")
+  department   Department? @relation("DepartmentMembers", fields: [departmentId], references: [id])
+  departmentId Int?        @unique
+
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
@@ -89,14 +96,41 @@ enum ModuleStatus {
 }
 
 model ModuleRegistry {
-  id Int @id @default(autoincrement())
+  id            Int          @id @default(autoincrement())
   accessToRoles Roles[]
-  parentUrl String?
-  name String
-  url String
-  customIcon Boolean? @default(false)
-  icon String
-  status ModuleStatus @default(active)
+  parentUrl     String?
+  name          String
+  url           String
+  customIcon    Boolean?     @default(false)
+  icon          String
+  status        ModuleStatus @default(active)
 
   @@map("module_registry")
+}
+
+model Faculty {
+  id          Int          @id @default(autoincrement())
+  name        String       @unique
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @default(now()) @updatedAt
+  dean        User         @relation(fields: [deanId], references: [id])
+  deanId      Int          @unique
+  deanMessage String?
+  departments Department[]
+}
+
+model Department {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  chairman        User    @relation("DepartmentChairman", fields: [chairmanId], references: [id])
+  chairmanId      Int     @unique
+  chairmanMessage String?
+  members         User[]  @relation("DepartmentMembers")
+
+  // Faculty that this department belongs to
+  faculty   Faculty? @relation(fields: [facultyId], references: [id])
+  facultyId Int
 }

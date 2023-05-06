@@ -1,7 +1,7 @@
-import { RequestMethod, VersioningType } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
 import { AppModule } from '@api/app.module';
 import { PrismaClientExceptionFilter } from '@api/exceptions/prisma-client-exception/prisma-client-exception.filter';
+import { RequestMethod, VersioningType } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
