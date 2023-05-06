@@ -1,6 +1,5 @@
 import {
   Box,
-  ClickAwayListener,
   FormControl,
   LinearProgress,
   MenuItem,
@@ -8,7 +7,6 @@ import {
   Paper,
   TextField,
   Zoom,
-  useTheme,
 } from '@mui/material';
 import { debounce } from '@webportal/libs/utils/debounce';
 import { api } from '@webportal/services';
@@ -17,6 +15,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 export interface ModuleParentFieldProps
   extends Omit<OutlinedTextFieldProps, 'onChange' | 'onFocus'> {
+  // eslint-disable-next-line no-unused-vars
   onSelectParent: (value?: string) => void;
 }
 
@@ -80,6 +79,16 @@ const ModuleParentField: React.FC<ModuleParentFieldProps> = ({
         <Box pt={1} position='absolute' width='100%' top={48} zIndex={999999}>
           {loading ? <LinearProgress /> : null}
           <Paper elevation={5}>
+            <MenuItem
+              key={''}
+              onClick={() => {
+                setText('');
+                setIsEditing(false);
+                onSelectParent?.();
+              }}
+              sx={{ padding: 2 }}>
+              None
+            </MenuItem>
             {parents.map(p => (
               <MenuItem
                 key={p.url}

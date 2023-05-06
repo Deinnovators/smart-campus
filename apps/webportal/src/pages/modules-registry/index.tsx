@@ -4,7 +4,6 @@ import {
   Button,
   Card,
   Container,
-  IconButton,
   Modal,
   Table,
   TableBody,
@@ -17,7 +16,6 @@ import Head from 'next/head';
 import { api } from '@webportal/services';
 import { ModuleRegistry } from 'database';
 import { GetServerSideProps } from 'next';
-import { Edit, Delete } from '@mui/icons-material';
 import Image from 'next/image';
 import { AddModuleForm } from '@webportal/libs/forms';
 import ModuleAction from '@webportal/features/module-registry/ModuleAction';
