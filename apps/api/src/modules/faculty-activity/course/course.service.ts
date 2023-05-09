@@ -21,6 +21,7 @@ export class CourseService {
     try {
       const course = await this.prisma.course.findUnique({
         where: { id },
+        include: { CourseCurriculum: true },
       });
 
       if (!course) {
@@ -37,7 +38,7 @@ export class CourseService {
     try {
       const courses = await this.prisma.course.findMany({
         where: { departmentId: id },
-        include: { department: true },
+        include: { department: true, CourseCurriculum: true },
       });
 
       if (!courses) {

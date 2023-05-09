@@ -4,6 +4,7 @@ import { JwtAuthGuard } from '@api/guards/jwt-auth.guard';
 import { RolesGuard } from '@api/guards/roles.guard';
 import { AuthModule } from '@api/modules/auth/auth.module';
 import { CourseModule } from '@api/modules/faculty-activity/course/course.module';
+import { CurriculumModule } from '@api/modules/faculty-activity/curriculum/curriculum/curriculum.module';
 import { FacultyModule } from '@api/modules/faculty/faculty.module';
 import { UsersModule } from '@api/modules/users/users.module';
 import { Module } from '@nestjs/common';
@@ -19,6 +20,7 @@ import { ModuleRegistryModule } from './modules/module-registry/module-registry.
     FacultyModule,
     DepartmentModule,
     CourseModule,
+    CurriculumModule,
   ],
   controllers: [AppController],
   providers: [

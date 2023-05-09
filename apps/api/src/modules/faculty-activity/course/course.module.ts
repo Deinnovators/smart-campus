@@ -7,6 +7,6 @@ import { Module } from '@nestjs/common';
   imports: [],
   providers: [CourseService, PrismaService],
   controllers: [CourseController],
-  exports: [CourseService],
+  exports: [],
 })
 export class CourseModule {}
