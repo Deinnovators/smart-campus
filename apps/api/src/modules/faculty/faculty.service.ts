@@ -7,11 +7,6 @@ export class FacultyService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(data: Prisma.FacultyCreateInput): Promise<Faculty> {
-    // const { name, deanId } = data;
-    // if (!name || !deanId) {
-    //   throw new Error('Faculty name and Dean information are required');
-    // }
-
     try {
       return await this.prisma.faculty.create({ data });
     } catch (error) {
@@ -50,11 +45,6 @@ export class FacultyService {
   }
 
   async update(id: number, data: Prisma.FacultyUpdateInput): Promise<Faculty> {
-    // const { name, dean } = data;
-    // if (!name || !dean) {
-    //   throw new Error('Faculty name and Dean information are required');
-    // }
-
     try {
       const faculty = await this.prisma.faculty.update({
         where: { id },

@@ -8,6 +8,7 @@ import {
   Param,
   UseFilters,
   Patch,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { FacultyService } from './faculty.service';
 import { AccessRoles } from '@api/decorators/roles.decorator';
@@ -19,7 +20,7 @@ export class FacultyController {
   constructor(private readonly facultyService: FacultyService) {}
 
   @AccessRoles('superadmin', 'admin')
-  @Post('/create')
+  @Post('/')
   create(@Body() data: Prisma.FacultyCreateInput) {
     return this.facultyService.create(data);
   }
@@ -32,19 +33,22 @@ export class FacultyController {
 
   @AccessRoles('superadmin', 'admin')
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseIntPipe) id: number) {
     return this.facultyService.findOne(+id);
   }
 
   @AccessRoles('superadmin', 'admin')
-  @Patch('update/:id')
-  update(@Param('id') id: string, @Body() data: Prisma.FacultyUpdateInput) {
+  @Patch(':id')
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() data: Prisma.FacultyUpdateInput,
+  ) {
     return this.facultyService.update(+id, data);
   }
 
   @AccessRoles('superadmin', 'admin')
-  @Delete('delete/:id')
-  remove(@Param('id') id: string) {
+  @Delete(':id')
+  remove(@Param('id', ParseIntPipe) id: number) {
     return this.facultyService.remove(+id);
   }
 }

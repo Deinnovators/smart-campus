@@ -38,12 +38,6 @@ export class DepartmentService {
   async createDepartment(
     data: Prisma.DepartmentCreateInput,
   ): Promise<Department> {
-    // const { name, faculty, chairman } = data;
-    // if (!name || !faculty || !chairman) {
-    //   throw new Error(
-    //     'Department name, faculty information, and chairman are required',
-    //   );
-    // }
     try {
       return await this.prisma.department.create({ data });
     } catch (error) {
@@ -55,12 +49,6 @@ export class DepartmentService {
     id: number,
     data: Prisma.DepartmentUpdateInput,
   ): Promise<Department> {
-    // const { name, faculty, chairman } = data;
-    // if (!name || !faculty || !chairman) {
-    //   throw new Error(
-    //     'Department name, faculty information, and chairman are required',
-    //   );
-    // }
     try {
       const department = await this.prisma.department.update({
         where: { id },

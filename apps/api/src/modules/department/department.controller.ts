@@ -31,7 +31,7 @@ export class DepartmentController {
   }
 
   @AccessRoles('superadmin', 'admin')
-  @Post('create')
+  @Post('')
   async createDepartment(
     @Body() data: Prisma.DepartmentCreateInput,
   ): Promise<Department> {
@@ -39,7 +39,7 @@ export class DepartmentController {
   }
 
   @AccessRoles('superadmin', 'admin')
-  @Patch('update/:id')
+  @Patch(':id')
   async updateDepartment(
     @Param('id') id: string,
     @Body() data: Prisma.DepartmentUpdateInput,
@@ -48,7 +48,7 @@ export class DepartmentController {
   }
 
   @AccessRoles('superadmin', 'admin')
-  @Delete('delete/:id')
+  @Delete(':id')
   async deleteDepartment(@Param('id') id: string): Promise<Department> {
     return this.departmentService.deleteDepartment(Number(id));
   }
