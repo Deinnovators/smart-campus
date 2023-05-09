@@ -7,6 +7,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   UseFilters,
@@ -18,33 +19,41 @@ import { Course } from 'database';
 export class CourseController {
   constructor(private readonly courseService: CourseService) {}
 
-  // @AccessRoles('superadmin', 'admin')
-
   @Get()
-  async findAllCourses(): Promise<Course[]> {
-    return this.courseService.findAll();
+  async getAllCourses(): Promise<Course[]> {
+    return this.courseService.getAllCourses();
   }
 
   @Get(':id')
-  async findOneCourse(@Param('id') id: string): Promise<Course> {
-    return this.courseService.findOne(parseInt(id));
+  async getCourseById(@Param('id', ParseIntPipe) id: number): Promise<Course> {
+    return this.courseService.getCourseById(id);
   }
 
+  @Get('/department/:id')
+  async getCourseByDepartmentId(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<Course[]> {
+    return this.courseService.getCourseByDepartmentId(id);
+  }
+
+  @AccessRoles('superadmin', 'admin')
   @Post()
   async createCourse(@Body() data: Course): Promise<Course> {
-    return this.courseService.create(data);
+    return this.courseService.createCourse(data);
   }
 
+  @AccessRoles('superadmin', 'admin')
   @Patch(':id')
   async updateCourse(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() data: Course,
   ): Promise<Course> {
-    return this.courseService.update(parseInt(id), data);
+    return this.courseService.updateCourse(id, data);
   }
 
+  @AccessRoles('superadmin', 'admin')
   @Delete(':id')
-  async deleteCourse(@Param('id') id: string): Promise<Course> {
-    return this.courseService.delete(parseInt(id));
+  async deleteCourse(@Param('id', ParseIntPipe) id: number): Promise<Course> {
+    return this.courseService.deleteCourse(id);
   }
 }
