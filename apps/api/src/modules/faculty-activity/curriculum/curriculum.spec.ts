@@ -1,4 +1,4 @@
-import { CourseCurriculumService } from '@api/modules/faculty-activity/curriculum/curriculum/curriculum.service';
+import { CourseCurriculumService } from '@api/modules/faculty-activity/curriculum/curriculum.service';
 import { Test, TestingModule } from '@nestjs/testing';
 
 describe('Curriculum', () => {
