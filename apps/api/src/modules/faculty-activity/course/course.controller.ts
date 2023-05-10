@@ -25,7 +25,9 @@ export class CourseController {
   }
 
   @Get(':id')
-  async getCourseById(@Param('id', ParseIntPipe) id: number): Promise<Course> {
+  async getCourseById(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<Course[]> {
     return this.courseService.getCourseById(id);
   }
 

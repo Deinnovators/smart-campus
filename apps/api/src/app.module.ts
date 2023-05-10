@@ -11,6 +11,7 @@ import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { DepartmentModule } from './modules/department/department.module';
 import { ModuleRegistryModule } from './modules/module-registry/module-registry.module';
+import { CourseDistributionModule } from '@api/modules/faculty-activity/course-distribution/course-distribution/course-distribution.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { ModuleRegistryModule } from './modules/module-registry/module-registry.
     DepartmentModule,
     CourseModule,
     CurriculumModule,
+    CourseDistributionModule,
   ],
   controllers: [AppController],
   providers: [

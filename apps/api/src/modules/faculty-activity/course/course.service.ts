@@ -17,9 +17,9 @@ export class CourseService {
     }
   }
 
-  async getCourseById(id: number): Promise<Course> {
+  async getCourseById(id: number): Promise<Course[]> {
     try {
-      const course = await this.prisma.course.findUnique({
+      const course = await this.prisma.course.findMany({
         where: { id },
         include: { CourseCurriculum: true },
       });
