@@ -7,11 +7,14 @@ import {
   Patch,
   ParseIntPipe,
   Post,
+  UseFilters,
 } from '@nestjs/common';
 import { CourseOffering } from '@prisma/client';
 import { CourseOfferingService } from './course-offering.service';
 import { AccessRoles } from '@api/decorators/roles.decorator';
+import { GlobalExceptionFilter } from '@api/exceptions/exception-filter';
 
+@UseFilters(GlobalExceptionFilter)
 @Controller('course-offerings')
 export class CourseOfferingController {
   constructor(private readonly courseOfferingService: CourseOfferingService) {}

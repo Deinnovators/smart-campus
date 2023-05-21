@@ -15,6 +15,7 @@ export class DepartmentService {
           faculty: true,
           courses: true,
           courseDistributions: true,
+          classRoutines: true,
         },
       });
       return departments;
@@ -32,6 +33,7 @@ export class DepartmentService {
           faculty: true,
           courses: true,
           courseDistributions: true,
+          classRoutines: true,
         },
       });
 

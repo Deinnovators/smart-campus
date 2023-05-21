@@ -13,6 +13,7 @@ import { DepartmentModule } from './modules/department/department.module';
 import { ModuleRegistryModule } from './modules/module-registry/module-registry.module';
 import { CourseDistributionModule } from '@api/modules/faculty-activity/course-distribution/course-distribution/course-distribution.module';
 import { CourseOfferingModule } from '@api/modules/faculty-activity/course-offering/course-offering/course-offering.module';
+import { ClassRoutineModule } from '@api/modules/faculty-activity/class-routines/class-routine/class-routine.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { CourseOfferingModule } from '@api/modules/faculty-activity/course-offer
     CurriculumModule,
     CourseDistributionModule,
     CourseOfferingModule,
+    ClassRoutineModule,
   ],
   controllers: [AppController],
   providers: [
