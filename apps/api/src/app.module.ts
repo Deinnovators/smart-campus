@@ -12,6 +12,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { DepartmentModule } from './modules/department/department.module';
 import { ModuleRegistryModule } from './modules/module-registry/module-registry.module';
 import { CourseDistributionModule } from '@api/modules/faculty-activity/course-distribution/course-distribution/course-distribution.module';
+import { CourseOfferingModule } from '@api/modules/faculty-activity/course-offering/course-offering/course-offering.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { CourseDistributionModule } from '@api/modules/faculty-activity/course-d
     CourseModule,
     CurriculumModule,
     CourseDistributionModule,
+    CourseOfferingModule,
   ],
   controllers: [AppController],
   providers: [

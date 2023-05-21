@@ -10,6 +10,11 @@ export class CourseService {
     try {
       const courses = await this.prisma.course.findMany({
         orderBy: { id: 'asc' },
+        include: {
+          department: true,
+          CourseCurriculum: true,
+          CourseOffering: true,
+        },
       });
       return courses;
     } catch (error) {
@@ -21,7 +26,11 @@ export class CourseService {
     try {
       const course = await this.prisma.course.findMany({
         where: { id },
-        include: { CourseCurriculum: true },
+        include: {
+          department: true,
+          CourseCurriculum: true,
+          CourseOffering: true,
+        },
       });
 
       if (!course) {
@@ -38,7 +47,11 @@ export class CourseService {
     try {
       const courses = await this.prisma.course.findMany({
         where: { departmentId: id },
-        include: { department: true, CourseCurriculum: true },
+        include: {
+          department: true,
+          CourseCurriculum: true,
+          CourseOffering: true,
+        },
       });
 
       if (!courses) {
@@ -63,6 +76,11 @@ export class CourseService {
       const course = await this.prisma.course.update({
         where: { id },
         data,
+        include: {
+          department: true,
+          CourseCurriculum: true,
+          CourseOffering: true,
+        },
       });
 
       if (!course) {

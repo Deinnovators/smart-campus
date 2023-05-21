@@ -10,6 +10,7 @@ export class CourseDistributionService {
     try {
       const courses = await this.prisma.courseDistribution.findMany({
         orderBy: { id: 'asc' },
+        include: { courseOfferings: true },
       });
       return courses;
     } catch (error) {
@@ -21,7 +22,7 @@ export class CourseDistributionService {
     try {
       const data = await this.prisma.courseDistribution.findUnique({
         where: { id },
-        // include: { CourseCurriculum: true },
+        include: { courseOfferings: true },
       });
 
       if (!data) {
@@ -89,6 +90,7 @@ export class CourseDistributionService {
       const distribution = await this.prisma.courseDistribution.update({
         where: { id },
         data,
+        include: { courseOfferings: true },
       });
 
       if (!distribution) {
