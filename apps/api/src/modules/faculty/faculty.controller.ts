@@ -25,13 +25,11 @@ export class FacultyController {
     return this.facultyService.create(data);
   }
 
-  @AccessRoles('superadmin', 'admin')
   @Get()
   findAll() {
     return this.facultyService.findAll();
   }
 
-  @AccessRoles('superadmin', 'admin')
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.facultyService.findOne(+id);

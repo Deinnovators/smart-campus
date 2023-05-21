@@ -10,7 +10,13 @@ export class DepartmentService {
     try {
       const departments = await this.prisma.department.findMany({
         orderBy: { id: 'asc' },
-        include: { members: true, faculty: true },
+        include: {
+          members: true,
+          faculty: true,
+          courses: true,
+          courseDistributions: true,
+          classRoutines: true,
+        },
       });
       return departments;
     } catch (error) {
@@ -22,7 +28,13 @@ export class DepartmentService {
     try {
       const department = await this.prisma.department.findUnique({
         where: { id },
-        include: { members: true, faculty: true },
+        include: {
+          members: true,
+          faculty: true,
+          courses: true,
+          courseDistributions: true,
+          classRoutines: true,
+        },
       });
 
       if (!department) {
