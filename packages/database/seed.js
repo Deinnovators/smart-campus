@@ -202,6 +202,9 @@ async function main() {
       create: user,
     });
   }
+
+  console.log('creating modules...');
+  await createModules();
 }
 
 const createMyAccounts = async () => {
@@ -240,6 +243,45 @@ const createMyAccounts = async () => {
     where: { email: 'sayeed@teacher.com' },
     update: {},
     create: createMyAccount('teacher'),
+  });
+};
+
+const createModules = async () => {
+  await prisma.moduleRegistry.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      id: 1,
+      name: 'Modules Registry',
+      icon: 'https://picsum.photos/200',
+      url: '/modules-registry',
+      accessToRoles: ['superadmin', 'admin'],
+      parentUrl: null,
+    },
+  });
+  await prisma.moduleRegistry.upsert({
+    where: { id: 2 },
+    update: {},
+    create: {
+      id: 2,
+      name: 'Faculty',
+      icon: 'https://picsum.photos/200',
+      url: '/faculty',
+      accessToRoles: ['superadmin', 'admin', 'student', 'stuff', 'teacher'],
+      parentUrl: null,
+    },
+  });
+  await prisma.moduleRegistry.upsert({
+    where: { id: 3 },
+    update: {},
+    create: {
+      id: 3,
+      name: 'Department',
+      icon: 'https://picsum.photos/200',
+      url: '/department',
+      accessToRoles: ['superadmin', 'admin', 'student', 'stuff', 'teacher'],
+      parentUrl: null,
+    },
   });
 };
 
