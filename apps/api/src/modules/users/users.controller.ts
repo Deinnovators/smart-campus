@@ -8,16 +8,22 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { Prisma, User } from 'database';
+import QueryString from 'qs';
 
 @Controller('users')
 export class UsersController {
   constructor(private service: UsersService) {}
 
   @Get()
-  async getUsers() {
-    return this.service.findMany();
+  async getUsers(@Query() query: string) {
+    let args;
+    if (query) {
+      args = QueryString.parse(query);
+    }
+    return this.service.findMany(args);
   }
 
   @Get(':id')
@@ -27,15 +33,15 @@ export class UsersController {
 
   @Patch(':id')
   async updateUser(
-    @Param() params,
+    @Param('id', ParseIntPipe) id: number,
     @Body() data: Prisma.UserUpdateInput,
   ): Promise<User> {
-    return this.service.update(+params.id, data);
+    return this.service.update(id, data);
   }
 
   @Delete(':id')
-  async deleteUser(@Param() params) {
-    return this.service.deleteOne(+params.id);
+  async deleteUser(@Param('id', ParseIntPipe) id: number) {
+    return this.service.deleteOne(id);
   }
 
   @Post()
