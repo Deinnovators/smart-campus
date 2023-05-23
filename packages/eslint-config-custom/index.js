@@ -8,7 +8,6 @@ module.exports = {
     quotes: [2, 'single', 'avoid-escape'],
     'no-undef': 'error',
     'no-console': 'error',
-    'no-unused-vars': 'error',
     'prettier/prettier': [
       'error',
       {
