@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://zafor:123@localhost:5432/smartcampus"
+  url      = env("DATABASE_URL")
 }
 
 model User {
