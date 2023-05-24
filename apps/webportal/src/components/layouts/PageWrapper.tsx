@@ -5,6 +5,7 @@ import { createStyles, Link, Typography } from '@mui/material';
 import NextLink from 'next/link';
 import { useAppCurrentTheme } from '@webportal/libs/hooks';
 import { Box } from '@mui/material';
+import { ToastContainer } from 'react-toastify';
 
 interface PageWrapperProps extends NavbarProps {
   children?: ReactNode;
@@ -35,6 +36,8 @@ export const PageWrapper: FC<PageWrapperProps> = ({
 }) => {
   return (
     <Container {...containerProps}>
+      <ToastContainer />
+
       <Navbar {...props} />
       <Box sx={{ marginTop: 10 }} />
       {children}

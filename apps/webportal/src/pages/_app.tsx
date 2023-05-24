@@ -6,6 +6,7 @@ import { ReactElement, ReactNode, useEffect } from 'react';
 import App, { AppInitialProps, AppProps } from 'next/app';
 import { AppThemeMode } from '@webportal/libs/contexts/theme.context';
 import { NextPage } from 'next';
+import { ToastContainer } from 'react-toastify';
 
 const inter = Inter({
   subsets: ['latin'],
