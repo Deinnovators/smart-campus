@@ -1,6 +1,6 @@
 import { PrismaService } from '@api/modules/persistance/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { Faculty, Prisma, Department } from '@prisma/client';
+import { Faculty, Prisma } from '@prisma/client';
 
 @Injectable()
 export class FacultyService {
