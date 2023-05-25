@@ -31,7 +31,7 @@ model User {
   faculty      Faculty?
   chairman     Department? @relation("DepartmentChairman")
   department   Department? @relation("DepartmentMembers", fields: [departmentId], references: [id])
-  departmentId Int?        @unique
+  departmentId Int?
 
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @default(now()) @updatedAt

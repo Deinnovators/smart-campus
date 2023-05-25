@@ -29,11 +29,11 @@ export class DepartmentService {
       const department = await this.prisma.department.findUnique({
         where: { id },
         include: {
-          members: true,
           faculty: true,
           courses: true,
           courseDistributions: true,
           classRoutines: true,
+          chairman: true,
         },
       });
 
@@ -91,5 +91,9 @@ export class DepartmentService {
     } catch (error) {
       throw new Error(`Failed to delete department with id ${id}`);
     }
+  }
+
+  async findAllMembers(args?: Prisma.UserFindManyArgs) {
+    return this.prisma.user.findMany(args);
   }
 }
