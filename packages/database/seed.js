@@ -5,6 +5,8 @@ const { districts, divisions, unions, upazillas } = require('bd-geojs');
 
 const password = '$2b$10$y5BbyfeOzbJO/LmXgBQxbud8PlEv6jncXQwsqwHG4ONn2ZOmQaWvi'; // admin123
 
+const rowCount = 2;
+
 const getRandomNumber = max => faker.datatype.number({ max, min: 0 });
 
 const getRandomBDAddress = () => {
@@ -166,7 +168,7 @@ async function main() {
   });
 
   console.log('creating bangladeshi student');
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < rowCount; i++) {
     const user = createBDStudent();
     await prisma.user.upsert({
       where: { email: user.email },
@@ -180,7 +182,7 @@ async function main() {
   }
 
   console.log('creating foreign students...');
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < rowCount; i++) {
     const user = createForeignStudent();
     await prisma.user.upsert({
       where: { email: user.email },
@@ -194,7 +196,7 @@ async function main() {
   }
 
   console.log('creating teachers...');
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < rowCount; i++) {
     const user = createTeacher();
     await prisma.user.upsert({
       where: { email: user.email },
