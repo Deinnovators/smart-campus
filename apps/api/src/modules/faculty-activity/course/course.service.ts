@@ -29,7 +29,17 @@ export class CourseService {
         include: {
           department: true,
           CourseCurriculum: true,
-          CourseOffering: true,
+          CourseOffering: {
+            include: {
+              // course: true,
+              teacher: true,
+              CourseDistribution: {
+                include: {
+                  department: true,
+                },
+              },
+            },
+          },
         },
       });
 

@@ -27,8 +27,6 @@ import React, { Fragment, useEffect, useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 const Course = () => {
   const [courseDetails, setCourseDetails] = useState({});
-  const [distributedCourse, setDistributedCourse] = useState([]);
-  const [departments, setDepartments] = useState({});
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
@@ -42,7 +40,6 @@ const Course = () => {
   };
   useEffect(() => {
     getCourseDetails();
-    getDepartments();
   }, [1]);
 
   async function getCourseDetails() {
@@ -59,7 +56,8 @@ const Course = () => {
       if (response.status === 200) {
         console.log(response);
         setCourseDetails(response.data[0]);
-        getDistributionDetails(response.data[0].CourseOffering);
+        // getDistributionDetails(response.data[0].CourseOffering);
+        setLoading(false);
       }
     } catch (error) {
       toast('error', error?.response?.data?.message || 'Something went wrong');
@@ -67,89 +65,7 @@ const Course = () => {
     }
   }
 
-  async function getDistributionDetails(CourseOffering) {
-    let newArr = [...distributedCourse];
-
-    for (let i = 0; i < CourseOffering.length; i++) {
-      try {
-        const url = `http://localhost:1337/api/v1/course-distribution/${CourseOffering[i]?.courseDistributionId}`;
-        const token = cookieService.get('token');
-        if (!token) throw new Error('No user token found');
-        const headers = {
-          Authorization: `Bearer ${token}`,
-        };
-
-        const response = await axios.get(url, { headers });
-        if (response.status === 200) {
-          newArr.push(response.data);
-        }
-      } catch (error) {
-        toast(
-          'error',
-          error?.response?.data?.message || 'Something went wrong',
-        );
-      }
-      if (i === CourseOffering.length - 1) {
-        setDistributedCourse(newArr);
-        setLoading(false);
-      }
-    }
-  }
-
-  async function getDepartments() {
-    try {
-      const url = 'http://localhost:1337/api/v1/departments';
-      const token = cookieService.get('token');
-      if (!token) throw new Error('No user token found');
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
-
-      const response = await axios.get(url, { headers });
-      if (response.status === 200) {
-        console.log(response);
-        const newObj = {};
-
-        response.data.forEach(obj => {
-          newObj[obj.id] = obj.name;
-        });
-
-        setDepartments(newObj);
-      }
-    } catch (error) {
-      toast('error', error?.response?.data?.message || 'Something went wrong');
-    }
-  }
-
-  async function getUsers(CourseOffering) {
-    let users = [...distributedCourse];
-
-    for (let i = 0; i < CourseOffering.length; i++) {
-      try {
-        const url = `http://localhost:1337/api/v1/users/${CourseOffering[i]?.courseDistributionId}`;
-        const token = cookieService.get('token');
-        if (!token) throw new Error('No user token found');
-        const headers = {
-          Authorization: `Bearer ${token}`,
-        };
-
-        const response = await axios.get(url, { headers });
-        if (response.status === 200) {
-          users.push(response.data);
-        }
-      } catch (error) {
-        toast(
-          'error',
-          error?.response?.data?.message || 'Something went wrong',
-        );
-      }
-      if (i === CourseOffering.length - 1) {
-        setDistributedCourse(users);
-        setLoading(false);
-      }
-    }
-  }
-  console.log(distributedCourse);
+  console.log(courseDetails);
   return (
     <Container>
       <Head>
@@ -283,23 +199,23 @@ const Course = () => {
                     <TableCell>Created At</TableCell>
                   </TableRow>
                 </TableHead>
-                {distributedCourse.map((dt, index) => (
+                {courseDetails.CourseOffering.map((dt, index) => (
                   <TableBody>
                     <TableRow key={index}>
                       <TableCell>{++index}</TableCell>
-                      <TableCell>{departments[dt.departmentId]}</TableCell>
-
-                      <TableCell>{dt.academicYear}</TableCell>
-                      <TableCell>{dt.section}</TableCell>
-                      <TableCell>{dt.semester}</TableCell>
-                      <TableCell>{dt.courseOfferings[0].teacherId}</TableCell>
+                      <TableCell>
+                        {dt.CourseDistribution.department.name}
+                      </TableCell>
 
                       <TableCell>
-                        {dt.courseOfferings[0].createdAt.slice(0, 10)}
+                        {dt.CourseDistribution.academicYear}
                       </TableCell>
-                      <TableCell>
-                        {dt.courseOfferings[0].updatedAt.slice(0, 10)}
-                      </TableCell>
+                      <TableCell>{dt.CourseDistribution.section}</TableCell>
+                      <TableCell>{dt.CourseDistribution.semester}</TableCell>
+                      <TableCell>{dt.teacher.name}</TableCell>
+
+                      <TableCell>{dt.createdAt.slice(0, 10)}</TableCell>
+                      <TableCell>{dt.updatedAt.slice(0, 10)}</TableCell>
                     </TableRow>
                   </TableBody>
                 ))}
