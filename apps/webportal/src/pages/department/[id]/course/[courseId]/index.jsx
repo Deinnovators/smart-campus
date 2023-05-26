@@ -24,20 +24,13 @@ import axios from 'axios';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { Fragment, useEffect, useState } from 'react';
-import AddIcon from '@mui/icons-material/Add';
+import ForwardIcon from '@mui/icons-material/Forward';
+
 const Course = () => {
   const [courseDetails, setCourseDetails] = useState({});
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
   useEffect(() => {
     getCourseDetails();
   }, [1]);
@@ -65,7 +58,7 @@ const Course = () => {
     }
   }
 
-  console.log(courseDetails);
+  console.log(courseDetails, router);
   return (
     <Container>
       <Head>
@@ -105,67 +98,78 @@ const Course = () => {
             spacing={2}
             component={Paper}
             style={{ marginTop: '24px' }}>
-            <React.Fragment key={courseDetails.id}>
-              <Grid item xs={12}>
-                <Typography variant='h4'>Basic Information</Typography>
-              </Grid>
-              <Grid item xs={3}>
-                <Typography variant='h6'>Name:</Typography>
-              </Grid>
-              <Grid item xs={9}>
-                <Typography variant='h6'>{courseDetails.name}</Typography>
-              </Grid>
-              <Grid item xs={3}>
-                <Typography variant='h6'>Code:</Typography>
-              </Grid>
-              <Grid item xs={9}>
-                <Typography variant='h6'>{courseDetails.code}</Typography>
-              </Grid>
-              <Grid item xs={3}>
-                <Typography variant='h6'>Credit:</Typography>
-              </Grid>
-              <Grid item xs={9}>
-                <Typography variant='h6'>{courseDetails.credit}</Typography>
-              </Grid>
-              <Grid item xs={3}>
-                <Typography variant='h6'>Type:</Typography>
-              </Grid>
-              <Grid item xs={9}>
-                <Typography variant='h6'>{courseDetails.type}</Typography>
-              </Grid>
-              <Grid item xs={3}>
-                <Typography variant='h6'>Department Name:</Typography>
-              </Grid>
-              <Grid item xs={9}>
-                <Typography variant='h6'>
-                  {courseDetails.department.name}
-                </Typography>
-              </Grid>
-              <Grid item xs={3}>
-                <Typography variant='h6'>Description:</Typography>
-              </Grid>
-              <Grid item xs={9}>
-                <Typography variant='h6'>
-                  {courseDetails.description}
-                </Typography>
-              </Grid>
-              <Grid item xs={3}>
-                <Typography variant='h6'>CreatedAt:</Typography>
-              </Grid>
-              <Grid item xs={9}>
-                <Typography variant='h6'>
-                  {courseDetails.createdAt.slice(0, 10)}
-                </Typography>
-              </Grid>{' '}
-              <Grid item xs={3}>
-                <Typography variant='h6'>UpdatedAt:</Typography>
-              </Grid>
-              <Grid item xs={9} style={{ marginBottom: '24px' }}>
-                <Typography variant='h6'>
-                  {courseDetails.updatedAt.slice(0, 10)}
-                </Typography>
-              </Grid>
-            </React.Fragment>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                width: '100%',
+                padding: '24px 16px',
+                flexWrap: 'wrap-reverse',
+              }}>
+              <Typography variant='h4'>Basic Information</Typography>
+              <Button
+                variant='contained'
+                onClick={() =>
+                  router.push(router.asPath + '/offer-and-distribute')
+                }>
+                create Offer and distribution <ForwardIcon />
+              </Button>
+            </div>
+            <Grid item xs={3}>
+              <Typography variant='h6'>Name:</Typography>
+            </Grid>
+            <Grid item xs={9}>
+              <Typography variant='h6'>{courseDetails.name}</Typography>
+            </Grid>
+            <Grid item xs={3}>
+              <Typography variant='h6'>Code:</Typography>
+            </Grid>
+            <Grid item xs={9}>
+              <Typography variant='h6'>{courseDetails.code}</Typography>
+            </Grid>
+            <Grid item xs={3}>
+              <Typography variant='h6'>Credit:</Typography>
+            </Grid>
+            <Grid item xs={9}>
+              <Typography variant='h6'>{courseDetails.credit}</Typography>
+            </Grid>
+            <Grid item xs={3}>
+              <Typography variant='h6'>Type:</Typography>
+            </Grid>
+            <Grid item xs={9}>
+              <Typography variant='h6'>{courseDetails.type}</Typography>
+            </Grid>
+            <Grid item xs={3}>
+              <Typography variant='h6'>Department Name:</Typography>
+            </Grid>
+            <Grid item xs={9}>
+              <Typography variant='h6'>
+                {courseDetails.department.name}
+              </Typography>
+            </Grid>
+            <Grid item xs={3}>
+              <Typography variant='h6'>Description:</Typography>
+            </Grid>
+            <Grid item xs={9}>
+              <Typography variant='h6'>{courseDetails.description}</Typography>
+            </Grid>
+            <Grid item xs={3}>
+              <Typography variant='h6'>CreatedAt:</Typography>
+            </Grid>
+            <Grid item xs={9}>
+              <Typography variant='h6'>
+                {courseDetails.createdAt.slice(0, 10)}
+              </Typography>
+            </Grid>{' '}
+            <Grid item xs={3}>
+              <Typography variant='h6'>UpdatedAt:</Typography>
+            </Grid>
+            <Grid item xs={9} style={{ marginBottom: '24px' }}>
+              <Typography variant='h6'>
+                {courseDetails.updatedAt.slice(0, 10)}
+              </Typography>
+            </Grid>
           </Grid>
 
           <Grid
@@ -174,16 +178,8 @@ const Course = () => {
             component={Paper}
             style={{ marginTop: '24px' }}>
             {' '}
-            <Grid item xs={8} style={{ marginBottom: '24px' }}>
+            <Grid item xs={12} style={{ marginBottom: '24px' }}>
               <Typography variant='h4'>Course Distributed To</Typography>
-            </Grid>
-            <Grid
-              item
-              xs={4}
-              style={{ marginBottom: '24px', paddingLeft: '60px' }}>
-              <Button variant='contained' onClick={handleClickOpen}>
-                <AddIcon /> Create New Distribution
-              </Button>
             </Grid>
             <TableContainer>
               <Table>
@@ -235,28 +231,6 @@ const Course = () => {
           </Grid>
         </Fragment>
       )}
-
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Create Distribution</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            To create a new distribution enter the following information below.
-          </DialogContentText>
-          <TextField
-            autoFocus
-            margin='dense'
-            id='name'
-            label='Email Address'
-            type='email'
-            fullWidth
-            variant='standard'
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Create</Button>
-        </DialogActions>
-      </Dialog>
     </Container>
   );
 };
