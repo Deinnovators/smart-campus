@@ -121,6 +121,35 @@ const Course = () => {
     }
   }
 
+  async function getUsers(CourseOffering) {
+    let users = [...distributedCourse];
+
+    for (let i = 0; i < CourseOffering.length; i++) {
+      try {
+        const url = `http://localhost:1337/api/v1/users/${CourseOffering[i]?.courseDistributionId}`;
+        const token = cookieService.get('token');
+        if (!token) throw new Error('No user token found');
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
+
+        const response = await axios.get(url, { headers });
+        if (response.status === 200) {
+          users.push(response.data);
+        }
+      } catch (error) {
+        toast(
+          'error',
+          error?.response?.data?.message || 'Something went wrong',
+        );
+      }
+      if (i === CourseOffering.length - 1) {
+        setDistributedCourse(users);
+        setLoading(false);
+      }
+    }
+  }
+  console.log(distributedCourse);
   return (
     <Container>
       <Head>
