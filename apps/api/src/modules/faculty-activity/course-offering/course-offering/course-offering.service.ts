@@ -10,6 +10,7 @@ export class CourseOfferingService {
     try {
       const offers = await this.prisma.courseOffering.findMany({
         orderBy: { id: 'asc' },
+        include: { CourseDistribution: true },
       });
       return offers;
     } catch (error) {
@@ -21,6 +22,7 @@ export class CourseOfferingService {
     try {
       const data = await this.prisma.courseOffering.findUnique({
         where: { id },
+        include: { CourseDistribution: true },
       });
 
       if (!data) {
@@ -36,7 +38,7 @@ export class CourseOfferingService {
     try {
       return await this.prisma.courseOffering.create({ data });
     } catch (error) {
-      throw new Error('Failed to create distribution');
+      throw new Error(`${error}  Failed to create offer`);
     }
   }
 
@@ -45,18 +47,18 @@ export class CourseOfferingService {
     data: Prisma.CourseOfferingUpdateInput,
   ): Promise<CourseOffering> {
     try {
-      const distribution = await this.prisma.courseOffering.update({
+      const offer = await this.prisma.courseOffering.update({
         where: { id },
         data,
       });
 
-      if (!distribution) {
-        throw new Error(`distribution with id ${id} not found`);
+      if (!offer) {
+        throw new Error(`offer with id ${id} not found`);
       }
 
-      return distribution;
+      return offer;
     } catch (error) {
-      throw new Error(`Failed to update distribution with id ${id}`);
+      throw new Error(`Failed to update offer with id ${id}`);
     }
   }
 
