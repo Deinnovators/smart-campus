@@ -36,6 +36,8 @@ import Toast from '@webportal/libs/utils/Toast';
 
 const Course = () => {
   const [courseDetails, setCourseDetails] = useState({});
+  const [courseDetailsMain, setCourseDetailsMain] = useState({});
+
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -63,7 +65,6 @@ const Course = () => {
     offerId: '',
     confirm: false,
   });
-
   useEffect(() => {
     getCourseDetails();
     getTeachers();
@@ -100,6 +101,7 @@ const Course = () => {
       const response = await axios.get(url, { headers });
       if (response.status === 200) {
         setCourseDetails(response.data[0]);
+        setCourseDetailsMain(response.data[0]);
         setLoading(false);
       }
     } catch (error) {
@@ -204,6 +206,17 @@ const Course = () => {
     } catch (error) {
       Toast('error', error?.response?.data?.message || 'Something went wrong');
     }
+  };
+
+  const updateTable = searchString => {
+    if (searchString === '') return setCourseDetails(courseDetailsMain);
+    const filteredCourseOffering = courseDetails.CourseOffering.filter(offer =>
+      JSON.stringify(offer).toLowerCase().includes(searchString.toLowerCase()),
+    );
+    setCourseDetails({
+      ...courseDetails,
+      CourseOffering: filteredCourseOffering,
+    });
   };
   return (
     <Container>
@@ -328,6 +341,14 @@ const Course = () => {
               <Typography variant='h4'>Course Distributed To</Typography>
             </Grid>
             <TableContainer>
+              <TextField
+                id='Search'
+                placeholder='Search by id, teacher name etc.'
+                variant='outlined'
+                sx={{ width: '96%', m: 2, mb: 4 }}
+                onChange={e => updateTable(e.target.value)}
+              />
+
               <Table>
                 <TableHead>
                   <TableRow>
@@ -336,7 +357,7 @@ const Course = () => {
                     <TableCell>Academic Year</TableCell>
                     <TableCell>Section</TableCell>
                     <TableCell>Semester</TableCell>
-                    <TableCell>Teacher ID</TableCell>
+                    <TableCell>Teacher</TableCell>
                     <TableCell>Updated At</TableCell>
                     <TableCell>Created At</TableCell>
                     <TableCell> Action</TableCell>
