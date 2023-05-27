@@ -1,4 +1,5 @@
 import { Box, Card, Typography } from '@mui/material';
+import { getModuleImageUrl } from '@webportal/libs/utils/string.utils';
 import { ModuleRegistry } from 'database';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -14,7 +15,7 @@ export const ModuleCard: React.FC<ModuleCardProps> = ({ module }) => {
     <Link href={link}>
       <Card>
         <Box height={200} position='relative' overflow='hidden'>
-          <Image src={module.icon} fill alt={module.name} />
+          <Image src={getModuleImageUrl(module.icon)} fill alt={module.name} />
         </Box>
         <Typography style={{ padding: 8 }} variant='h6'>
           {module.name}

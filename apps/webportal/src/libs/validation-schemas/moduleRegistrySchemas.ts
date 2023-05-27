@@ -2,7 +2,6 @@ import * as yup from 'yup';
 
 export const addModuleValidationSchema = yup.object().shape({
   name: yup.string().required('Name is required'),
-  icon: yup.string().required('Image is required'),
   url: yup.string().required('Module url is required'),
   status: yup
     .string()

@@ -19,6 +19,7 @@ import { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import { AddModuleForm } from '@webportal/libs/forms';
 import ModuleAction from '@webportal/features/module-registry/ModuleAction';
+import { getModuleImageUrl } from '@webportal/libs/utils/string.utils';
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
   const modules = await api.modules.getAllModules({
@@ -42,7 +43,6 @@ export default function ModulesRegistry(props: { modules: ModuleRegistry[] }) {
     setModules(prev => [...prev, module]);
     setIsAddModalVisible(false);
   }, []);
-
   const onDeleteSuccess = useCallback((id: number) => {
     setModules(prev => {
       const ms = [...prev];
@@ -89,7 +89,7 @@ export default function ModulesRegistry(props: { modules: ModuleRegistry[] }) {
                 <TableCell>{module.parentUrl ?? 'null'}</TableCell>
                 <TableCell>
                   <Image
-                    src={module.icon}
+                    src={getModuleImageUrl(module.icon)}
                     width={80}
                     height={80}
                     alt={`${module.name}-image`}

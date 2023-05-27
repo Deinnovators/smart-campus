@@ -84,7 +84,7 @@ const ModuleParentField: React.FC<ModuleParentFieldProps> = ({
               onClick={() => {
                 setText('');
                 setIsEditing(false);
-                onSelectParent?.();
+                onSelectParent?.('');
               }}
               sx={{ padding: 2 }}>
               None
