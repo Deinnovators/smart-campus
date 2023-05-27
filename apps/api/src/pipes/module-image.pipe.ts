@@ -11,7 +11,7 @@ export class ModuleImagePipe
   async transform(image: Express.Multer.File): Promise<string> {
     if (!image) return;
     const originalName = path.parse(image.originalname).name;
-    const filename = originalName + '.webp';
+    const filename = originalName + '-' + Date.now() + '.webp';
 
     await sharp(image.buffer)
       .resize(500, 500)
