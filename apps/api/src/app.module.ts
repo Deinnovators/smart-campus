@@ -14,9 +14,14 @@ import { ModuleRegistryModule } from './modules/module-registry/module-registry.
 import { CourseDistributionModule } from '@api/modules/faculty-activity/course-distribution/course-distribution/course-distribution.module';
 import { CourseOfferingModule } from '@api/modules/faculty-activity/course-offering/course-offering/course-offering.module';
 import { ClassRoutineModule } from '@api/modules/faculty-activity/class-routines/class-routine/class-routine.module';
+import { MulterModule } from '@nestjs/platform-express';
+import { memoryStorage } from 'multer';
 
 @Module({
   imports: [
+    MulterModule.register({
+      storage: memoryStorage(),
+    }),
     UsersModule,
     AuthModule,
     ModuleRegistryModule,

@@ -1,6 +1,10 @@
+import { moduleImageDir } from '@api/modules/module-registry/module-registry.contants';
 import { PrismaService } from '@api/modules/persistance/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { Prisma, Roles } from 'database';
+import { existsSync } from 'fs';
+import { unlink } from 'fs/promises';
+import path from 'path';
 
 @Injectable()
 export class ModuleRegistryService {
@@ -15,7 +19,12 @@ export class ModuleRegistryService {
   }
 
   async deleteModule(id: number) {
-    return this.prisma.moduleRegistry.delete({ where: { id } });
+    const res = await this.prisma.moduleRegistry.delete({ where: { id } });
+    const iconPath = path.join(moduleImageDir, res.icon);
+    if (existsSync(iconPath)) {
+      await unlink(iconPath);
+    }
+    return res;
   }
 
   async getParentModules(
