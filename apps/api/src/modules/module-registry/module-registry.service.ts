@@ -15,6 +15,12 @@ export class ModuleRegistryService {
   }
 
   async updateModule(id: number, data: Prisma.ModuleRegistryUpdateInput) {
+    const module = await this.prisma.moduleRegistry.findUniqueOrThrow({
+      where: { id },
+    });
+    if (data.icon) {
+      await unlink(path.join(moduleImageDir, module.icon));
+    }
     return this.prisma.moduleRegistry.update({ where: { id }, data });
   }
 

@@ -51,13 +51,14 @@ export class ModuleRegistryController {
     @Body() data: Prisma.ModuleRegistryCreateInput,
     @UploadedFile(ModuleImagePipe) icon: string,
   ) {
+    data.accessToRoles = JSON.parse(data.accessToRoles as string);
     return this.service.createModule({ ...data, icon });
   }
 
   @AccessRoles('superadmin', 'admin')
   @Patch('/:id')
   @UseInterceptors(FileInterceptor('icon'))
-  updateModule(
+  async updateModule(
     @Param('id', ParseIntPipe) id: number,
     @Body() data: Prisma.ModuleRegistryUpdateInput,
     @UploadedFile(ModuleImagePipe) icon?: string,
