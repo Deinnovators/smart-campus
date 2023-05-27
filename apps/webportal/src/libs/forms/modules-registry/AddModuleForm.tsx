@@ -12,7 +12,11 @@ export const AddModuleForm: React.FC<AddModuleFormProps> = ({ onSuccess }) => {
     async (e: any) => {
       try {
         setLoading(true);
-        const res = await api.modules.createModule(e);
+        const res = await api.modules.createModule(e, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
         setLoading(false);
         onSuccess?.(res);
       } catch (error) {

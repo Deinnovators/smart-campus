@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   Box,
   Button,
@@ -16,6 +16,7 @@ import { addModuleValidationSchema } from '@webportal/libs/validation-schemas/mo
 import { useFormik } from 'formik';
 import { Prisma } from 'database';
 import ModuleParentField from '@webportal/libs/forms/modules-registry/ModuleParentField';
+import ImageUpload from '@webportal/libs/forms/shared/ImageUpload';
 
 export interface BaseModuleFormProps {
   onSubmit: (value: Prisma.ModuleRegistryCreateInput) => void;
@@ -34,7 +35,6 @@ const roles = [
 
 const newInitialValues = {
   name: '',
-  icon: '',
   status: 'active',
   url: '',
   accessToRoles: ['superadmin'],
@@ -45,15 +45,48 @@ export const BaseModuleForm: React.FC<BaseModuleFormProps> = ({
   initialValues,
   loading,
 }) => {
+  const [icon, setIcon] = useState<File>();
+  const [iconError, setIconError] = useState<string>();
+
+  const createFormData = useCallback(
+    (values: any) => {
+      if (!icon) {
+        setIconError('Module image is required');
+        return;
+      }
+      const formData: any = new FormData();
+      const keys = Object.keys(values);
+      for (let i = 0; i < keys.length; i++) {
+        const key = keys[i];
+        formData.append(key, values[key]);
+      }
+      formData.delete('accessToRoles');
+      formData.append('accessToRoles', JSON.stringify(values.accessToRoles));
+      if (icon) {
+        formData.append('icon', icon);
+      }
+      onSubmit?.(formData);
+    },
+    [icon, onSubmit],
+  );
+
   const { values, handleSubmit, handleChange, handleBlur, errors, touched } =
     useFormik({
       initialValues: (initialValues as any) ?? newInitialValues,
-      onSubmit,
+      onSubmit: createFormData,
       validationSchema: addModuleValidationSchema,
     });
 
   return (
     <Box component='form' onSubmit={handleSubmit}>
+      <ImageUpload
+        onChange={file => {
+          setIconError('');
+          setIcon(file);
+        }}
+        label={`${values.icon || icon ? 'Change' : 'Upload'} module image`}
+        error={iconError}
+      />
       <FormControl fullWidth margin='normal'>
         <TextField
           placeholder='Module name'
@@ -62,18 +95,7 @@ export const BaseModuleForm: React.FC<BaseModuleFormProps> = ({
           onChange={handleChange('name')}
           onBlur={handleBlur('name')}
           error={Boolean(touched.name && errors.name)}
-          helperText={touched.name && errors.name}
-        />
-      </FormControl>
-      <FormControl fullWidth margin='normal'>
-        <TextField
-          placeholder='Module image url'
-          label='Image'
-          value={values.icon}
-          onChange={handleChange('icon')}
-          onBlur={handleBlur('icon')}
-          error={Boolean(touched.icon && errors.icon)}
-          helperText={touched.icon && errors.icon}
+          helperText={touched.name && (errors.name as any)}
         />
       </FormControl>
       <FormControl fullWidth margin='normal'>
@@ -84,7 +106,7 @@ export const BaseModuleForm: React.FC<BaseModuleFormProps> = ({
           onChange={handleChange('url')}
           onBlur={handleBlur('url')}
           error={Boolean(touched.url && errors.url)}
-          helperText={touched.url && errors.url}
+          helperText={touched.url && (errors.url as any)}
         />
       </FormControl>
       <ModuleParentField
@@ -95,7 +117,7 @@ export const BaseModuleForm: React.FC<BaseModuleFormProps> = ({
         onBlur={handleBlur('parentUrl')}
         onSelectParent={handleChange('parentUrl') as any}
         error={Boolean(touched.parentUrl && errors.parentUrl)}
-        helperText={touched.parentUrl && errors.parentUrl}
+        helperText={touched.parentUrl && (errors.parentUrl as any)}
       />
       <FormControl variant='outlined' fullWidth margin='normal'>
         <InputLabel id='roles-select-label'>Access Roles</InputLabel>
@@ -119,7 +141,7 @@ export const BaseModuleForm: React.FC<BaseModuleFormProps> = ({
           ))}
         </Select>
         {touched.accessToRoles && errors.accessToRoles ? (
-          <FormHelperText error>{errors.accessToRoles}</FormHelperText>
+          <FormHelperText error>{errors.accessToRoles as any}</FormHelperText>
         ) : null}
       </FormControl>
       <FormControl fullWidth margin='normal'>
@@ -134,7 +156,7 @@ export const BaseModuleForm: React.FC<BaseModuleFormProps> = ({
           <MenuItem value='inactive'>Inactive</MenuItem>
         </TextField>
         {touched.status && errors.status ? (
-          <FormHelperText error>{errors.status}</FormHelperText>
+          <FormHelperText error>{errors.status as any}</FormHelperText>
         ) : null}
       </FormControl>
       <FormControl margin='normal'>
