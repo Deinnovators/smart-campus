@@ -17,10 +17,12 @@ import { useFormik } from 'formik';
 import { Prisma } from 'database';
 import ModuleParentField from '@webportal/libs/forms/modules-registry/ModuleParentField';
 import ImageUpload from '@webportal/libs/forms/shared/ImageUpload';
+import { getModuleImageUrl } from '@webportal/libs/utils/string.utils';
 
 export interface BaseModuleFormProps {
   onSubmit: (value: Prisma.ModuleRegistryCreateInput) => void;
   initialValues?: Prisma.ModuleRegistryCreateInput;
+  imagePath?: string;
   loading?: boolean;
 }
 const roles = [
@@ -44,13 +46,14 @@ export const BaseModuleForm: React.FC<BaseModuleFormProps> = ({
   onSubmit,
   initialValues,
   loading,
+  imagePath,
 }) => {
   const [icon, setIcon] = useState<File>();
   const [iconError, setIconError] = useState<string>();
 
   const createFormData = useCallback(
     (values: any) => {
-      if (!icon) {
+      if (!icon && !initialValues) {
         setIconError('Module image is required');
         return;
       }
@@ -67,7 +70,7 @@ export const BaseModuleForm: React.FC<BaseModuleFormProps> = ({
       }
       onSubmit?.(formData);
     },
-    [icon, onSubmit],
+    [icon, onSubmit, initialValues],
   );
 
   const { values, handleSubmit, handleChange, handleBlur, errors, touched } =
@@ -77,6 +80,8 @@ export const BaseModuleForm: React.FC<BaseModuleFormProps> = ({
       validationSchema: addModuleValidationSchema,
     });
 
+  const submit_cta = initialValues ? 'Edit' : 'Add';
+
   return (
     <Box component='form' onSubmit={handleSubmit}>
       <ImageUpload
@@ -84,7 +89,8 @@ export const BaseModuleForm: React.FC<BaseModuleFormProps> = ({
           setIconError('');
           setIcon(file);
         }}
-        label={`${values.icon || icon ? 'Change' : 'Upload'} module image`}
+        imagePath={imagePath}
+        label={`${imagePath || icon ? 'Change' : 'Upload'} module image`}
         error={iconError}
       />
       <FormControl fullWidth margin='normal'>
@@ -161,7 +167,11 @@ export const BaseModuleForm: React.FC<BaseModuleFormProps> = ({
       </FormControl>
       <FormControl margin='normal'>
         <Button disabled={loading} type='submit' variant='contained'>
-          {loading ? <CircularProgress color='inherit' size={24} /> : 'Add'}
+          {loading ? (
+            <CircularProgress color='inherit' size={24} />
+          ) : (
+            submit_cta
+          )}
         </Button>
       </FormControl>
     </Box>
