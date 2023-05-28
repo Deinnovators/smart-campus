@@ -66,7 +66,6 @@ const ClassRoutineTable = ({ routineData, viewConditionalSection = true }) => {
       setTableData(JSON.parse(routineData.routine));
     } else if (router.query.routineSlug === 'update') {
       let parsedData = JSON.parse(localStorage.getItem('routineData'));
-      console.log(parsedData);
       setData({
         academicYear: parsedData.academicYear,
         level: parsedData.level,

@@ -33,7 +33,6 @@ const ClassRoutine = () => {
 
       const response = await axios.get(url, { headers });
       if (response.status === 200) {
-        console.log(response.data);
         setRoutine(response.data);
       }
     } catch (error) {
