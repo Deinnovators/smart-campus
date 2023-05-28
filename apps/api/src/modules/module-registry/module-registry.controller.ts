@@ -1,6 +1,7 @@
 import { AccessRoles } from '@api/decorators/roles.decorator';
 import { CurrentUserRole } from '@api/decorators/user.decorators';
 import { ModuleRegistryService } from '@api/modules/module-registry/module-registry.service';
+import { ModuleImagePipe } from '@api/pipes/module-image.pipe';
 import {
   Body,
   Controller,
@@ -12,7 +13,10 @@ import {
   Patch,
   Post,
   Query,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { Prisma, Roles } from 'database';
 import QueryString from 'qs';
 
@@ -42,16 +46,29 @@ export class ModuleRegistryController {
 
   @AccessRoles('superadmin', 'admin')
   @Post()
-  createModule(@Body() data: Prisma.ModuleRegistryCreateInput) {
-    return this.service.createModule(data);
+  @UseInterceptors(FileInterceptor('icon'))
+  createModule(
+    @Body() data: Prisma.ModuleRegistryCreateInput,
+    @UploadedFile(ModuleImagePipe) icon: string,
+  ) {
+    data.accessToRoles = JSON.parse(data.accessToRoles as string);
+    return this.service.createModule({ ...data, icon });
   }
 
   @AccessRoles('superadmin', 'admin')
   @Patch('/:id')
-  updateModule(
+  @UseInterceptors(FileInterceptor('icon'))
+  async updateModule(
     @Param('id', ParseIntPipe) id: number,
     @Body() data: Prisma.ModuleRegistryUpdateInput,
+    @UploadedFile(ModuleImagePipe) icon?: string,
   ) {
+    if (icon) {
+      data.icon = icon;
+    }
+    if (data.accessToRoles) {
+      data.accessToRoles = JSON.parse(data.accessToRoles as string);
+    }
     return this.service.updateModule(id, data);
   }
 

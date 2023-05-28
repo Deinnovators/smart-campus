@@ -96,15 +96,15 @@ export default function Dashboard(props: { modules: ModuleRegistry[] }) {
 
       <Divider style={{ margin: '1rem 0' }} />
 
-      <Grid container spacing={4}>
+      <Box display='flex' flexWrap='wrap' justifyContent='center'>
         {props.modules.map(module => {
           return (
-            <Grid item xs={6} sm={4} md={3} key={module.id}>
-              <ModuleCard module={module} />
-            </Grid>
+            <Box key={module.id}>
+              <ModuleCard module={module} key={module.id} />
+            </Box>
           );
         })}
-      </Grid>
+      </Box>
     </Container>
   );
 }

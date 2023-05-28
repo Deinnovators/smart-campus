@@ -14,9 +14,17 @@ import { ModuleRegistryModule } from './modules/module-registry/module-registry.
 import { CourseDistributionModule } from '@api/modules/faculty-activity/course-distribution/course-distribution/course-distribution.module';
 import { CourseOfferingModule } from '@api/modules/faculty-activity/course-offering/course-offering/course-offering.module';
 import { ClassRoutineModule } from '@api/modules/faculty-activity/class-routines/class-routine/class-routine.module';
+import { MulterModule } from '@nestjs/platform-express';
+import { memoryStorage } from 'multer';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+import { uploadDir } from '@api/constants/path.constants';
 
 @Module({
   imports: [
+    MulterModule.register({
+      storage: memoryStorage(),
+    }),
     UsersModule,
     AuthModule,
     ModuleRegistryModule,
@@ -27,6 +35,10 @@ import { ClassRoutineModule } from '@api/modules/faculty-activity/class-routines
     CourseDistributionModule,
     CourseOfferingModule,
     ClassRoutineModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', uploadDir),
+      serveRoot: '/' + uploadDir,
+    }),
   ],
   controllers: [AppController],
   providers: [
