@@ -1,16 +1,7 @@
 import React, { useState } from 'react';
-import {
-  Button,
-  Container,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Paper,
-  Select,
-  TextField,
-} from '@mui/material';
+import { Button, Container, Grid, TextField, Paper } from '@mui/material';
 import Head from 'next/head';
-export default function CreateFaculty() {
+export default function CreateDepartment() {
   const [name, setName] = useState('');
   const [deanId, setDeanId] = useState(0);
   const [deanMessage, setDeanMessage] = useState('');
@@ -43,18 +34,24 @@ export default function CreateFaculty() {
         }}>
         <Grid item xs={12}>
           <form onSubmit={handleAddDepartment}>
-            <Select
-              labelId='demo-simple-select-standard-label'
-              id='demo-simple-select-standard-label'
-              value={deanId}
-              onChange={handleDeanIdChange}
-              label='DeanID'>
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
-            </Select>
             <TextField
               label='Name'
+              variant='outlined'
+              margin='normal'
+              fullWidth
+              value={name}
+              onChange={handleNameChange}
+            />
+            <TextField
+              label='Faculty ID'
+              variant='outlined'
+              margin='normal'
+              fullWidth
+              value={name}
+              onChange={handleNameChange}
+            />
+            <TextField
+              label='Chairman ID'
               variant='outlined'
               margin='normal'
               fullWidth

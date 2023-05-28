@@ -25,27 +25,24 @@ import { BriefCard } from '@webportal/components/BriefCard';
 import { MessageCard } from '@webportal/components/MessageCard';
 import Link from 'next/link';
 
-export default function SingleDepartment() {
+export default function SingleFaculty() {
   const router = useRouter();
   const { id } = router.query;
-  const courseNewUrl = '/department/' + id + '/course/new';
-  const [departmentInformation, setDepartmentInformation] = useState({});
-  const [chairman, setChairman] = useState('');
+  const [facultyInformation, setFacultyInformation] = useState({});
+  const [dean, setDean] = useState('');
   const [departments, setDepartments] = useState([]);
   const [value, setValue] = useState(0);
   const [dialogueOpen, setDialogueOpen] = useState(false);
   const [agreeToDelete, setAgreeToDelete] = useState(false);
-  const [courses, setCourses] = useState([]);
-  const [role, setRole] = useState('');
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
   const handleDeanIdChange = event => {
-    // setDeanId(event.target.value);
+    setDeanId(event.target.value);
   };
 
   const handleDeanMessageChange = event => {
-    // setDeanMessage(event.target.value);
+    setDeanMessage(event.target.value);
   };
 
   const handleAddDepartment = event => {
@@ -61,18 +58,16 @@ export default function SingleDepartment() {
   const handleClose = bool => {
     setDialogueOpen(false);
     if (bool) {
-      deleteDepartment();
+      deleteFaculty();
     }
   };
   useEffect(() => {
-    getDepartmentInformation();
-    getChairman();
-    getAllCourse();
-    getRole();
-  }, []);
-  const getRole = async () => {
+    getFacultyInformation();
+    getDean();
+  }, [1]);
+  const getFacultyInformation = async () => {
     try {
-      const url = 'http://localhost:1337/api/v1/auth/profile';
+      const url = `http://localhost:1337/api/v1/faculty/${id}`;
       const token = cookieService.get('token');
       if (!token) throw new Error('No user token found');
       const headers = {
@@ -81,15 +76,16 @@ export default function SingleDepartment() {
 
       const response = await axios.get(url, { headers });
       if (response.status === 200) {
-        setRole(response.data.role);
+        setFacultyInformation(response.data);
+        setDepartments(response.data.departments);
       }
     } catch (error) {
       toast('error', error?.response?.data?.message || 'Something went wrong');
     }
   };
-  const getAllCourse = async () => {
+  const getDean = async () => {
     try {
-      const url = 'http://localhost:1337/api/v1/course';
+      const url = `http://localhost:1337/api/v1/users/${facultyInformation.deanId}`;
       const token = cookieService.get('token');
       if (!token) throw new Error('No user token found');
       const headers = {
@@ -97,51 +93,17 @@ export default function SingleDepartment() {
       };
 
       const response = await axios.get(url, { headers });
+      console.log(response);
       if (response.status === 200) {
-        setCourses(response.data);
+        setDean(response?.data?.name);
       }
     } catch (error) {
       toast('error', error?.response?.data?.message || 'Something went wrong');
     }
   };
-
-  const getDepartmentInformation = async () => {
+  const deleteFaculty = async () => {
     try {
-      const url = `http://localhost:1337/api/v1/departments/${id}`;
-      const token = cookieService.get('token');
-      if (!token) throw new Error('No user token found');
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
-
-      const response = await axios.get(url, { headers });
-      if (response.status === 200) {
-        setDepartmentInformation(response.data);
-      }
-    } catch (error) {
-      toast('error', error?.response?.data?.message || 'Something went wrong');
-    }
-  };
-  const getChairman = async () => {
-    try {
-      const url = `http://localhost:1337/api/v1/users/${departmentInformation.chairmanId}`;
-      const token = cookieService.get('token');
-      if (!token) throw new Error('No user token found');
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
-
-      const response = await axios.get(url, { headers });
-      if (response.status === 200) {
-        setChairman(response?.data?.name);
-      }
-    } catch (error) {
-      toast('error', error?.response?.data?.message || 'Something went wrong');
-    }
-  };
-  const deleteDepartment = async () => {
-    try {
-      const url = `http://localhost:1337/api/v1/departments/${id}`;
+      const url = `http://localhost:1337/api/v1/faculty/${id}`;
       const token = cookieService.get('token');
       if (!token) throw new Error('No user token found');
       const headers = {
@@ -149,7 +111,7 @@ export default function SingleDepartment() {
       };
 
       const response = await axios.delete(url, { headers });
-      router.push('/department');
+      router.push('/faculty');
     } catch (error) {
       toast('error', error?.response?.data?.message || 'Something went wrong');
     }
@@ -157,13 +119,12 @@ export default function SingleDepartment() {
   return (
     <Container>
       <Head>
-        <title>Department</title>
+        <title>Faculty</title>
       </Head>
       <div>
         <Tabs value={value} onChange={handleChange} aria-label='Tabs example'>
           <Tab label='Details' />
           <Tab label='Update Information' />
-          <Tab label='Courses' />
         </Tabs>
         <Typography>
           {value === 0 && (
@@ -180,7 +141,7 @@ export default function SingleDepartment() {
                     marginBottom: '24px',
                   }}>
                   <Grid item xs={6}>
-                    <BriefCard name='Department' value={departments.length} />
+                    <BriefCard name='Department' value='33' />
                   </Grid>
                   <Grid item xs={6}>
                     <BriefCard name='Degree' value='33' />
@@ -202,15 +163,47 @@ export default function SingleDepartment() {
                     marginBottom: '24px',
                   }}>
                   <Grid item xs={12}>
-                    <Typography variant='h6' gutterBottom>
-                      Welcome Message from The Chairman
+                    <Typography variant='h5' gutterBottom textColor='secondary'>
+                      Welcome Message from The Dean
                     </Typography>
                   </Grid>
                   <Grid item xs={12}>
                     <MessageCard
-                      message={departmentInformation.chairmanMessage}
-                      name={chairman}
+                      message={facultyInformation.deanMessage}
+                      name={dean}
                     />
+                  </Grid>
+                </Grid>
+                <Grid
+                  container
+                  component={Paper}
+                  spacing={2}
+                  style={{
+                    padding: '16px',
+                    marginTop: '24px',
+                    marginBottom: '24px',
+                  }}>
+                  <Grid item xs={12}>
+                    <Typography variant='h5' gutterBottom textColor='secondary'>
+                      Departments
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    {departments.map(department => (
+                      <Link
+                        key={department.id}
+                        href={`/department/${department.id}`}
+                        passHref>
+                        <Typography
+                          style={{
+                            textDecoration: 'none',
+                            cursor: 'pointer',
+                          }}
+                          variant='subtitle1'>
+                          {department.name}
+                        </Typography>
+                      </Link>
+                    ))}
                   </Grid>
                 </Grid>
               </div>
@@ -229,16 +222,7 @@ export default function SingleDepartment() {
                   //   onChange={handleNameChange}
                 />
                 <TextField
-                  label='Chairman ID'
-                  variant='outlined'
-                  margin='normal'
-                  type='number'
-                  fullWidth
-                  //   value={deanId}
-                  onChange={handleDeanIdChange}
-                />
-                <TextField
-                  label='Faculty ID'
+                  label='Dean ID'
                   variant='outlined'
                   margin='normal'
                   type='number'
@@ -276,23 +260,6 @@ export default function SingleDepartment() {
               </form>
             </div>
           )}
-          {value === 2 && (
-            <div>
-              {courses.map(course => (
-                <div key={course._id}>{course.name}</div>
-              ))}
-              {role === 'admin' || role === 'superadmin' ? (
-                <Link href={`/department/${String(id)}/course/new`} passHref>
-                  <Button
-                    variant='contained'
-                    color='primary'
-                    style={{ marginTop: '1rem' }}>
-                    Add New Course
-                  </Button>
-                </Link>
-              ) : null}
-            </div>
-          )}
         </Typography>
       </div>
       <Dialog
@@ -303,7 +270,7 @@ export default function SingleDepartment() {
         <DialogTitle id='alert-dialog-title'>{'Delete Faculty'}</DialogTitle>
         <DialogContent>
           <DialogContentText id='alert-dialog-description'>
-            Are you sure to Delete the Department?
+            Are you sure to Delete the faculty?
           </DialogContentText>
         </DialogContent>
         <DialogActions>

@@ -1,82 +1,127 @@
-import React, { useState } from 'react';
-import { Button, Container, TextField, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import {
+  Button,
+  Container,
+  Grid,
+  Paper,
+  TextField,
+  Typography,
+} from '@mui/material';
 import Head from 'next/head';
+import { BriefCard } from '@webportal/components/BriefCard';
+import { cookieService } from '@webportal/services';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import Link from 'next/link';
 export default function DepartmentModule() {
-  const [name, setName] = useState('');
-  const [deanId, setDeanId] = useState(0);
-  const [deanMessage, setDeanMessage] = useState('');
   const [departments, setDepartments] = useState([]);
-  const handleNameChange = event => {
-    setName(event.target.value);
-  };
+  const [role, setRole] = useState('');
+  useEffect(() => {
+    getRole();
+    getAllDepartments();
+  }, [1]);
+  const getAllDepartments = async () => {
+    try {
+      const url = 'http://localhost:1337/api/v1/departments';
+      const token = cookieService.get('token');
+      if (!token) throw new Error('No user token found');
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
 
-  const handleDeanIdChange = event => {
-    setDeanId(event.target.value);
+      const response = await axios.get(url, { headers });
+      if (response.status === 200) {
+        setDepartments(response.data);
+      }
+    } catch (error) {
+      toast('error', error?.response?.data?.message || 'Something went wrong');
+    }
   };
+  const getRole = async () => {
+    try {
+      const url = 'http://localhost:1337/api/v1/auth/profile';
+      const token = cookieService.get('token');
+      if (!token) throw new Error('No user token found');
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
 
-  const handleDeanMessageChange = event => {
-    setDeanMessage(event.target.value);
-  };
-
-  const handleAddDepartment = event => {
-    event.preventDefault();
-    const departmentName = event.target.elements.departmentName.value;
-    setDepartments([...departments, departmentName]);
-    event.target.reset();
+      const response = await axios.get(url, { headers });
+      if (response.status === 200) {
+        setRole(response.data.role);
+      }
+    } catch (error) {
+      toast('error', error?.response?.data?.message || 'Something went wrong');
+    }
   };
   return (
     <Container>
       <Head>
         <title>Modules Registry</title>
       </Head>
-      <form onSubmit={handleAddDepartment}>
-        <TextField
-          label='Name'
-          variant='outlined'
-          margin='normal'
-          fullWidth
-          value={name}
-          onChange={handleNameChange}
-        />
-        <TextField
-          label='Dean ID'
-          variant='outlined'
-          margin='normal'
-          type='number'
-          fullWidth
-          value={deanId}
-          onChange={handleDeanIdChange}
-        />
-        <TextField
-          label='Dean Message'
-          variant='outlined'
-          margin='normal'
-          fullWidth
-          multiline
-          rows={4}
-          value={deanMessage}
-          onChange={handleDeanMessageChange}
-        />
-        <div>
-          <Typography variant='h6' gutterBottom>
-            Departments:
-          </Typography>
+      <div style={{ marginTop: '1rem', marginBottom: '1rem' }}>
+        <Grid
+          container
+          component={Paper}
+          spacing={2}
+          style={{
+            padding: '24px',
+            marginTop: '24px',
+            marginBottom: '24px',
+          }}>
+          <Grid item xs={6}>
+            <BriefCard name='Department' value={departments.length} />
+          </Grid>
+          <Grid item xs={6}>
+            <BriefCard name='Degree' value={departments.length} />
+          </Grid>
+          <Grid item xs={6}>
+            <BriefCard name='Degree' value='6' />
+          </Grid>
+          <Grid item xs={6}>
+            <BriefCard name='Member' value='50' />
+          </Grid>
+        </Grid>
+        <Grid
+          container
+          component={Paper}
+          spacing={2}
+          style={{
+            padding: '24px',
+            marginTop: '24px',
+            marginBottom: '24px',
+          }}>
+          <Grid item xs={12}>
+            {departments.map(department => {
+              return (
+                <Link
+                  key={department.id}
+                  href={`/department/${department.id}`}
+                  passHref>
+                  <Typography
+                    style={{
+                      textDecoration: 'none',
+                      cursor: 'pointer',
+                    }}
+                    variant='subtitle1'>
+                    {department.name}
+                  </Typography>
+                </Link>
+              );
+            })}
+          </Grid>
+        </Grid>
 
-          <TextField
-            label='Department'
-            variant='outlined'
-            margin='normal'
-            name='departmentName'
-          />
+        {role === 'admin' || role === 'superadmin' ? (
           <Button
-            style={{ display: 'block' }}
             variant='contained'
             color='primary'
-            type='submit'>
-            Add Department
+            style={{ marginTop: '1rem' }}
+            href='/department/new'>
+            Add New Departement
           </Button>
-        </div>
-      </form>
+        ) : null}
+      </div>
     </Container>
   );
 }
