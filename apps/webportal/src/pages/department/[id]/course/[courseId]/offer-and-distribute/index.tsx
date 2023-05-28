@@ -33,10 +33,13 @@ const OfferAndDistribute = () => {
     semester: '',
     section: '',
     departmentId: +router.query.id,
+    level: '',
+    session: '',
   });
   const year = [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023];
   const semester = ['one', 'two'];
   const section = ['a', 'b', 'c'];
+  const level = ['I', 'II', 'III', 'IV', 'VI', 'VII', 'VIII', 'VIV'];
   const [teachers, setTeachers] = useState([]);
 
   const [activeStep, setActiveStep] = useState(0);
@@ -127,7 +130,9 @@ const OfferAndDistribute = () => {
       activeStep === 0 &&
       (distributionValues.academicYear === '' ||
         distributionValues.semester === '' ||
-        distributionValues.section === '')
+        distributionValues.section === '' ||
+        distributionValues.level === '' ||
+        distributionValues.session === '')
     ) {
       bool = true;
     } else if (
@@ -165,6 +170,46 @@ const OfferAndDistribute = () => {
             </Typography>
             <Grid container spacing={2} sx={{ width: '100%', p: 6 }}>
               <Grid item xs={12}>
+                <FormControl sx={{ my: 2, width: '100%' }}>
+                  <InputLabel id='AcademicYear'>Academic Year</InputLabel>
+                  <Select
+                    labelId='AcademicYear'
+                    id='year'
+                    label='Academic Year'
+                    value={distributionValues.academicYear}
+                    onChange={e =>
+                      setDistributionValues({
+                        ...distributionValues,
+                        academicYear: e.target.value.toString(),
+                      })
+                    }>
+                    {year.map((dt, idx) => (
+                      <MenuItem value={dt} key={idx}>
+                        {dt}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <FormControl sx={{ my: 2, width: '100%' }}>
+                  <InputLabel id='LevelLabel'>Level</InputLabel>
+                  <Select
+                    labelId='LevelLabel'
+                    id='Level'
+                    label='Level'
+                    value={distributionValues.level}
+                    onChange={e =>
+                      setDistributionValues({
+                        ...distributionValues,
+                        level: e.target.value.toString(),
+                      })
+                    }>
+                    {level.map((dt, idx) => (
+                      <MenuItem value={dt} key={idx}>
+                        {dt}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
                 <FormControl sx={{ mb: 2, width: '100%' }}>
                   {' '}
                   <InputLabel id='SemesterLabel'>Semester</InputLabel>
@@ -186,6 +231,22 @@ const OfferAndDistribute = () => {
                     ))}
                   </Select>
                 </FormControl>
+
+                <FormControl sx={{ mb: 2, width: '100%' }}>
+                  <TextField
+                    id='Session'
+                    variant='outlined'
+                    label='Session In Year'
+                    value={distributionValues.session}
+                    onChange={e =>
+                      setDistributionValues({
+                        ...distributionValues,
+                        session: e.target.value.toString(),
+                      })
+                    }
+                  />
+                </FormControl>
+
                 <FormControl sx={{ my: 2, width: '100%' }}>
                   <InputLabel id='SectionLabel'>Section</InputLabel>
                   <Select
@@ -200,26 +261,6 @@ const OfferAndDistribute = () => {
                       })
                     }>
                     {section.map((dt, idx) => (
-                      <MenuItem value={dt} key={idx}>
-                        {dt}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                <FormControl sx={{ my: 2, width: '100%' }}>
-                  <InputLabel id='AcademicYear'>Academic Year</InputLabel>
-                  <Select
-                    labelId='AcademicYear'
-                    id='year'
-                    label='Academic Year'
-                    value={distributionValues.academicYear}
-                    onChange={e =>
-                      setDistributionValues({
-                        ...distributionValues,
-                        academicYear: e.target.value.toString(),
-                      })
-                    }>
-                    {year.map((dt, idx) => (
                       <MenuItem value={dt} key={idx}>
                         {dt}
                       </MenuItem>

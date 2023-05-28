@@ -27,7 +27,6 @@ const Curriculum = () => {
 
       const response = await axios.get(url, { headers });
       if (response.status === 200) {
-        console.log(response);
         setCurriculum(response.data);
       }
     } catch (error) {

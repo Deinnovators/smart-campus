@@ -50,6 +50,7 @@ const Course = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const level = ['I', 'II', 'III', 'IV', 'VI', 'VII', 'VIII', 'VIV'];
 
   const [openModal, setModal] = React.useState(false);
   const [values, setValues] = useState({
@@ -137,6 +138,8 @@ const Course = () => {
       semester: toUpdate.semester,
       section: toUpdate.section,
       departmentId: +router.query.id,
+      session: toUpdate.session,
+      level: toUpdate.level,
     };
 
     try {
@@ -408,105 +411,124 @@ const Course = () => {
                 create Offer and distribution <ForwardIcon />
               </Button>
             </div>
-            <TableContainer>
-              <TextField
-                id='Search'
-                placeholder='Search by id, teacher name etc.'
-                variant='outlined'
-                sx={{ width: '96%', m: 2, mb: 4 }}
-                onChange={e => updateTable(e.target.value)}
-              />
+            {courseDetails.CourseOffering.length > 0 ? (
+              <TableContainer>
+                <TextField
+                  id='Search'
+                  placeholder='Search by id, teacher name etc.'
+                  variant='outlined'
+                  sx={{ width: '96%', m: 2, mb: 4 }}
+                  onChange={e => updateTable(e.target.value)}
+                />
 
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>ID</TableCell>
-                    <TableCell>Department</TableCell>
-                    <TableCell>Academic Year</TableCell>
-                    <TableCell>Section</TableCell>
-                    <TableCell>Semester</TableCell>
-                    <TableCell>Teacher</TableCell>
-                    <TableCell>Updated At</TableCell>
-                    <TableCell>Created At</TableCell>
-                    <TableCell> Action</TableCell>
-                  </TableRow>
-                </TableHead>
-                {courseDetails.CourseOffering.map((dt, index) => (
-                  <TableBody>
-                    <TableRow key={index}>
-                      <TableCell>{++index}</TableCell>
-                      <TableCell>
-                        {dt?.CourseDistribution?.department?.name}
-                      </TableCell>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>ID</TableCell>
+                      <TableCell>Department</TableCell>
+                      <TableCell>Academic Year</TableCell>
+                      <TableCell>Session</TableCell>
+                      <TableCell>Level</TableCell>
+                      <TableCell>Semester</TableCell>
+                      <TableCell>Section</TableCell>
+                      <TableCell>Teacher</TableCell>
+                      <TableCell>Updated At</TableCell>
+                      <TableCell>Created At</TableCell>
+                      <TableCell> Action</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  {courseDetails.CourseOffering.map((dt, index) => (
+                    <TableBody>
+                      <TableRow key={index}>
+                        <TableCell>{++index}</TableCell>
+                        <TableCell>
+                          {dt?.CourseDistribution?.department?.name}
+                        </TableCell>
 
-                      <TableCell>
-                        {dt?.CourseDistribution?.academicYear}
-                      </TableCell>
-                      <TableCell>{dt?.CourseDistribution?.section}</TableCell>
-                      <TableCell>{dt?.CourseDistribution?.semester}</TableCell>
-                      <TableCell>{dt?.teacher?.name}</TableCell>
+                        <TableCell>
+                          {dt?.CourseDistribution?.academicYear}
+                        </TableCell>
+                        <TableCell>{dt?.CourseDistribution?.session}</TableCell>
+                        <TableCell>{dt?.CourseDistribution?.level}</TableCell>
+                        <TableCell>
+                          {dt?.CourseDistribution?.semester}
+                        </TableCell>
+                        <TableCell>{dt?.CourseDistribution?.section}</TableCell>
 
-                      <TableCell>{dt?.createdAt.slice(0, 10)}</TableCell>
-                      <TableCell>{dt?.updatedAt.slice(0, 10)}</TableCell>
-                      <TableCell sx={{ textAlign: 'center' }}>
-                        <div>
-                          <MoreVertIcon
-                            id='basic-button'
-                            aria-controls={open ? 'basic-menu' : undefined}
-                            aria-haspopup='true'
-                            variant='contained'
-                            sx={{ cursor: 'pointer' }}
-                            aria-expanded={open ? 'true' : undefined}
-                            onClick={e => {
-                              setToUpdate({
-                                courseId: dt?.courseId,
-                                teacherId: dt?.teacherId,
-                                academicYear:
-                                  dt?.CourseDistribution?.academicYear,
-                                section: dt?.CourseDistribution?.section,
-                                semester: dt?.CourseDistribution?.semester,
-                                distributionId: dt?.courseDistributionId,
-                                offerId: dt?.id,
-                              });
-                              handleClick(e);
-                            }}
-                          />
-                          <Menu
-                            id='basic-menu'
-                            anchorEl={anchorEl}
-                            open={open}
-                            onClose={handleClose}
-                            MenuListProps={{
-                              'aria-labelledby': 'basic-button',
-                            }}>
-                            <MenuItem
-                              onClick={() => {
-                                handleClose();
-                                setModal(true);
-                              }}>
-                              <BorderColorIcon sx={{ mr: 2 }} /> Update
-                            </MenuItem>
-                            <MenuItem
-                              onClick={() => {
-                                setDeleteModal(true);
-                                handleClose();
-                                setDeleteId({
-                                  ...deleteId,
+                        <TableCell>{dt?.teacher?.name}</TableCell>
+
+                        <TableCell>{dt?.createdAt.slice(0, 10)}</TableCell>
+                        <TableCell>{dt?.updatedAt.slice(0, 10)}</TableCell>
+                        <TableCell sx={{ textAlign: 'center' }}>
+                          <div>
+                            <MoreVertIcon
+                              id='basic-button'
+                              aria-controls={open ? 'basic-menu' : undefined}
+                              aria-haspopup='true'
+                              variant='contained'
+                              sx={{ cursor: 'pointer' }}
+                              aria-expanded={open ? 'true' : undefined}
+                              onClick={e => {
+                                setToUpdate({
+                                  courseId: dt?.courseId,
+                                  teacherId: dt?.teacherId,
+                                  academicYear:
+                                    dt?.CourseDistribution?.academicYear,
+                                  section: dt?.CourseDistribution?.section,
+                                  semester: dt?.CourseDistribution?.semester,
                                   distributionId: dt?.courseDistributionId,
                                   offerId: dt?.id,
+                                  session: dt?.CourseDistribution?.session,
+                                  level: dt?.CourseDistribution?.level,
                                 });
+                                handleClick(e);
+                              }}
+                            />
+                            <Menu
+                              id='basic-menu'
+                              anchorEl={anchorEl}
+                              open={open}
+                              onClose={handleClose}
+                              MenuListProps={{
+                                'aria-labelledby': 'basic-button',
                               }}>
-                              <DeleteIcon sx={{ mr: 2, color: '#ff5a5a' }} />{' '}
-                              Delete
-                            </MenuItem>
-                          </Menu>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                ))}
-              </Table>
-            </TableContainer>
+                              <MenuItem
+                                onClick={() => {
+                                  handleClose();
+                                  setModal(true);
+                                }}>
+                                <BorderColorIcon sx={{ mr: 2 }} /> Update
+                              </MenuItem>
+                              <MenuItem
+                                onClick={() => {
+                                  setDeleteModal(true);
+                                  handleClose();
+                                  setDeleteId({
+                                    ...deleteId,
+                                    distributionId: dt?.courseDistributionId,
+                                    offerId: dt?.id,
+                                  });
+                                }}>
+                                <DeleteIcon sx={{ mr: 2, color: '#ff5a5a' }} />{' '}
+                                Delete
+                              </MenuItem>
+                            </Menu>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  ))}
+                </Table>
+              </TableContainer>
+            ) : (
+              <Typography
+                variant='h6'
+                sx={{
+                  m: 5,
+                }}>
+                No data found
+              </Typography>
+            )}
           </Grid>
           <Dialog open={openModal} onClose={() => setModal(false)}>
             <DialogTitle sx={{ mb: 3 }}>
@@ -516,6 +538,69 @@ const Course = () => {
               {' '}
               <Grid container spacing={2} sx={{ width: '100%' }}>
                 <Grid item xs={12}>
+                  <FormControl sx={{ my: 2, width: '100%' }}>
+                    <InputLabel id='AcademicYear'>Academic Year</InputLabel>
+                    <Select
+                      labelId='AcademicYear'
+                      id='year'
+                      label='Academic Year'
+                      value={toUpdate.academicYear}
+                      onChange={e =>
+                        setToUpdate({
+                          ...toUpdate,
+                          academicYear: e.target.value,
+                        })
+                      }>
+                      {year.map((dt, idx) => (
+                        <MenuItem
+                          value={dt}
+                          key={idx}
+                          selected={
+                            toUpdate.academicYear === dt ? true : false
+                          }>
+                          {dt}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                  <FormControl sx={{ my: 2, width: '100%' }}>
+                    <TextField
+                      id='Session'
+                      variant='outlined'
+                      label='Session In Year'
+                      value={toUpdate.session}
+                      onChange={e =>
+                        setToUpdate({
+                          ...toUpdate,
+                          session: e.target.value,
+                        })
+                      }
+                    />
+                  </FormControl>
+                  <FormControl sx={{ my: 2, width: '100%' }}>
+                    {' '}
+                    <InputLabel id='Level'>Level</InputLabel>
+                    <Select
+                      labelId='Level'
+                      id='Level'
+                      label='Level'
+                      value={toUpdate.level}
+                      onChange={e =>
+                        setToUpdate({
+                          ...toUpdate,
+                          level: e.target.value,
+                        })
+                      }>
+                      {level.map((dt, idx) => (
+                        <MenuItem
+                          value={dt}
+                          key={idx}
+                          selected={toUpdate.level === dt ? true : false}>
+                          {dt}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                   <FormControl sx={{ my: 2, width: '100%' }}>
                     {' '}
                     <InputLabel id='SemesterLabel'>Semester</InputLabel>
@@ -558,31 +643,6 @@ const Course = () => {
                           value={dt}
                           key={idx}
                           selected={toUpdate.section === dt ? true : false}>
-                          {dt}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                  <FormControl sx={{ my: 2, width: '100%' }}>
-                    <InputLabel id='AcademicYear'>Academic Year</InputLabel>
-                    <Select
-                      labelId='AcademicYear'
-                      id='year'
-                      label='Academic Year'
-                      value={toUpdate.academicYear}
-                      onChange={e =>
-                        setToUpdate({
-                          ...toUpdate,
-                          academicYear: e.target.value,
-                        })
-                      }>
-                      {year.map((dt, idx) => (
-                        <MenuItem
-                          value={dt}
-                          key={idx}
-                          selected={
-                            toUpdate.academicYear === dt ? true : false
-                          }>
                           {dt}
                         </MenuItem>
                       ))}
@@ -787,16 +847,6 @@ const Course = () => {
               <Button onClick={updateCourse}>update</Button>
             </DialogActions>
           </Dialog>
-          <Grid
-            container
-            spacing={2}
-            component={Paper}
-            style={{ marginTop: '24px' }}>
-            {' '}
-            <Grid item xs={12} style={{ marginBottom: '24px' }}>
-              <Typography variant='h4'>Course Curriculum Krte hbe</Typography>
-            </Grid>
-          </Grid>
         </Fragment>
       )}
     </Container>

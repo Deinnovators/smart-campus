@@ -159,7 +159,9 @@ model Course {
 model CourseDistribution {
   id              Int              @id @default(autoincrement())
   academicYear    String
+  level           Level
   semester        Semester
+  session         String
   section         Section
   courseOfferings CourseOffering[]
   createdAt       DateTime         @default(now())
@@ -196,11 +198,14 @@ model CourseCurriculum {
 model ClassRoutine {
   id           Int      @id @default(autoincrement())
   academicYear String
+  level        Level
   semester     Semester
   section      Section
-  routine      Json
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @default(now()) @updatedAt
+  session      String
+
+  routine   Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
   department   Department @relation(fields: [departmentId], references: [id])
   departmentId Int
@@ -209,6 +214,13 @@ model ClassRoutine {
 enum Semester {
   one
   two
+}
+
+enum Level {
+  I
+  II
+  III
+  IV
 }
 
 enum Section {
