@@ -59,8 +59,7 @@ export const Navbar: FC<NavbarProps> = ({ showUserAvatar = true }) => {
                   <Avatar sx={{ height: 24, width: 24 }}>
                     <Image
                       src={user?.avatar ?? 'https://picsum.photos/200'}
-                      width={80}
-                      height={80}
+                      fill
                       alt='user avatar'
                     />
                   </Avatar>

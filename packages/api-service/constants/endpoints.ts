@@ -10,6 +10,9 @@ export const endpoints = {
     children: '/modules/children',
     all: '/modules/all',
   },
+  users: {
+    base: '/users',
+  },
 };
 
 export type Endpoints = typeof endpoints;

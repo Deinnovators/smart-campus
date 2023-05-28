@@ -20,7 +20,19 @@ export class UsersService {
   }
 
   async findMany(args?: Prisma.UserFindManyArgs): Promise<User[]> {
-    return this.prisma.user.findMany(args);
+    return this.prisma.user.findMany({
+      ...args,
+      take: args.take ? +args.take : undefined,
+      include: {
+        ...args?.include,
+        address: true,
+        foreignAddress: true,
+        faculty: true,
+        department: true,
+        chairman: true,
+        dean: true,
+      },
+    });
   }
 
   async deleteOne(id: number) {

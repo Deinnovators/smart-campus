@@ -4,3 +4,4 @@ export const ApiUrl = BaseUrl + '/api';
 export const getApiUrlOfVersion = (version: string) => ApiUrl + '/' + version;
 export const uploadDir = BaseUrl + '/uploads';
 export const moduleImageDir = uploadDir + '/modules';
+export const PaginationLimit = 20;
