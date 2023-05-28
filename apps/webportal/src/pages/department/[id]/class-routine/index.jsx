@@ -9,6 +9,8 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Button, Container, Grid, Paper } from '@mui/material';
+import ClassRoutineTable from '../../../../components/ClassRoutineTable';
+import EditIcon from '@mui/icons-material/Edit';
 
 const ClassRoutine = () => {
   const router = useRouter();
@@ -41,14 +43,14 @@ const ClassRoutine = () => {
   return (
     <Fragment>
       <Container sx={{ p: 2 }}>
-        <Grid container spacing={2} style={{ marginTop: '24px' }}>
+        <Grid container style={{ marginTop: '24px' }}>
           <div
             style={{
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
               width: '100%',
-              padding: '24px 16px',
+              padding: '24px 0px',
               flexWrap: 'wrap-reverse',
             }}>
             <Typography variant='h4'>Class Routine</Typography>
@@ -57,26 +59,48 @@ const ClassRoutine = () => {
               onClick={() => {
                 router.push(router.asPath + '/create');
               }}>
-              Create a routine
+              Create routine
             </Button>
           </div>
         </Grid>
-        {/* {routine.map((item, idx) => (
-          <Accordion sx={{ mb: 2 }} key={idx}>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography>
-                Session: {item?.academicYear} semester:{item?.semester}
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-                eget.
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
-        ))} */}
+        {routine.length > 0 ? (
+          routine.map((item, idx) => (
+            <Accordion sx={{ mb: 2 }} key={idx}>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    width: '100%',
+                  }}>
+                  {' '}
+                  <Typography>
+                    Level: {item?.level} Semester: {item?.semester} Session:{' '}
+                    {item?.session}
+                  </Typography>
+                  <EditIcon
+                    sx={{ cursor: 'pointer', mr: 2 }}
+                    onClick={() => {
+                      localStorage.setItem('routineData', JSON.stringify(item));
+                      router.push(router.asPath + '/update');
+                    }}
+                  />
+                </div>
+              </AccordionSummary>
+              <AccordionDetails>
+                <ClassRoutineTable
+                  routineData={item}
+                  viewConditionalSection={false}
+                />
+              </AccordionDetails>
+            </Accordion>
+          ))
+        ) : (
+          <Typography variant='h6' sx={{ my: 10 }}>
+            No routine found for this department. Please create one.
+          </Typography>
+        )}
       </Container>
     </Fragment>
   );
