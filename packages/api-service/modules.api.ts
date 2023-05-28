@@ -30,6 +30,7 @@ export class ModulesApi extends BaseHttp {
     });
     return res.data;
   }
+
   async createModule(
     data: Prisma.ModuleRegistryCreateArgs,
     config?: AxiosRequestConfig,
@@ -41,6 +42,20 @@ export class ModulesApi extends BaseHttp {
     });
     return res.data;
   }
+
+  async updateModule(
+    id: number,
+    data: Prisma.ModuleRegistryUpdateArgs,
+    config?: AxiosRequestConfig,
+  ): Promise<ModuleRegistry> {
+    const res = await this.patch({
+      endpoint: `${this.endpoints.modules.base}/${id}`,
+      data,
+      config,
+    });
+    return res.data;
+  }
+
   async deleteModule(
     id: number,
     config?: AxiosRequestConfig,
