@@ -34,6 +34,7 @@ import BorderColorIcon from '@mui/icons-material/BorderColor';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Toast from '@webportal/libs/utils/Toast';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import Link from 'next/link';
 
 const Course = () => {
   const [courseDetails, setCourseDetails] = useState({});
@@ -372,6 +373,15 @@ const Course = () => {
                 {courseDetails?.updatedAt.slice(0, 10)}
               </Typography>
             </Grid>
+            <Link
+              href={
+                router.asPath +
+                '/curriculum/' +
+                courseDetails?.CourseCurriculum[0]?.id
+              }
+              style={{ textDecoration: 'underline', margin: '16px' }}>
+              Click to see course Curriculum
+            </Link>
           </Grid>
 
           <Grid
