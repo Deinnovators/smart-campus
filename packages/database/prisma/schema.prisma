@@ -28,7 +28,10 @@ model User {
 
   bio String?
 
-  faculty      Faculty?
+  faculty   Faculty? @relation(fields: [facultyId], references: [id])
+  facultyId Int?     @unique
+  dean      Faculty? @relation("dean")
+
   chairman     Department? @relation("DepartmentChairman")
   department   Department? @relation("DepartmentMembers", fields: [departmentId], references: [id])
   departmentId Int?
@@ -114,8 +117,9 @@ model Faculty {
   name        String       @unique
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @default(now()) @updatedAt
-  dean        User         @relation(fields: [deanId], references: [id])
+  dean        User         @relation("dean", fields: [deanId], references: [id])
   deanId      Int          @unique
+  members     User[]
   deanMessage String?
   departments Department[]
 }

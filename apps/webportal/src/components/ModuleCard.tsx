@@ -13,8 +13,8 @@ export const ModuleCard: React.FC<ModuleCardProps> = ({ module }) => {
   const link = module.url.includes('/') ? module.url : `/modules/${module.url}`;
   return (
     <Link href={link}>
-      <Card>
-        <Box height={200} position='relative' overflow='hidden'>
+      <Card sx={{ margin: 2 }}>
+        <Box height={200} width={200} position='relative' overflow='hidden'>
           <Image src={getModuleImageUrl(module.icon)} fill alt={module.name} />
         </Box>
         <Typography style={{ padding: 8 }} variant='h6'>
