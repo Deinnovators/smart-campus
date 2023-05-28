@@ -66,6 +66,9 @@ export class ModuleRegistryController {
     if (icon) {
       data.icon = icon;
     }
+    if (data.accessToRoles) {
+      data.accessToRoles = JSON.parse(data.accessToRoles as string);
+    }
     return this.service.updateModule(id, data);
   }
 
