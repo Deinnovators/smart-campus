@@ -11,6 +11,9 @@ export class ModuleRegistryService {
   constructor(private readonly prisma: PrismaService) {}
 
   async createModule(data: Prisma.ModuleRegistryCreateInput) {
+    if (!data.parentUrl) {
+      data.parentUrl = null;
+    }
     return this.prisma.moduleRegistry.create({ data });
   }
 
@@ -18,8 +21,12 @@ export class ModuleRegistryService {
     const module = await this.prisma.moduleRegistry.findUniqueOrThrow({
       where: { id },
     });
-    if (data.icon) {
-      await unlink(path.join(moduleImageDir, module.icon));
+    const iconPath = path.join(moduleImageDir, module.icon);
+    if (data.icon && existsSync(iconPath)) {
+      await unlink(iconPath);
+    }
+    if (!data.parentUrl) {
+      data.parentUrl = null;
     }
     return this.prisma.moduleRegistry.update({ where: { id }, data });
   }
@@ -44,8 +51,12 @@ export class ModuleRegistryService {
           has: role,
         },
         status: 'active',
-        parentUrl: null,
+        OR: [{ parentUrl: null }, { parentUrl: 'null' }, { parentUrl: '' }],
         ...args?.where,
+      },
+      orderBy: {
+        id: 'asc',
+        ...args?.orderBy,
       },
       take: args?.take ? +args.take : undefined,
     });
@@ -58,7 +69,11 @@ export class ModuleRegistryService {
   }
 
   async getAllModules() {
-    return this.prisma.moduleRegistry.findMany();
+    return this.prisma.moduleRegistry.findMany({
+      orderBy: {
+        id: 'asc',
+      },
+    });
   }
 
   async getModuleById(id: number) {
