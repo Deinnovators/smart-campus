@@ -33,11 +33,12 @@ import ForwardIcon from '@mui/icons-material/Forward';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Toast from '@webportal/libs/utils/Toast';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 const Course = () => {
   const [courseDetails, setCourseDetails] = useState({});
   const [courseDetailsMain, setCourseDetailsMain] = useState({});
-
+  const [updateBasic, setUpdateBasic] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -65,6 +66,14 @@ const Course = () => {
     offerId: '',
     confirm: false,
   });
+  const [updateCourseInfo, setUpdateCourseInfo] = useState({
+    name: '',
+    description: '',
+    type: '',
+    credit: '',
+    code: '',
+  });
+
   useEffect(() => {
     getCourseDetails();
     getTeachers();
@@ -102,6 +111,13 @@ const Course = () => {
       if (response.status === 200) {
         setCourseDetails(response.data[0]);
         setCourseDetailsMain(response.data[0]);
+        setUpdateCourseInfo({
+          name: response.data[0].name,
+          description: response.data[0].description,
+          type: response.data[0].type,
+          credit: response.data[0].credit,
+          code: response.data[0].code,
+        });
         setLoading(false);
       }
     } catch (error) {
@@ -218,6 +234,33 @@ const Course = () => {
       CourseOffering: filteredCourseOffering,
     });
   };
+
+  const updateCourse = async () => {
+    let url = 'http://localhost:1337/api/v1/course/' + router.query.courseId;
+
+    let body = {
+      ...updateCourseInfo,
+      credit: parseFloat(updateCourseInfo.credit),
+    };
+
+    try {
+      const token = cookieService.get('token');
+      if (!token) throw new Error('No user token found');
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+
+      const response = await axios.patch(url, body, { headers });
+      if (response.status === 200) {
+        Toast('success', 'Course update successfully.');
+        getCourseDetails();
+        setUpdateBasic(false);
+      }
+    } catch (error) {
+      Toast('error', error?.response?.data?.message || 'Something went wrong');
+      return;
+    }
+  };
   return (
     <Container>
       <Head>
@@ -269,10 +312,10 @@ const Course = () => {
               <Typography variant='h4'>Basic Information</Typography>
               <Button
                 variant='contained'
-                onClick={() =>
-                  router.push(router.asPath + '/offer-and-distribute')
-                }>
-                create Offer and distribution <ForwardIcon />
+                onClick={() => {
+                  setUpdateBasic(true);
+                }}>
+                update
               </Button>
             </div>
             <Grid item xs={3}>
@@ -337,9 +380,24 @@ const Course = () => {
             component={Paper}
             style={{ marginTop: '24px' }}>
             {' '}
-            <Grid item xs={12} style={{ marginBottom: '24px' }}>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                width: '100%',
+                padding: '24px 16px',
+                flexWrap: 'wrap-reverse',
+              }}>
               <Typography variant='h4'>Course Distributed To</Typography>
-            </Grid>
+              <Button
+                variant='contained'
+                onClick={() =>
+                  router.push(router.asPath + '/offer-and-distribute')
+                }>
+                create Offer and distribution <ForwardIcon />
+              </Button>
+            </div>
             <TableContainer>
               <TextField
                 id='Search'
@@ -380,13 +438,14 @@ const Course = () => {
 
                       <TableCell>{dt?.createdAt.slice(0, 10)}</TableCell>
                       <TableCell>{dt?.updatedAt.slice(0, 10)}</TableCell>
-                      <TableCell>
+                      <TableCell sx={{ textAlign: 'center' }}>
                         <div>
-                          <Button
+                          <MoreVertIcon
                             id='basic-button'
                             aria-controls={open ? 'basic-menu' : undefined}
                             aria-haspopup='true'
                             variant='contained'
+                            sx={{ cursor: 'pointer' }}
                             aria-expanded={open ? 'true' : undefined}
                             onClick={e => {
                               setToUpdate({
@@ -400,9 +459,8 @@ const Course = () => {
                                 offerId: dt?.id,
                               });
                               handleClick(e);
-                            }}>
-                            action
-                          </Button>
+                            }}
+                          />
                           <Menu
                             id='basic-menu'
                             anchorEl={anchorEl}
@@ -602,6 +660,123 @@ const Course = () => {
             </DialogActions>
           </Dialog>
 
+          <Dialog open={updateBasic} onClose={() => setUpdateBasic(false)}>
+            <DialogTitle sx={{ mb: 3 }}>Update Basic Information</DialogTitle>
+            <DialogContent>
+              {' '}
+              <Grid container spacing={2} sx={{ width: '100%', mt: 2 }}>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    id='Name'
+                    label='Course Name'
+                    variant='outlined'
+                    sx={{ width: '100%', mb: 1 }}
+                    value={updateCourseInfo.name}
+                    onChange={e =>
+                      setUpdateCourseInfo({
+                        ...updateCourseInfo,
+                        name: e.target.value,
+                      })
+                    }
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    id='Code'
+                    label='Code'
+                    variant='outlined'
+                    sx={{ width: '100%', mb: 1 }}
+                    value={updateCourseInfo.code}
+                    onChange={e =>
+                      setUpdateCourseInfo({
+                        ...updateCourseInfo,
+                        code: e.target.value,
+                      })
+                    }
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    id='Credit'
+                    label='Credit'
+                    variant='outlined'
+                    sx={{ width: '100%', mb: 1 }}
+                    value={updateCourseInfo.credit}
+                    onChange={e =>
+                      setUpdateCourseInfo({
+                        ...updateCourseInfo,
+                        credit: e.target.value,
+                      })
+                    }
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    id='outlined-multiline-static'
+                    label='Description'
+                    multiline
+                    rows={4}
+                    defaultValue='Default Value'
+                    sx={{ width: '100%', mb: 1 }}
+                    value={updateCourseInfo.description}
+                    onChange={e =>
+                      setUpdateCourseInfo({
+                        ...updateCourseInfo,
+                        description: e.target.value,
+                      })
+                    }
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl sx={{ width: '100%' }}>
+                    {' '}
+                    <InputLabel id='TypeLabel'>Type</InputLabel>
+                    <Select
+                      labelId='TypeLabel'
+                      id='Type'
+                      label='Type'
+                      value={updateCourseInfo.type}
+                      onChange={e =>
+                        setUpdateCourseInfo({
+                          ...updateCourseInfo,
+                          type: e.target.value,
+                        })
+                      }>
+                      <MenuItem
+                        value={'theory'}
+                        selected={
+                          updateCourseInfo.type === 'theory' ? true : false
+                        }>
+                        Theory
+                      </MenuItem>
+                      <MenuItem
+                        value={'sessional'}
+                        selected={
+                          updateCourseInfo.type === 'sessional' ? true : false
+                        }>
+                        Sessional
+                      </MenuItem>
+                      <MenuItem
+                        value={'others'}
+                        selected={
+                          updateCourseInfo.type === 'others' ? true : false
+                        }>
+                        Others
+                      </MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+              </Grid>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setUpdateBasic(false)}>Cancel</Button>
+              <Button onClick={updateCourse}>update</Button>
+            </DialogActions>
+          </Dialog>
           <Grid
             container
             spacing={2}
