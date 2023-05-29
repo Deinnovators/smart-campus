@@ -11,6 +11,18 @@ export class UsersApi extends BaseHttp {
     this.endpoints = ep;
   }
 
+  async createUser(
+    data: Prisma.UserCreateInput,
+    config?: AxiosRequestConfig,
+  ): Promise<User> {
+    const res = await this.post({
+      endpoint: this.endpoints.users.base,
+      data,
+      config,
+    });
+    return res.data;
+  }
+
   async getUsers(
     args: Prisma.UserFindManyArgs,
     config: AxiosRequestConfig,

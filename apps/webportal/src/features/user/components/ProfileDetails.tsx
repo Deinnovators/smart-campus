@@ -27,9 +27,12 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ user }) => {
           <Table sx={{ border: 0 }}>
             <TableBody>
               <DetailRow value={user?.nationality} title='Nationality' />
-              <DetailRow value={user?.sex} title='Sex' />
+              <DetailRow value={user?.sex} capitalize title='Sex' />
               <DetailRow
-                value={dayjs(user?.dateOfBirth).format('DD/MM/YYYY')}
+                value={
+                  user?.dateOfBirth &&
+                  dayjs(user?.dateOfBirth).format('DD/MM/YYYY')
+                }
                 title='Date of birth'
               />
             </TableBody>
@@ -49,7 +52,7 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ user }) => {
   );
 };
 
-const DetailRow = ({ title, value }: any) => {
+const DetailRow = ({ title, value, capitalize }: any) => {
   if (!value) return null;
   return (
     <TableRow>
@@ -57,7 +60,9 @@ const DetailRow = ({ title, value }: any) => {
         <Typography>{title}: </Typography>
       </TableCell>
       <TableCell sx={{ border: 'none' }}>
-        <Typography>{value}</Typography>
+        <Typography sx={{ textTransform: capitalize ? 'capitalize' : 'none' }}>
+          {value}
+        </Typography>
       </TableCell>
     </TableRow>
   );

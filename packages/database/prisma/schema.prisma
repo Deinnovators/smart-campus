@@ -18,9 +18,9 @@ model User {
   name            String
   password        String
   role            Roles                @default(student)
-  sex             Sex                  @default(male)
-  dateOfBirth     DateTime
-  mobile          String
+  sex             Sex?                 @default(male)
+  dateOfBirth     DateTime?
+  mobile          String?
   address         Address?
   nationality     String               @default("Bangladeshi")
   nationalityType UserNationalityTypes @default(native)
