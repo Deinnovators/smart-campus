@@ -22,4 +22,15 @@ export class UsersApi extends BaseHttp {
     });
     return res.data;
   }
+
+  async getUserById(
+    id: string | number,
+    config: AxiosRequestConfig,
+  ): Promise<User> {
+    const res = await this.get({
+      endpoint: `${this.endpoints.users.base}/${id}`,
+      config,
+    });
+    return res.data;
+  }
 }
