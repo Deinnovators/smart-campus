@@ -1,8 +1,8 @@
 import {
   Box,
   Card,
-  Grid,
   Table,
+  TableBody,
   TableCell,
   TableRow,
   Typography,
@@ -25,12 +25,14 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ user }) => {
         <Box p={2}>
           <Typography variant='h6'>Personal Informations</Typography>
           <Table sx={{ border: 0 }}>
-            <DetailRow value={user?.nationality} title='Nationality' />
-            <DetailRow value={user?.sex} title='Sex' />
-            <DetailRow
-              value={dayjs(user?.dateOfBirth).format('DD/MM/YYYY')}
-              title='Date of birth'
-            />
+            <TableBody>
+              <DetailRow value={user?.nationality} title='Nationality' />
+              <DetailRow value={user?.sex} title='Sex' />
+              <DetailRow
+                value={dayjs(user?.dateOfBirth).format('DD/MM/YYYY')}
+                title='Date of birth'
+              />
+            </TableBody>
           </Table>
         </Box>
       </Card>

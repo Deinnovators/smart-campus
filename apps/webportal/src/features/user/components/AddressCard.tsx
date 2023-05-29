@@ -1,4 +1,4 @@
-import { Box, Card, Table, Typography } from '@mui/material';
+import { Box, Card, Table, TableBody, Typography } from '@mui/material';
 import { Address } from 'database';
 import React from 'react';
 
@@ -16,12 +16,14 @@ export const AddressCard: React.FC<AddressCardProps> = ({
       <Box p={2}>
         <Typography variant='h6'>Address</Typography>
         <Table>
-          <RowComponent value={address?.village} title='Village' />
-          <RowComponent value={address?.union} title='Union' />
-          <RowComponent value={address?.upazilla} title='Upazilla' />
-          <RowComponent value={address?.district} title='District' />
-          <RowComponent value={address?.division} title='Division' />
-          <RowComponent value={address?.zip} title='Zip code' />
+          <TableBody>
+            <RowComponent value={address?.village} title='Village' />
+            <RowComponent value={address?.union} title='Union' />
+            <RowComponent value={address?.upazilla} title='Upazilla' />
+            <RowComponent value={address?.district} title='District' />
+            <RowComponent value={address?.division} title='Division' />
+            <RowComponent value={address?.zip} title='Zip code' />
+          </TableBody>
         </Table>
       </Box>
     </Card>
