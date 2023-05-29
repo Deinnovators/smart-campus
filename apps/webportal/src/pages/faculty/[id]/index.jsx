@@ -13,6 +13,10 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from '@mui/material';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -97,6 +101,7 @@ export default function SingleFaculty() {
       if (response.status === 200) {
         setDean(response?.data?.name);
       }
+      console.log(response);
     } catch (error) {
       toast('error', error?.response?.data?.message || 'Something went wrong');
     }
@@ -210,9 +215,22 @@ export default function SingleFaculty() {
             </div>
           )}
           {value === 1 && (
-            <div>
+            <div style={{ marginTop: '24px' }}>
               {' '}
               <form onSubmit={handleAddDepartment}>
+                <FormControl fullWidth>
+                  <InputLabel id='demo-simple-select-label'>Dean ID</InputLabel>
+                  <Select
+                    labelId='demo-simple-select-label'
+                    id='demo-simple-select'
+                    value={facultyInformation.deanId}
+                    label='Age'
+                    onChange={handleDeanIdChange}>
+                    <MenuItem value={0}>0</MenuItem>
+                    <MenuItem value={1}>1</MenuItem>
+                    <MenuItem value={2}>2</MenuItem>
+                  </Select>
+                </FormControl>
                 <TextField
                   label='Name'
                   variant='outlined'
@@ -221,15 +239,7 @@ export default function SingleFaculty() {
                   value={name}
                   //   onChange={handleNameChange}
                 />
-                <TextField
-                  label='Dean ID'
-                  variant='outlined'
-                  margin='normal'
-                  type='number'
-                  fullWidth
-                  //   value={deanId}
-                  onChange={handleDeanIdChange}
-                />
+
                 <TextField
                   label='Dean Message'
                   variant='outlined'

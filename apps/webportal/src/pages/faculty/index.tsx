@@ -105,12 +105,6 @@ export default function FacultyModule() {
             <Grid item xs={6}>
               <BriefCard name='Department' value={departments.length} />
             </Grid>
-            <Grid item xs={6}>
-              <BriefCard name='Degree' value='6' />
-            </Grid>
-            <Grid item xs={6}>
-              <BriefCard name='Member' value='50' />
-            </Grid>
           </Grid>
 
           <Grid

@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Container,
+  FormControl,
   Grid,
   InputLabel,
   MenuItem,
@@ -10,11 +11,31 @@ import {
   TextField,
 } from '@mui/material';
 import Head from 'next/head';
+import { cookieService } from '@webportal/services';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 export default function CreateFaculty() {
   const [name, setName] = useState('');
   const [deanId, setDeanId] = useState(0);
   const [deanMessage, setDeanMessage] = useState('');
-  const [departments, setDepartments] = useState([]);
+  const [users, setUsers] = useState([]);
+
+  const getAllUsers = async () => {
+    try {
+      const url = 'http://localhost:1337/api/v1/users';
+      const token = cookieService.get('token');
+      if (!token) throw new Error('No user token found');
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+
+      const response = await axios.get(url, { headers });
+      setUsers(response.data);
+      const teachers = response.data.filter(user => user.role === 'teacher');
+    } catch (error) {
+      toast('error', error?.response?.data?.message || 'Something went wrong');
+    }
+  };
   const handleNameChange = event => {
     setName(event.target.value);
   };
@@ -26,11 +47,16 @@ export default function CreateFaculty() {
     setDeanMessage(event.target.value);
   };
 
-  const handleAddDepartment = event => {};
+  const handleCreateFaculty = event => {
+    event.preventDefault();
+  };
+  useEffect(() => {
+    getAllUsers();
+  }, [1]);
   return (
     <Container>
       <Head>
-        <title>Modules Registry</title>
+        <title>Create Faculty</title>
       </Head>
       <Grid
         container
@@ -42,19 +68,22 @@ export default function CreateFaculty() {
           marginBottom: '24px',
         }}>
         <Grid item xs={12}>
-          <form onSubmit={handleAddDepartment}>
-            <Select
-              labelId='demo-simple-select-standard-label'
-              id='demo-simple-select-standard-label'
-              value={deanId}
-              onChange={handleDeanIdChange}
-              label='DeanID'>
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
-            </Select>
+          <form onSubmit={handleCreateFaculty}>
+            <FormControl fullWidth>
+              <InputLabel id='demo-simple-select-label'>Dean ID</InputLabel>
+              <Select
+                labelId='demo-simple-select-label'
+                id='demo-simple-select'
+                value={deanId}
+                label='Age'
+                onChange={handleDeanIdChange}>
+                <MenuItem value={0}>0</MenuItem>
+                <MenuItem value={1}>1</MenuItem>
+                <MenuItem value={2}>2</MenuItem>
+              </Select>
+            </FormControl>
             <TextField
-              label='Name'
+              label='Faculty Name'
               variant='outlined'
               margin='normal'
               fullWidth

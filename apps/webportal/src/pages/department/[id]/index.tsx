@@ -185,12 +185,6 @@ export default function SingleDepartment() {
                   <Grid item xs={6}>
                     <BriefCard name='Degree' value='33' />
                   </Grid>
-                  <Grid item xs={6}>
-                    <BriefCard name='Teacher' value='33' />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <BriefCard name='Student' value='33' />
-                  </Grid>
                 </Grid>
                 <Grid
                   container
@@ -279,7 +273,19 @@ export default function SingleDepartment() {
           {value === 2 && (
             <div>
               {courses.map(course => (
-                <div key={course._id}>{course.name}</div>
+                <Link
+                  key={course.id}
+                  href={`/department/${id}/course/${course.id}`}
+                  passHref>
+                  <Typography
+                    style={{
+                      textDecoration: 'none',
+                      cursor: 'pointer',
+                    }}
+                    variant='subtitle1'>
+                    {course.name}
+                  </Typography>
+                </Link>
               ))}
               {role === 'admin' || role === 'superadmin' ? (
                 <Link href={`/department/${String(id)}/course/new`} passHref>
