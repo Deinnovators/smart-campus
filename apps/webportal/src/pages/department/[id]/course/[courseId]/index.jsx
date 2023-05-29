@@ -265,6 +265,7 @@ const Course = () => {
       return;
     }
   };
+
   return (
     <Container>
       <Head>
@@ -376,15 +377,23 @@ const Course = () => {
                 {courseDetails?.updatedAt.slice(0, 10)}
               </Typography>
             </Grid>
-            <Link
-              href={
-                router.asPath +
-                '/curriculum/' +
-                courseDetails?.CourseCurriculum[0]?.id
-              }
-              style={{ textDecoration: 'underline', margin: '16px' }}>
-              Click to see course Curriculum
-            </Link>
+            {courseDetails?.CourseCurriculum.length > 0 ? (
+              <Link
+                href={
+                  router.asPath +
+                  '/curriculum/' +
+                  courseDetails?.CourseCurriculum[0]?.id
+                }
+                style={{ textDecoration: 'underline', margin: '16px' }}>
+                Click to see course Curriculum
+              </Link>
+            ) : (
+              <Link
+                href={router.asPath + '/curriculum/create'}
+                style={{ textDecoration: 'underline', margin: '16px' }}>
+                Create course Curriculum
+              </Link>
+            )}
           </Grid>
 
           <Grid
@@ -757,6 +766,7 @@ const Course = () => {
                     id='Code'
                     label='Code'
                     variant='outlined'
+                    disabled
                     sx={{ width: '100%', mb: 1 }}
                     value={updateCourseInfo.code}
                     onChange={e =>
@@ -809,6 +819,7 @@ const Course = () => {
                       labelId='TypeLabel'
                       id='Type'
                       label='Type'
+                      disabled
                       value={updateCourseInfo.type}
                       onChange={e =>
                         setUpdateCourseInfo({

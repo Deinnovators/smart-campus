@@ -534,15 +534,17 @@ const ClassRoutineTable = ({ routineData, viewConditionalSection = true }) => {
             width: '100%',
             padding: '32px 0px',
           }}>
-          <Button
-            variant='contained'
-            disabled={checkValidation() ? true : false}
-            sx={{ backgroundColor: '#ca1d1d', color: '#fff' }}
-            onClick={() => {
-              setDeleteModal(true);
-            }}>
-            Delete routine
-          </Button>
+          {router?.query.routineSlug === 'update' && (
+            <Button
+              variant='contained'
+              disabled={checkValidation() ? true : false}
+              sx={{ backgroundColor: '#ca1d1d', color: '#fff' }}
+              onClick={() => {
+                setDeleteModal(true);
+              }}>
+              Delete routine
+            </Button>
+          )}
           <Button
             variant='contained'
             disabled={checkValidation() ? true : false}

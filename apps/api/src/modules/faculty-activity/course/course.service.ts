@@ -99,7 +99,7 @@ export class CourseService {
 
       return course;
     } catch (error) {
-      throw new Error(`Failed to update course with id ${id}`);
+      throw new Error(error + `Failed to update course with id ${id}`);
     }
   }
 
