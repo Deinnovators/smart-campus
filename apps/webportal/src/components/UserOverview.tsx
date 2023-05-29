@@ -6,6 +6,7 @@ import {
 } from '@mui/icons-material';
 import { Avatar, Box, Button, Card, Typography } from '@mui/material';
 import { Spacer } from '@webportal/components/Spacer';
+import { getUserImageUrl } from '@webportal/libs/utils/string.utils';
 import { User } from 'database';
 import Image from 'next/image';
 import React from 'react';
@@ -30,7 +31,11 @@ export const UserOverview: React.FC<UserOverviewProps> = ({
           <Avatar
             variant='circular'
             sx={{ width: avatarSize, height: avatarSize }}>
-            <Image src={user?.avatar ?? ''} alt={`${user?.name}-avatar`} fill />
+            <Image
+              src={getUserImageUrl(user?.avatar)}
+              alt={`${user?.name}-avatar`}
+              fill
+            />
           </Avatar>
         </Box>
         <Spacer />
