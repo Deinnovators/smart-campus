@@ -1,7 +1,7 @@
 import { UsersService } from '@api/modules/users/users.service';
 import { HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Prisma, User } from 'database';
+import { User } from 'database';
 import bcrypt from 'bcrypt';
 
 @Injectable()
@@ -26,22 +26,6 @@ export class AuthService {
   }
 
   async login(user: User) {
-    return {
-      jwt: this.jwtService.sign({ user }),
-      user,
-    };
-  }
-
-  async register(data: Prisma.UserCreateInput) {
-    const { password, ...rest } = data;
-    const salt = await bcrypt.genSalt();
-    const hashedPassword = await bcrypt.hash(password, salt);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password: _, ...user } = await this.usersService.create({
-      ...rest,
-      password: hashedPassword,
-    });
-
     return {
       jwt: this.jwtService.sign({ user }),
       user,
