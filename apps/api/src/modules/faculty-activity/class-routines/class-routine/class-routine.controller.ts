@@ -30,6 +30,12 @@ export class ClassRoutineController {
   ): Promise<ClassRoutine[]> {
     return this.classRoutineService.findOne(id);
   }
+  @Get('department/:id')
+  async findByDept(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<ClassRoutine[]> {
+    return this.classRoutineService.findByDept(id);
+  }
 
   @AccessRoles('superadmin', 'admin')
   @Post()

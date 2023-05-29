@@ -29,7 +29,17 @@ export class CourseService {
         include: {
           department: true,
           CourseCurriculum: true,
-          CourseOffering: true,
+          CourseOffering: {
+            include: {
+              // course: true,
+              teacher: true,
+              CourseDistribution: {
+                include: {
+                  department: true,
+                },
+              },
+            },
+          },
         },
       });
 
@@ -89,7 +99,7 @@ export class CourseService {
 
       return course;
     } catch (error) {
-      throw new Error(`Failed to update course with id ${id}`);
+      throw new Error(error + `Failed to update course with id ${id}`);
     }
   }
 
