@@ -40,6 +40,21 @@ export class ClassRoutineService {
     }
   }
 
+  async findByDept(id: number): Promise<ClassRoutine[]> {
+    try {
+      const classRoutine = await this.prisma.classRoutine.findMany({
+        where: { departmentId: id },
+      });
+
+      if (!classRoutine) {
+        throw new Error(`classRoutine with dept id ${id} not found`);
+      }
+      return classRoutine;
+    } catch (error) {
+      throw new Error(`Failed to fetch classRoutine with dept id ${id}`);
+    }
+  }
+
   async update(params: {
     id: number;
     data: Prisma.ClassRoutineUpdateInput;
