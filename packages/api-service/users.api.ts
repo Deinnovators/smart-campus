@@ -45,4 +45,14 @@ export class UsersApi extends BaseHttp {
     });
     return res.data;
   }
+
+  async deleteUser(
+    id: string | number,
+    config?: AxiosRequestConfig,
+  ): Promise<void> {
+    await this.delete({
+      endpoint: `${this.endpoints.users.base}/${id}`,
+      config,
+    });
+  }
 }
