@@ -45,7 +45,7 @@ export const SearchSelect: React.FC<SearchSelectProps> = ({
 
   const valueText = React.useMemo(() => {
     const parent = options.find(p => p.value === value);
-    return parent?.title;
+    return parent?.title ?? '';
   }, [options, value]);
 
   useEffect(() => {
