@@ -14,11 +14,13 @@ export class FacultyService {
     }
   }
 
-  async findAll(): Promise<Faculty[]> {
+  async findAll(args?: Prisma.FacultyFindManyArgs): Promise<Faculty[]> {
     try {
       const faculties = await this.prisma.faculty.findMany({
+        ...args,
         orderBy: { id: 'asc' },
         include: { departments: true },
+        take: args?.take ? +args.take : undefined,
       });
 
       return faculties;

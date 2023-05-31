@@ -23,8 +23,12 @@ export class DepartmentController {
 
   @AccessRoles('superadmin', 'admin')
   @Get()
-  async getAllDepartments(): Promise<Department[]> {
-    return this.departmentService.getAllDepartments();
+  async getAllDepartments(@Query() query: string): Promise<Department[]> {
+    let args;
+    if (query) {
+      args = QueryString.parse(query);
+    }
+    return this.departmentService.getAllDepartments(args);
   }
 
   @AccessRoles('superadmin', 'admin')

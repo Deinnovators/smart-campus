@@ -9,10 +9,12 @@ import {
   UseFilters,
   Patch,
   ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { FacultyService } from './faculty.service';
 import { AccessRoles } from '@api/decorators/roles.decorator';
 import { GlobalExceptionFilter } from '@api/exceptions/exception-filter';
+import QueryString from 'qs';
 
 @Controller('faculty')
 @UseFilters(GlobalExceptionFilter)
@@ -26,8 +28,12 @@ export class FacultyController {
   }
 
   @Get()
-  findAll() {
-    return this.facultyService.findAll();
+  findAll(@Query() query?: string) {
+    let args;
+    if (query) {
+      args = QueryString.parse(query);
+    }
+    return this.facultyService.findAll(args);
   }
 
   @Get(':id')
