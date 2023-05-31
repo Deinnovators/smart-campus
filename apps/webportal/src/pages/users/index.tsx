@@ -20,6 +20,8 @@ import { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import { authRoutes } from '@webportal/constants/route.constants';
 import Link from 'next/link';
+import { AddUserForm } from '@webportal/libs/forms/users/AddUserForm';
+import { getUserImageUrl } from '@webportal/libs/utils/string.utils';
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
   const users = await api.users.getUsers(
@@ -50,19 +52,6 @@ export default function UsersModule(props: { users: User[] }) {
     setUsers(prev => [...prev, user]);
     setIsAddModalVisible(false);
   }, []);
-
-  const onUserEditSuccess = useCallback(
-    (user: User) => {
-      const arr = [...users];
-      let index = arr.findIndex(m => m.id === user.id);
-      if (index !== -1) {
-        arr[index] = user;
-      }
-      setUsers(arr);
-      setIsEditModalVisible(false);
-    },
-    [users],
-  );
 
   const onDeleteSuccess = useCallback((id: number) => {
     setUsers(prev => {
@@ -110,7 +99,7 @@ export default function UsersModule(props: { users: User[] }) {
                 <TableCell>
                   <Avatar>
                     <Image
-                      src={user.avatar ?? ''}
+                      src={getUserImageUrl(user.avatar)}
                       alt={`${user.name}-avatar`}
                       fill
                     />
@@ -139,23 +128,7 @@ export default function UsersModule(props: { users: User[] }) {
           left={'50%'}
           sx={{ transform: 'translate(-50%, -50%)' }}
           width={500}>
-          <Card sx={{ padding: 4 }}>
-            <Typography variant='h6'>Add New User</Typography>
-          </Card>
-        </Box>
-      </Modal>
-      <Modal
-        open={isEditModalVisible}
-        onClose={() => setIsEditModalVisible(false)}>
-        <Box
-          position='absolute'
-          top='50%'
-          left={'50%'}
-          sx={{ transform: 'translate(-50%, -50%)' }}
-          width={500}>
-          <Card sx={{ padding: 4 }}>
-            <Typography variant='h6'>Edit User</Typography>
-          </Card>
+          <AddUserForm onSuccess={onUserAddSuccess} />
         </Box>
       </Modal>
     </Container>

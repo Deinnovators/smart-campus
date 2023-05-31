@@ -18,6 +18,7 @@ import { Prisma } from 'database';
 import ModuleParentField from '@webportal/libs/forms/modules-registry/ModuleParentField';
 import ImageUpload from '@webportal/libs/forms/shared/ImageUpload';
 import { getModuleImageUrl } from '@webportal/libs/utils/string.utils';
+import { roles } from '@webportal/constants';
 
 export interface BaseModuleFormProps {
   onSubmit: (value: Prisma.ModuleRegistryCreateInput) => void;
@@ -25,15 +26,6 @@ export interface BaseModuleFormProps {
   imagePath?: string;
   loading?: boolean;
 }
-const roles = [
-  'superadmin',
-  'admin',
-  'student',
-  'teacher',
-  'beneficiary',
-  'stuff',
-  'alumni',
-];
 
 const newInitialValues = {
   name: '',

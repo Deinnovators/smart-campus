@@ -3,6 +3,7 @@ export const endpoints = {
     base: '/auth',
     login: '/auth/login',
     register: '/auth/register',
+    profile: '/auth/profile',
   },
   modules: {
     base: '/modules',

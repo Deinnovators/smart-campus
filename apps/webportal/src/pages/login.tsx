@@ -11,6 +11,7 @@ import Container from '@mui/material/Container';
 import { useLogin } from '@webportal/libs/hooks/auth.hooks';
 import { PageWrapper } from '@webportal/components';
 import Head from 'next/head';
+import PasswordField from '@webportal/libs/forms/shared/PasswordField';
 
 export default function Login() {
   const [email, setEmail] = useState<string>('');
@@ -51,13 +52,12 @@ export default function Login() {
             autoFocus
             onChange={e => setEmail(e.target.value)}
           />
-          <TextField
+          <PasswordField
             margin='normal'
             required
             fullWidth
             name='password'
             label='Password'
-            type='password'
             id='password'
             autoComplete='current-password'
             onChange={e => setPass(e.target.value)}
@@ -73,11 +73,6 @@ export default function Login() {
             <Grid item xs>
               <Link href='#' variant='body2'>
                 Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href='#' variant='body2'>
-                {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
           </Grid>

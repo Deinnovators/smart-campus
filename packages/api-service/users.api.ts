@@ -11,6 +11,18 @@ export class UsersApi extends BaseHttp {
     this.endpoints = ep;
   }
 
+  async createUser(
+    data: Prisma.UserCreateInput,
+    config?: AxiosRequestConfig,
+  ): Promise<User> {
+    const res = await this.post({
+      endpoint: this.endpoints.users.base,
+      data,
+      config,
+    });
+    return res.data;
+  }
+
   async getUsers(
     args: Prisma.UserFindManyArgs,
     config: AxiosRequestConfig,
@@ -18,6 +30,17 @@ export class UsersApi extends BaseHttp {
     const query = this.getQueryString(args);
     const res = await this.get({
       endpoint: `${this.endpoints.users.base}${query ? '?' + query : ''}`,
+      config,
+    });
+    return res.data;
+  }
+
+  async getUserById(
+    id: string | number,
+    config: AxiosRequestConfig,
+  ): Promise<User> {
+    const res = await this.get({
+      endpoint: `${this.endpoints.users.base}/${id}`,
       config,
     });
     return res.data;

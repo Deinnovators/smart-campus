@@ -15,6 +15,9 @@ import Image from 'next/image';
 import { useCurrentUser, useLogout } from '@webportal/libs/hooks';
 import { Box } from '@mui/system';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { authRoutes } from '@webportal/constants/route.constants';
+import { getUserImageUrl } from '@webportal/libs/utils/string.utils';
 
 export interface NavbarProps {
   showUserAvatar?: boolean;
@@ -28,6 +31,7 @@ export const Navbar: FC<NavbarProps> = ({ showUserAvatar = true }) => {
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+  const router = useRouter();
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -58,7 +62,7 @@ export const Navbar: FC<NavbarProps> = ({ showUserAvatar = true }) => {
                 <IconButton>
                   <Avatar sx={{ height: 24, width: 24 }}>
                     <Image
-                      src={user?.avatar ?? 'https://picsum.photos/200'}
+                      src={getUserImageUrl(user?.avatar)}
                       fill
                       alt='user avatar'
                     />
@@ -81,7 +85,13 @@ export const Navbar: FC<NavbarProps> = ({ showUserAvatar = true }) => {
               anchorEl={anchorEl}
               open={Boolean(anchorEl)}
               onClose={handleClose}>
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
+              <MenuItem
+                onClick={() => {
+                  handleClose();
+                  router.push(`${authRoutes.profile}/${user?.id}`);
+                }}>
+                Profile
+              </MenuItem>
               <MenuItem
                 onClick={() => {
                   handleClose();
