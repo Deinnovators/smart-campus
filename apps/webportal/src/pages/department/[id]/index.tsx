@@ -271,7 +271,7 @@ export default function SingleDepartment() {
             </div>
           )}
           {value === 2 && (
-            <div>
+            <div style={{ marginTop: '24px', marginBottom: '24px' }}>
               {courses.map(course => (
                 <Link
                   key={course.id}
