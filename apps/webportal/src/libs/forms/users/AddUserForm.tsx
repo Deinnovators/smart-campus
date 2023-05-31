@@ -5,6 +5,7 @@ import {
   CircularProgress,
   FormControl,
   FormHelperText,
+  Grid,
   InputLabel,
   MenuItem,
   Select,
@@ -82,32 +83,38 @@ export const AddUserForm: React.FC<AddUserFormProps> = ({ onSuccess }) => {
   return (
     <Card sx={{ padding: 4 }}>
       <Box p={2}>
-        <Box py={2} display='flex' justifyContent='center' alignItems='center'>
+        <Box pb={2} display='flex' justifyContent='center' alignItems='center'>
           <Typography variant='h6'>Add new user</Typography>
         </Box>
         <Box component='form' onSubmit={handleSubmit}>
-          <FormControl fullWidth margin='normal'>
-            <TextField
-              label='Name'
-              placeholder='Full name'
-              value={values.name}
-              onChange={handleChange('name')}
-              onBlur={handleBlur('name')}
-              error={Boolean(touched.name && errors.name)}
-              helperText={touched.name && errors.name}
-            />
-          </FormControl>
-          <FormControl fullWidth margin='normal'>
-            <TextField
-              label='Id'
-              placeholder='Related Id'
-              value={values.uid}
-              onChange={handleChange('uid')}
-              onBlur={handleBlur('uid')}
-              error={Boolean(touched.uid && errors.uid)}
-              helperText={touched.uid && errors.uid}
-            />
-          </FormControl>
+          <Grid spacing={2} container>
+            <Grid item xs={8}>
+              <FormControl fullWidth margin='normal'>
+                <TextField
+                  label='Name'
+                  placeholder='Full name'
+                  value={values.name}
+                  onChange={handleChange('name')}
+                  onBlur={handleBlur('name')}
+                  error={Boolean(touched.name && errors.name)}
+                  helperText={touched.name && errors.name}
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={4}>
+              <FormControl fullWidth margin='normal'>
+                <TextField
+                  label='Id'
+                  placeholder='Related Id'
+                  value={values.uid}
+                  onChange={handleChange('uid')}
+                  onBlur={handleBlur('uid')}
+                  error={Boolean(touched.uid && errors.uid)}
+                  helperText={touched.uid && errors.uid}
+                />
+              </FormControl>
+            </Grid>
+          </Grid>
           <FormControl fullWidth margin='normal'>
             <TextField
               label='Email'
@@ -137,6 +144,7 @@ export const AddUserForm: React.FC<AddUserFormProps> = ({ onSuccess }) => {
               if (id) {
                 setIsDepartmentDisabled(false);
                 setFieldValue('facultyId', id);
+                setFieldValue('departmentId', '');
               }
             }}
             onBlur={handleBlur('facultyId')}
@@ -152,6 +160,7 @@ export const AddUserForm: React.FC<AddUserFormProps> = ({ onSuccess }) => {
                 setFieldValue('departmentId', id);
               }
             }}
+            facultyId={values.facultyId}
             onBlur={handleBlur('departmentId')}
             error={Boolean(touched.departmentId && errors.departmentId)}
             helperText={touched.departmentId && errors.departmentId}

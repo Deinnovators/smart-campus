@@ -12,6 +12,10 @@ export class DepartmentService {
     try {
       const departments = await this.prisma.department.findMany({
         ...args,
+        where: {
+          ...args?.where,
+          facultyId: args?.where?.facultyId ? +args.where.facultyId : undefined,
+        },
         orderBy: { id: 'asc' },
         include: {
           ...args?.include,

@@ -9,34 +9,40 @@ export interface DepartmentFieldProps
   extends Omit<SearchSelectProps, 'onSelect' | 'options'> {
   // eslint-disable-next-line no-unused-vars
   onSelectDepartment: (value?: string) => void;
+  facultyId?: string;
 }
 
 export const DepartmentField: React.FC<DepartmentFieldProps> = ({
   onSelectDepartment,
   value,
+  facultyId,
   ...props
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [departments, setDepartments] = useState<Department[]>([]);
 
-  const getDepartments = useCallback(async (name: string) => {
-    try {
-      setLoading(true);
-      const res = await api.department.getDepartmets({
-        where: {
-          name: {
-            contains: name,
-            mode: 'insensitive',
+  const getDepartments = useCallback(
+    async (name: string) => {
+      try {
+        setLoading(true);
+        const res = await api.department.getDepartmets({
+          where: {
+            name: {
+              contains: name,
+              mode: 'insensitive',
+            },
+            facultyId: facultyId ? +facultyId : undefined,
           },
-        },
-        take: 4,
-      });
-      setDepartments(res);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-    }
-  }, []);
+          take: 4,
+        });
+        setDepartments(res);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+      }
+    },
+    [facultyId],
+  );
 
   return (
     <SearchSelect
