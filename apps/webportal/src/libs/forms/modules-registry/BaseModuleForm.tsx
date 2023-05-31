@@ -110,7 +110,6 @@ export const BaseModuleForm: React.FC<BaseModuleFormProps> = ({
       <ModuleParentField
         placeholder='Type to search parent'
         label='Parent'
-        variant='outlined'
         value={values.parentUrl}
         onBlur={handleBlur('parentUrl')}
         onSelectParent={handleChange('parentUrl') as any}

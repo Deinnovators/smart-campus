@@ -55,4 +55,17 @@ export class UsersApi extends BaseHttp {
       config,
     });
   }
+
+  async updateUser(
+    id: string | number,
+    data: Prisma.UserUpdateInput,
+    config?: AxiosRequestConfig,
+  ): Promise<User> {
+    const res = await this.patch({
+      endpoint: `${this.endpoints.users.base}/${id}`,
+      data,
+      config,
+    });
+    return res.data;
+  }
 }

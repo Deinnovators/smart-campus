@@ -46,7 +46,7 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ user }) => {
           address={user.foreignAddress}
         />
       ) : (
-        <AddressCard address={user?.address} RowComponent={DetailRow} />
+        <AddressCard user={user} RowComponent={DetailRow} />
       )}
     </Box>
   );

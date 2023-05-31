@@ -30,7 +30,7 @@ export default function UserProfile({ user }: { user: User }) {
   return (
     <Container>
       <Head>
-        <title>Profile::{user.name}</title>
+        <title>Profile</title>
       </Head>
       <UserProfileFeatures user={user} />
     </Container>

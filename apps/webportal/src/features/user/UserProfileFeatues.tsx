@@ -32,7 +32,6 @@ export const UserProfileFeatures: React.FC<UserProfileFeaturesProps> = ({
   const deleteUser = useCallback(async () => {
     try {
       setLoading(true);
-      await new Promise(res => setTimeout(res, 2000));
       await api.users.deleteUser(user.id);
       setLoading(false);
       router.replace('/users');
