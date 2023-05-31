@@ -6,17 +6,22 @@ import { Department, Prisma } from '@prisma/client';
 export class DepartmentService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getAllDepartments(): Promise<Department[]> {
+  async getAllDepartments(
+    args?: Prisma.DepartmentFindManyArgs,
+  ): Promise<Department[]> {
     try {
       const departments = await this.prisma.department.findMany({
+        ...args,
         orderBy: { id: 'asc' },
         include: {
+          ...args?.include,
           members: true,
           faculty: true,
           courses: true,
           courseDistributions: true,
           classRoutines: true,
         },
+        take: args?.take ? +args.take : undefined,
       });
       return departments;
     } catch (error) {

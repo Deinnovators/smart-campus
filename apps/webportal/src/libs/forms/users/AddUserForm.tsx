@@ -13,6 +13,8 @@ import {
 } from '@mui/material';
 import { nationalityTypes, roles } from '@webportal/constants';
 import PasswordField from '@webportal/libs/forms/shared/PasswordField';
+import { DepartmentField } from '@webportal/libs/forms/users/DepartmentField';
+import { FacultyField } from '@webportal/libs/forms/users/FacultyField';
 import { addUserValidationSchema } from '@webportal/libs/validation-schemas/userSchemas';
 import { api } from '@webportal/services';
 import { User } from 'database';
@@ -26,10 +28,25 @@ export interface AddUserFormProps {
 export const AddUserForm: React.FC<AddUserFormProps> = ({ onSuccess }) => {
   const [showNationality, setShowNationality] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [isDepartmentDisabled, setIsDepartmentDisabled] =
+    useState<boolean>(true);
 
-  const onSubmit = async (values: any) => {
+  const onSubmit = async (v: any) => {
     try {
+      const values = { ...v };
       setLoading(true);
+      if (values.facultyId) {
+        values.faculty = {
+          connect: { id: +values.facultyId },
+        };
+        delete values.facultyId;
+      }
+      if (values.departmentId) {
+        values.department = {
+          connect: { id: +values.departmentId },
+        };
+        delete values.departmentId;
+      }
       const res = await api.users.createUser(values);
       setLoading(false);
       onSuccess?.(res);
@@ -55,6 +72,8 @@ export const AddUserForm: React.FC<AddUserFormProps> = ({ onSuccess }) => {
       nationalityType: 'native',
       nationality: 'Bangladeshi',
       role: '',
+      facultyId: undefined,
+      departmentId: undefined,
     },
     onSubmit,
     validationSchema: addUserValidationSchema,
@@ -112,6 +131,32 @@ export const AddUserForm: React.FC<AddUserFormProps> = ({ onSuccess }) => {
               helperText={touched.password && errors.password}
             />
           </FormControl>
+          <FacultyField
+            label='Faculty'
+            onSelectFaculty={(id?: string) => {
+              if (id) {
+                setIsDepartmentDisabled(false);
+                setFieldValue('facultyId', id);
+              }
+            }}
+            onBlur={handleBlur('facultyId')}
+            error={Boolean(touched.facultyId && errors.facultyId)}
+            helperText={touched.facultyId && errors.facultyId}
+            value={values.facultyId}
+          />
+          <DepartmentField
+            disabled={isDepartmentDisabled}
+            label='Department'
+            onSelectDepartment={(id?: string) => {
+              if (id) {
+                setFieldValue('departmentId', id);
+              }
+            }}
+            onBlur={handleBlur('departmentId')}
+            error={Boolean(touched.departmentId && errors.departmentId)}
+            helperText={touched.departmentId && errors.departmentId}
+            value={values.departmentId}
+          />
           <FormControl fullWidth margin='normal'>
             <InputLabel id='nationality-type-select'>
               Nationality Type

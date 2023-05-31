@@ -14,6 +14,12 @@ export const endpoints = {
   users: {
     base: '/users',
   },
+  faculty: {
+    base: '/faculty',
+  },
+  department: {
+    base: '/departments',
+  },
 };
 
 export type Endpoints = typeof endpoints;
