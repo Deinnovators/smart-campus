@@ -34,7 +34,6 @@ export class UsersController {
     return this.service.findOne({ where: { id: id } });
   }
 
-  @AccessRoles('superadmin', 'admin')
   @Patch(':id')
   async updateUser(
     @Param('id', ParseIntPipe) id: number,
