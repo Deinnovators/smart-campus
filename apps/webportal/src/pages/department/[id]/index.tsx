@@ -222,6 +222,21 @@ export default function SingleDepartment() {
                     />
                   </Grid>
                 </Grid>
+                <Grid
+                  container
+                  component={Paper}
+                  spacing={2}
+                  style={{
+                    padding: '16px',
+                    marginTop: '24px',
+                    marginBottom: '24px',
+                  }}>
+                  <Grid item xs={12}>
+                    <Link href={`/department/${id}/class-routine`}>
+                      See Class Routine
+                    </Link>
+                  </Grid>
+                </Grid>
               </div>
             </div>
           )}
