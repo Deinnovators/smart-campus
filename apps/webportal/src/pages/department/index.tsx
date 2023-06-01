@@ -75,12 +75,6 @@ export default function DepartmentModule() {
           <Grid item xs={6}>
             <BriefCard name='Degree' value={departments.length} />
           </Grid>
-          <Grid item xs={6}>
-            <BriefCard name='Degree' value='6' />
-          </Grid>
-          <Grid item xs={6}>
-            <BriefCard name='Member' value='50' />
-          </Grid>
         </Grid>
         <Grid
           container

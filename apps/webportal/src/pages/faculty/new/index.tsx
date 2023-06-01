@@ -14,7 +14,10 @@ import Head from 'next/head';
 import { cookieService } from '@webportal/services';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useRouter } from 'next/router';
 export default function CreateFaculty() {
+  const router = useRouter();
+
   const [name, setName] = useState('');
   const [deanId, setDeanId] = useState(0);
   const [deanMessage, setDeanMessage] = useState('');
@@ -71,6 +74,7 @@ export default function CreateFaculty() {
   const handleCreateFaculty = event => {
     event.preventDefault();
     createFaculty();
+    router.push('/faculty');
   };
   useEffect(() => {
     getAllUsers();
