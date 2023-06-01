@@ -34,7 +34,7 @@ export default function DepartmentModule() {
         setDepartments(response.data);
       }
     } catch (error) {
-      toast('error', error?.response?.data?.message || 'Something went wrong');
+      // toast('error', error?.response?.data?.message || 'Something went wrong');
     }
   };
   const getRole = async () => {
@@ -51,7 +51,7 @@ export default function DepartmentModule() {
         setRole(response.data.role);
       }
     } catch (error) {
-      toast('error', error?.response?.data?.message || 'Something went wrong');
+      // toast('error', error?.response?.data?.message || 'Something went wrong');
     }
   };
   return (
