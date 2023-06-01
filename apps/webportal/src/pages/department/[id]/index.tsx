@@ -24,6 +24,7 @@ import { toast } from 'react-toastify';
 import { BriefCard } from '@webportal/components/BriefCard';
 import { MessageCard } from '@webportal/components/MessageCard';
 import Link from 'next/link';
+import { Label } from '@mui/icons-material';
 
 export default function SingleDepartment() {
   const router = useRouter();
@@ -37,23 +38,20 @@ export default function SingleDepartment() {
   const [agreeToDelete, setAgreeToDelete] = useState(false);
   const [courses, setCourses] = useState([]);
   const [role, setRole] = useState('');
+  const [chairmanMessage, setChiarmanMessage] = useState('');
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  const handleDeanIdChange = event => {
-    // setDeanId(event.target.value);
-  };
 
-  const handleDeanMessageChange = event => {
-    // setDeanMessage(event.target.value);
+  const handleChairmanMessageChange = event => {
+    setChiarmanMessage(event.target.value);
   };
-
-  const handleAddDepartment = event => {
+  const handleUpdateDepartment = event => {
     event.preventDefault();
-    const departmentName = event.target.elements.departmentName.value;
-    setDepartments([...departments, departmentName]);
-    event.target.reset();
+    updateDepartment();
+    router.push('/department');
   };
+
   const handleDeleteFaculty = e => {
     e.preventDefault();
     setDialogueOpen(true);
@@ -62,6 +60,23 @@ export default function SingleDepartment() {
     setDialogueOpen(false);
     if (bool) {
       deleteDepartment();
+    }
+  };
+  const updateDepartment = async () => {
+    try {
+      const url = `http://localhost:1337/api/v1/departments/${id}`;
+      const token = cookieService.get('token');
+      if (!token) throw new Error('No user token found');
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      const body = {
+        chairmanMessage: chairmanMessage,
+      };
+      const response = await axios.patch(url, body, { headers });
+      toast('success', 'Department updated successfully');
+    } catch (error) {
+      toast('error', 'Something went wrong');
     }
   };
   useEffect(() => {
@@ -213,42 +228,48 @@ export default function SingleDepartment() {
           {value === 1 && (
             <div>
               {' '}
-              <form onSubmit={handleAddDepartment}>
+              <form onSubmit={handleUpdateDepartment}>
                 <TextField
                   label='Name'
                   variant='outlined'
                   margin='normal'
                   fullWidth
-                  value={name}
-                  //   onChange={handleNameChange}
+                  value={departmentInformation.name}
+                  // //   onChange={handleNameChange}
+                  disabled={true}
                 />
+                <Typography>Chairman ID</Typography>
                 <TextField
-                  label='Chairman ID'
+                  // label='Chairman ID'
                   variant='outlined'
                   margin='normal'
                   type='number'
                   fullWidth
-                  //   value={deanId}
-                  onChange={handleDeanIdChange}
+                  value={departmentInformation.chairmanId}
+                  // onChange={handleDeanIdChange}
+                  disabled={true}
                 />
+                <Typography>Faculty ID</Typography>
+
                 <TextField
-                  label='Faculty ID'
+                  // label='Faculty ID'
                   variant='outlined'
                   margin='normal'
                   type='number'
                   fullWidth
-                  //   value={deanId}
-                  onChange={handleDeanIdChange}
+                  value={departmentInformation.facultyId}
+                  // onChange={handleDeanIdChange}
+                  disabled={true}
                 />
                 <TextField
-                  label='Dean Message'
+                  label='Chairman Message'
                   variant='outlined'
                   margin='normal'
                   fullWidth
                   multiline
                   rows={4}
-                  //   value={deanMessage}
-                  onChange={handleDeanMessageChange}
+                  value={chairmanMessage}
+                  onChange={handleChairmanMessageChange}
                 />
                 <div
                   style={{ display: 'flex', gap: '16px', marginTop: '16px' }}>

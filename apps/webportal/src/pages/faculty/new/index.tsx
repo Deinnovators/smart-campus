@@ -19,6 +19,7 @@ export default function CreateFaculty() {
   const [deanId, setDeanId] = useState(0);
   const [deanMessage, setDeanMessage] = useState('');
   const [users, setUsers] = useState([]);
+  const [allTeachers, setAllTeachers] = useState([]);
 
   const getAllUsers = async () => {
     try {
@@ -32,6 +33,7 @@ export default function CreateFaculty() {
       const response = await axios.get(url, { headers });
       setUsers(response.data);
       const teachers = response.data.filter(user => user.role === 'teacher');
+      setAllTeachers(teachers);
     } catch (error) {
       toast('error', error?.response?.data?.message || 'Something went wrong');
     }
@@ -46,9 +48,29 @@ export default function CreateFaculty() {
   const handleDeanMessageChange = event => {
     setDeanMessage(event.target.value);
   };
+  const createFaculty = async () => {
+    try {
+      const url = 'http://localhost:1337/api/v1/faculty';
+      const token = cookieService.get('token');
+      if (!token) throw new Error('No user token found');
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      const body = {
+        name: name,
+        deanId: deanId,
+        deanMessage: deanMessage,
+      };
+      const response = await axios.post(url, body, { headers });
+      toast('success', 'Faculty Created Successfully');
+    } catch (error) {
+      toast('error', error?.response?.data?.message || 'Something went wrong');
+    }
+  };
 
   const handleCreateFaculty = event => {
     event.preventDefault();
+    createFaculty();
   };
   useEffect(() => {
     getAllUsers();
@@ -77,9 +99,9 @@ export default function CreateFaculty() {
                 value={deanId}
                 label='Age'
                 onChange={handleDeanIdChange}>
-                <MenuItem value={0}>0</MenuItem>
-                <MenuItem value={1}>1</MenuItem>
-                <MenuItem value={2}>2</MenuItem>
+                {allTeachers.map(teacher => {
+                  return <MenuItem value={teacher.id}>{teacher.id}</MenuItem>;
+                })}
               </Select>
             </FormControl>
             <TextField

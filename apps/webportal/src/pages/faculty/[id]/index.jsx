@@ -38,15 +38,63 @@ export default function SingleFaculty() {
   const [value, setValue] = useState(0);
   const [dialogueOpen, setDialogueOpen] = useState(false);
   const [agreeToDelete, setAgreeToDelete] = useState(false);
+  const [deanMessage, setDeanMessage] = useState(
+    facultyInformation && facultyInformation.deanMessage,
+  );
+  const [facultyTeachers, setFacultyTeachers] = useState([]);
+  const [deanId, setDeanId] = useState('');
+  const handleUpdateFaculty = e => {
+    e.preventDefault();
+    updateFaculty();
+    router.push('/faculty');
+  };
+  const updateFaculty = async () => {
+    try {
+      const url = `http://localhost:1337/api/v1/faculty/${id}`;
+      const token = cookieService.get('token');
+      if (!token) throw new Error('No user token found');
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      const body = {
+        // deanId: deanId,
+        deanMessage: deanMessage,
+      };
+      const response = await axios.patch(url, body, { headers });
+      toast('success', 'Faculty updated successfully');
+    } catch (error) {
+      toast('error', 'Something went wrong');
+    }
+  };
+  const getAllTeachersOfFaculty = async () => {
+    try {
+      const url = 'http://localhost:1337/api/v1/users';
+      const token = cookieService.get('token');
+      if (!token) throw new Error('No user token found');
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+
+      const response = await axios.get(url, { headers });
+      const teachers = response.data.filter(
+        user =>
+          user.role === 'teacher' && facultyInformation.name === user.faculty,
+      );
+      setFacultyTeachers(teachers);
+    } catch (error) {
+      toast('error', error?.response?.data?.message || 'Something went wrong');
+    }
+  };
   const handleChange = (event, newValue) => {
+    getFacultyInformation();
     setValue(newValue);
   };
   const handleDeanIdChange = event => {
     setDeanId(event.target.value);
   };
 
-  const handleDeanMessageChange = event => {
-    setDeanMessage(event.target.value);
+  const handleDeanMessageChange = e => {
+    setDeanMessage(e.target.value);
   };
 
   const handleAddDepartment = event => {
@@ -68,7 +116,8 @@ export default function SingleFaculty() {
   useEffect(() => {
     getFacultyInformation();
     getDean();
-  }, [1]);
+    getAllTeachersOfFaculty();
+  }, []);
   const getFacultyInformation = async () => {
     try {
       const url = `http://localhost:1337/api/v1/faculty/${id}`;
@@ -97,11 +146,9 @@ export default function SingleFaculty() {
       };
 
       const response = await axios.get(url, { headers });
-      console.log(response);
       if (response.status === 200) {
         setDean(response?.data?.name);
       }
-      console.log(response);
     } catch (error) {
       toast('error', error?.response?.data?.message || 'Something went wrong');
     }
@@ -217,18 +264,21 @@ export default function SingleFaculty() {
           {value === 1 && (
             <div style={{ marginTop: '24px' }}>
               {' '}
-              <form onSubmit={handleAddDepartment}>
+              <form onSubmit={handleUpdateFaculty}>
                 <FormControl fullWidth>
                   <InputLabel id='demo-simple-select-label'>Dean ID</InputLabel>
                   <Select
                     labelId='demo-simple-select-label'
                     id='demo-simple-select'
+                    disabled={true}
                     value={facultyInformation.deanId}
-                    label='Age'
+                    label='Dean ID'
                     onChange={handleDeanIdChange}>
-                    <MenuItem value={0}>0</MenuItem>
-                    <MenuItem value={1}>1</MenuItem>
-                    <MenuItem value={2}>2</MenuItem>
+                    {facultyTeachers.map(teacher => {
+                      return (
+                        <MenuItem value={teacher.id}>{teacher.id}</MenuItem>
+                      );
+                    })}
                   </Select>
                 </FormControl>
                 <TextField
@@ -236,8 +286,8 @@ export default function SingleFaculty() {
                   variant='outlined'
                   margin='normal'
                   fullWidth
-                  value={name}
-                  //   onChange={handleNameChange}
+                  value={facultyInformation.name}
+                  disabled={true}
                 />
 
                 <TextField
@@ -247,7 +297,7 @@ export default function SingleFaculty() {
                   fullWidth
                   multiline
                   rows={4}
-                  //   value={deanMessage}
+                  value={deanMessage}
                   onChange={handleDeanMessageChange}
                 />
                 <div
