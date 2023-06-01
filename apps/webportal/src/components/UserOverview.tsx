@@ -15,6 +15,7 @@ export interface UserOverviewProps {
   user?: User;
   primaryBtnTitle?: string;
   onPrimaryBtnClick?: () => void;
+  primaryBtnError?: boolean;
 }
 
 const avatarSize = 200;
@@ -23,6 +24,7 @@ export const UserOverview: React.FC<UserOverviewProps> = ({
   user,
   primaryBtnTitle,
   onPrimaryBtnClick,
+  primaryBtnError,
 }) => {
   return (
     <Card>
@@ -46,7 +48,11 @@ export const UserOverview: React.FC<UserOverviewProps> = ({
         </Typography>
         <Spacer />
         {primaryBtnTitle ? (
-          <Button fullWidth variant='outlined' onClick={onPrimaryBtnClick}>
+          <Button
+            fullWidth
+            variant='outlined'
+            onClick={onPrimaryBtnClick}
+            color={primaryBtnError ? 'error' : 'primary'}>
             {primaryBtnTitle}
           </Button>
         ) : null}

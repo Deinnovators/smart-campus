@@ -5,6 +5,7 @@ import {
   CircularProgress,
   FormControl,
   FormHelperText,
+  Grid,
   InputLabel,
   MenuItem,
   Select,
@@ -13,6 +14,8 @@ import {
 } from '@mui/material';
 import { nationalityTypes, roles } from '@webportal/constants';
 import PasswordField from '@webportal/libs/forms/shared/PasswordField';
+import { DepartmentField } from '@webportal/libs/forms/users/DepartmentField';
+import { FacultyField } from '@webportal/libs/forms/users/FacultyField';
 import { addUserValidationSchema } from '@webportal/libs/validation-schemas/userSchemas';
 import { api } from '@webportal/services';
 import { User } from 'database';
@@ -26,10 +29,25 @@ export interface AddUserFormProps {
 export const AddUserForm: React.FC<AddUserFormProps> = ({ onSuccess }) => {
   const [showNationality, setShowNationality] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [isDepartmentDisabled, setIsDepartmentDisabled] =
+    useState<boolean>(true);
 
-  const onSubmit = async (values: any) => {
+  const onSubmit = async (v: any) => {
     try {
+      const values = { ...v };
       setLoading(true);
+      if (values.facultyId) {
+        values.faculty = {
+          connect: { id: +values.facultyId },
+        };
+        delete values.facultyId;
+      }
+      if (values.departmentId) {
+        values.department = {
+          connect: { id: +values.departmentId },
+        };
+        delete values.departmentId;
+      }
       const res = await api.users.createUser(values);
       setLoading(false);
       onSuccess?.(res);
@@ -55,6 +73,8 @@ export const AddUserForm: React.FC<AddUserFormProps> = ({ onSuccess }) => {
       nationalityType: 'native',
       nationality: 'Bangladeshi',
       role: '',
+      facultyId: undefined,
+      departmentId: undefined,
     },
     onSubmit,
     validationSchema: addUserValidationSchema,
@@ -63,32 +83,38 @@ export const AddUserForm: React.FC<AddUserFormProps> = ({ onSuccess }) => {
   return (
     <Card sx={{ padding: 4 }}>
       <Box p={2}>
-        <Box py={2} display='flex' justifyContent='center' alignItems='center'>
+        <Box pb={2} display='flex' justifyContent='center' alignItems='center'>
           <Typography variant='h6'>Add new user</Typography>
         </Box>
         <Box component='form' onSubmit={handleSubmit}>
-          <FormControl fullWidth margin='normal'>
-            <TextField
-              label='Name'
-              placeholder='Full name'
-              value={values.name}
-              onChange={handleChange('name')}
-              onBlur={handleBlur('name')}
-              error={Boolean(touched.name && errors.name)}
-              helperText={touched.name && errors.name}
-            />
-          </FormControl>
-          <FormControl fullWidth margin='normal'>
-            <TextField
-              label='Id'
-              placeholder='Related Id'
-              value={values.uid}
-              onChange={handleChange('uid')}
-              onBlur={handleBlur('uid')}
-              error={Boolean(touched.uid && errors.uid)}
-              helperText={touched.uid && errors.uid}
-            />
-          </FormControl>
+          <Grid spacing={2} container>
+            <Grid item xs={8}>
+              <FormControl fullWidth margin='normal'>
+                <TextField
+                  label='Name'
+                  placeholder='Full name'
+                  value={values.name}
+                  onChange={handleChange('name')}
+                  onBlur={handleBlur('name')}
+                  error={Boolean(touched.name && errors.name)}
+                  helperText={touched.name && errors.name}
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={4}>
+              <FormControl fullWidth margin='normal'>
+                <TextField
+                  label='Id'
+                  placeholder='Related Id'
+                  value={values.uid}
+                  onChange={handleChange('uid')}
+                  onBlur={handleBlur('uid')}
+                  error={Boolean(touched.uid && errors.uid)}
+                  helperText={touched.uid && errors.uid}
+                />
+              </FormControl>
+            </Grid>
+          </Grid>
           <FormControl fullWidth margin='normal'>
             <TextField
               label='Email'
@@ -112,6 +138,34 @@ export const AddUserForm: React.FC<AddUserFormProps> = ({ onSuccess }) => {
               helperText={touched.password && errors.password}
             />
           </FormControl>
+          <FacultyField
+            label='Faculty'
+            onSelectFaculty={(id?: string) => {
+              if (id) {
+                setIsDepartmentDisabled(false);
+                setFieldValue('facultyId', id);
+                setFieldValue('departmentId', '');
+              }
+            }}
+            onBlur={handleBlur('facultyId')}
+            error={Boolean(touched.facultyId && errors.facultyId)}
+            helperText={touched.facultyId && errors.facultyId}
+            value={values.facultyId}
+          />
+          <DepartmentField
+            disabled={isDepartmentDisabled}
+            label='Department'
+            onSelectDepartment={(id?: string) => {
+              if (id) {
+                setFieldValue('departmentId', id);
+              }
+            }}
+            facultyId={values.facultyId}
+            onBlur={handleBlur('departmentId')}
+            error={Boolean(touched.departmentId && errors.departmentId)}
+            helperText={touched.departmentId && errors.departmentId}
+            value={values.departmentId}
+          />
           <FormControl fullWidth margin='normal'>
             <InputLabel id='nationality-type-select'>
               Nationality Type

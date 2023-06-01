@@ -127,7 +127,7 @@ export default function UsersModule(props: { users: User[] }) {
           top='50%'
           left={'50%'}
           sx={{ transform: 'translate(-50%, -50%)' }}
-          width={500}>
+          width={600}>
           <AddUserForm onSuccess={onUserAddSuccess} />
         </Box>
       </Modal>

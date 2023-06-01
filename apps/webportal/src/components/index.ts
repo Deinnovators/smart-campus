@@ -6,3 +6,4 @@ import { BriefCard } from './BriefCard';
 import { MessageCard } from './MessageCard';
 export { UserOverview } from './UserOverview';
 export { Spacer } from './Spacer';
+export { OverlayLoader } from './OverlayLoader';
