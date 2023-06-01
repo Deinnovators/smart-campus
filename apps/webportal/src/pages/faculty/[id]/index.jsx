@@ -63,7 +63,7 @@ export default function SingleFaculty() {
       const response = await axios.patch(url, body, { headers });
       toast('success', 'Faculty updated successfully');
     } catch (error) {
-      toast('error', 'Something went wrong');
+      // toast('error', 'Something went wrong');
     }
   };
   const getAllTeachersOfFaculty = async () => {
@@ -82,7 +82,7 @@ export default function SingleFaculty() {
       );
       setFacultyTeachers(teachers);
     } catch (error) {
-      toast('error', error?.response?.data?.message || 'Something went wrong');
+      // toast('error', error?.response?.data?.message || 'Something went wrong');
     }
   };
   const handleChange = (event, newValue) => {
@@ -133,7 +133,7 @@ export default function SingleFaculty() {
         setDepartments(response.data.departments);
       }
     } catch (error) {
-      toast('error', error?.response?.data?.message || 'Something went wrong');
+      // toast('error', error?.response?.data?.message || 'Something went wrong');
     }
   };
   const getDean = async () => {
@@ -150,7 +150,7 @@ export default function SingleFaculty() {
         setDean(response?.data?.name);
       }
     } catch (error) {
-      toast('error', error?.response?.data?.message || 'Something went wrong');
+      // toast('error', error?.response?.data?.message || 'Something went wrong');
     }
   };
   const deleteFaculty = async () => {
@@ -165,7 +165,7 @@ export default function SingleFaculty() {
       const response = await axios.delete(url, { headers });
       router.push('/faculty');
     } catch (error) {
-      toast('error', error?.response?.data?.message || 'Something went wrong');
+      // toast('error', error?.response?.data?.message || 'Something went wrong');
     }
   };
   return (
