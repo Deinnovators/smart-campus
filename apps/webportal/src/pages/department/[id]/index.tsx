@@ -24,7 +24,6 @@ import { toast } from 'react-toastify';
 import { BriefCard } from '@webportal/components/BriefCard';
 import { MessageCard } from '@webportal/components/MessageCard';
 import Link from 'next/link';
-import { Label } from '@mui/icons-material';
 
 export default function SingleDepartment() {
   const router = useRouter();
@@ -196,9 +195,6 @@ export default function SingleDepartment() {
                   }}>
                   <Grid item xs={6}>
                     <BriefCard name='Department' value={departments.length} />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <BriefCard name='Degree' value='33' />
                   </Grid>
                 </Grid>
                 <Grid

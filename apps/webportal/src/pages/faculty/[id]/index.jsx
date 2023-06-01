@@ -193,16 +193,10 @@ export default function SingleFaculty() {
                     marginBottom: '24px',
                   }}>
                   <Grid item xs={6}>
-                    <BriefCard name='Department' value='33' />
+                    <BriefCard name='Department' value={departments.length} />
                   </Grid>
                   <Grid item xs={6}>
-                    <BriefCard name='Degree' value='33' />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <BriefCard name='Teacher' value='33' />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <BriefCard name='Student' value='33' />
+                    <BriefCard name='Degree' value={departments.length} />
                   </Grid>
                 </Grid>
                 <Grid
