@@ -59,9 +59,7 @@ export default function CreateDepartment() {
       }
       const ids = response.data.map(faculty => faculty.id);
       setFacultyIDS(ids);
-    } catch (error) {
-      toast('error', error?.response?.data?.message || 'Something went wrong');
-    }
+    } catch (error) {}
   };
   const getAllTeachersOfFaculty = async () => {
     try {
@@ -76,7 +74,7 @@ export default function CreateDepartment() {
       const teachers = response.data.filter(res => res.role === 'teacher');
       setAllTeachers(teachers);
     } catch (error) {
-      toast('error', error?.response?.data?.message || 'Something went wrong');
+      // toast('error', error?.response?.data?.message || 'Something went wrong');
     }
   };
   const createDepartment = async () => {
@@ -96,7 +94,7 @@ export default function CreateDepartment() {
       const response = await axios.post(url, body, { headers });
       toast('success', 'department Created Successfully');
     } catch (error) {
-      toast('error', error?.response?.data?.message || 'Something went wrong');
+      // toast('error', error?.response?.data?.message || 'Something went wrong');
     }
   };
   const handleAddDepartment = event => {

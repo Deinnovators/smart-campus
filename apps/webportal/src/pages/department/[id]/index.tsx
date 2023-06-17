@@ -24,7 +24,6 @@ import { toast } from 'react-toastify';
 import { BriefCard } from '@webportal/components/BriefCard';
 import { MessageCard } from '@webportal/components/MessageCard';
 import Link from 'next/link';
-import { Label } from '@mui/icons-material';
 
 export default function SingleDepartment() {
   const router = useRouter();
@@ -76,7 +75,7 @@ export default function SingleDepartment() {
       const response = await axios.patch(url, body, { headers });
       toast('success', 'Department updated successfully');
     } catch (error) {
-      toast('error', 'Something went wrong');
+      // toast('error', 'Something went wrong');
     }
   };
   useEffect(() => {
@@ -99,7 +98,7 @@ export default function SingleDepartment() {
         setRole(response.data.role);
       }
     } catch (error) {
-      toast('error', error?.response?.data?.message || 'Something went wrong');
+      // toast('error', error?.response?.data?.message || 'Something went wrong');
     }
   };
   const getAllCourse = async () => {
@@ -116,7 +115,7 @@ export default function SingleDepartment() {
         setCourses(response.data);
       }
     } catch (error) {
-      toast('error', error?.response?.data?.message || 'Something went wrong');
+      // toast('error', error?.response?.data?.message || 'Something went wrong');
     }
   };
 
@@ -134,7 +133,7 @@ export default function SingleDepartment() {
         setDepartmentInformation(response.data);
       }
     } catch (error) {
-      toast('error', error?.response?.data?.message || 'Something went wrong');
+      // toast('error', error?.response?.data?.message || 'Something went wrong');
     }
   };
   const getChairman = async () => {
@@ -151,7 +150,7 @@ export default function SingleDepartment() {
         setChairman(response?.data?.name);
       }
     } catch (error) {
-      toast('error', error?.response?.data?.message || 'Something went wrong');
+      // toast('error', error?.response?.data?.message || 'Something went wrong');
     }
   };
   const deleteDepartment = async () => {
@@ -166,7 +165,7 @@ export default function SingleDepartment() {
       const response = await axios.delete(url, { headers });
       router.push('/department');
     } catch (error) {
-      toast('error', error?.response?.data?.message || 'Something went wrong');
+      // toast('error', error?.response?.data?.message || 'Something went wrong');
     }
   };
   return (
@@ -196,9 +195,6 @@ export default function SingleDepartment() {
                   }}>
                   <Grid item xs={6}>
                     <BriefCard name='Department' value={departments.length} />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <BriefCard name='Degree' value='33' />
                   </Grid>
                 </Grid>
                 <Grid

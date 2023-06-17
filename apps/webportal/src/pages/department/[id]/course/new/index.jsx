@@ -31,7 +31,7 @@ export default function CreateCourse() {
       };
       const response = await axios.post(url, body, { headers });
     } catch (error) {
-      toast('error', error?.response?.data?.message || 'Something went wrong');
+      // toast('error', error?.response?.data?.message || 'Something went wrong');
     }
   };
   const handleNameChange = event => {

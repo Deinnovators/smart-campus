@@ -38,7 +38,7 @@ export default function CreateFaculty() {
       const teachers = response.data.filter(user => user.role === 'teacher');
       setAllTeachers(teachers);
     } catch (error) {
-      toast('error', error?.response?.data?.message || 'Something went wrong');
+      // toast('error', error?.response?.data?.message || 'Something went wrong');
     }
   };
   const handleNameChange = event => {
@@ -67,7 +67,7 @@ export default function CreateFaculty() {
       const response = await axios.post(url, body, { headers });
       toast('success', 'Faculty Created Successfully');
     } catch (error) {
-      toast('error', error?.response?.data?.message || 'Something went wrong');
+      // toast('error', error?.response?.data?.message || 'Something went wrong');
     }
   };
 

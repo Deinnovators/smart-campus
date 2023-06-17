@@ -46,7 +46,7 @@ export default function FacultyModule() {
         setFaculties(response.data);
       }
     } catch (error) {
-      toast('error', error?.response?.data?.message || 'Something went wrong');
+      // toast('error', error?.response?.data?.message || 'Something went wrong');
     }
   };
   const getAllDepartments = async () => {
@@ -63,7 +63,7 @@ export default function FacultyModule() {
         setDepartments(response.data);
       }
     } catch (error) {
-      toast('error', error?.response?.data?.message || 'Something went wrong');
+      // toast('error', error?.response?.data?.message || 'Something went wrong');
     }
   };
   const getRole = async () => {
@@ -80,7 +80,7 @@ export default function FacultyModule() {
         setRole(response.data.role);
       }
     } catch (error) {
-      toast('error', error?.response?.data?.message || 'Something went wrong');
+      // toast('error', error?.response?.data?.message || 'Something went wrong');
     }
   };
   return (
