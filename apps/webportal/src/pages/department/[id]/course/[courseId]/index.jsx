@@ -83,8 +83,7 @@ const Course = () => {
 
   const getTeachers = async () => {
     try {
-      const url =
-        'http://localhost:1337/api/v1/departments/members/1?where%5Brole%5D=teacher';
+      const url = `http://localhost:1337/api/v1/departments/members/${router.query.id}?where%5Brole%5D=teacher`;
       const token = cookieService.get('token');
       if (!token) throw new Error('No user token found');
       const headers = {
@@ -265,6 +264,8 @@ const Course = () => {
       return;
     }
   };
+
+  console.log(teachers);
 
   return (
     <Container>
