@@ -3,7 +3,12 @@ const nextConfig = {
   reactStrictMode: true,
   transpilePackages: ['ui'],
   images: {
-    domains: ['picsum.photos', 'cloudflare-ipfs.com', 'localhost'],
+    domains: [
+      'picsum.photos',
+      'cloudflare-ipfs.com',
+      'localhost',
+      '66.29.130.137',
+    ],
   },
 };
 
