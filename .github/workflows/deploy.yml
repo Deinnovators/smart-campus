@@ -24,8 +24,9 @@ jobs:
         key: ${{ secrets.PRIVATE_KEY }}
         port: 22
         script: |
-          ls
-          pwd
+          eval $(ssh-agent)
+          sleep 2
+          ssh-add ~/.ssh/git
           cd /opt/smart-campus
           git pull origin release
           git status
