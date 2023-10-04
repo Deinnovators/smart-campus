@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { ModuleCard, PageWrapper, UserOverview } from '@webportal/components';
-import { Box, Container, Grid, Typography } from '@mui/material';
+import { Box, Container, Grid } from '@mui/material';
 import { useCurrentUser } from '@webportal/libs/hooks';
 import Head from 'next/head';
 import { api } from '@webportal/services';
@@ -40,9 +40,6 @@ export default function Dashboard(props: { modules: ModuleRegistry[] }) {
       <Head>
         <title>HSTU Portal</title>
       </Head>
-      <Typography>
-        This is a test to chek if ontinuous deployment is working{' '}
-      </Typography>
       <Grid container spacing={4}>
         <Grid item xs={12} md={5} lg={4}>
           <Box sx={{ marginTop: 2 }} />
