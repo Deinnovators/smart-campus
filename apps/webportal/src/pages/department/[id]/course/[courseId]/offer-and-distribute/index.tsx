@@ -24,14 +24,14 @@ const OfferAndDistribute = () => {
   const router = useRouter();
 
   const [values, setValues] = useState({
-    courseId: +router.query.courseId,
+    courseId: router.query?.courseId ? +router.query?.courseId : '',
     teacherId: '',
   });
   const [distributionValues, setDistributionValues] = useState({
     academicYear: '',
     semester: '',
     section: '',
-    departmentId: +router.query.id,
+    departmentId: router.query?.id ? +router.query?.id : '',
     level: '',
     session: '',
   });
@@ -78,7 +78,7 @@ const OfferAndDistribute = () => {
       if (response.status === 200) {
         setTeachers(response.data);
       }
-    } catch (error) {
+    } catch (error: any) {
       Toast('error', error?.response?.data?.message || 'Something went wrong');
     }
   };
@@ -118,7 +118,7 @@ const OfferAndDistribute = () => {
 
         handleNext();
       }
-    } catch (error) {
+    } catch (error: any) {
       Toast('error', error?.response?.data?.message || 'Something went wrong');
     }
   };
@@ -305,7 +305,7 @@ const OfferAndDistribute = () => {
                       setValues({ ...values, teacherId: e.target.value })
                     }>
                     {teachers.length > 0 &&
-                      teachers.map((teacher, idx) => (
+                      teachers.map((teacher: any, idx) => (
                         <MenuItem value={teacher?.id} key={idx}>
                           {teacher?.name}
                         </MenuItem>

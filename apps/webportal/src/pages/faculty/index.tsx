@@ -77,10 +77,11 @@ const faculties = [
 ];
 
 export default function FacultyModule() {
-  const [expanded, setExpanded] = useState(false);
-  const handleAccordionChange = panel => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
-  };
+  const [expanded, setExpanded] = useState<any>(false);
+  const handleAccordionChange =
+    (panel: any) => (event: any, isExpanded: any) => {
+      setExpanded(isExpanded ? panel : false);
+    };
   return (
     <Container>
       <Head>

@@ -4,14 +4,14 @@ import Head from 'next/head';
 export default function EditDepartment() {
   const [name, setName] = useState('');
   const [deanMessage, setDeanMessage] = useState('');
-  const [departments, setDepartments] = useState([]);
-  const handleNameChange = event => {
+  const [departments, setDepartments] = useState<any[]>([]);
+  const handleNameChange = (event: any) => {
     setName(event.target.value);
   };
-  const handleDeanMessageChange = event => {
+  const handleDeanMessageChange = (event: any) => {
     setDeanMessage(event.target.value);
   };
-  const handleAddDepartment = event => {
+  const handleAddDepartment = (event: any) => {
     event.preventDefault();
     const departmentName = event.target.elements.departmentName.value;
     setDepartments([...departments, departmentName]);
