@@ -1,9 +1,9 @@
-name:  🚀 Deploy on push using ssh
+# name:  🚀 Deploy on push using ssh
 
-on:
-  push:
-    branches:
-      - release
+# on:
+#   push:
+#     branches:
+#       - release
 
 # jobs:
 #   build:
