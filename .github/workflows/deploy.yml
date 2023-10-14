@@ -1,14 +1,16 @@
-# name:  🚀 Deploy on push using ssh
+name:  🚀 Deploy on push using ssh
 
-# on:
-#   push:
-#     branches:
-#       - release
+on:
+  push:
+    branches:
+      - release
 
-# jobs:
-#   build:
-#     runs-on: ubuntu-latest
-#     steps:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Console log
+        run: echo "🚀 action ran" 
 #     - name: Deploy using ssh
 #       uses: appleboy/ssh-action@master
 #       with:
