@@ -7,7 +7,7 @@ const nextConfig = {
       'picsum.photos',
       'cloudflare-ipfs.com',
       'localhost',
-      '66.29.130.137',
+      process.env['NEXT_PUBLIC_BASE_URL_HOST'],
     ],
   },
 };
