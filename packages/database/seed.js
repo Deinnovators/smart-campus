@@ -255,7 +255,7 @@ const createModules = async () => {
     create: {
       id: 1,
       name: 'Modules Registry',
-      icon: 'https://picsum.photos/200',
+      icon: 'modules.webp',
       url: '/modules-registry',
       accessToRoles: ['superadmin', 'admin'],
       parentUrl: null,
@@ -266,10 +266,10 @@ const createModules = async () => {
     update: {},
     create: {
       id: 2,
-      name: 'Faculty',
-      icon: 'https://picsum.photos/200',
-      url: '/faculty',
-      accessToRoles: ['superadmin', 'admin', 'student', 'stuff', 'teacher'],
+      name: 'Users',
+      icon: 'users.webp',
+      url: '/users',
+      accessToRoles: ['superadmin', 'admin'],
       parentUrl: null,
     },
   });
@@ -278,10 +278,17 @@ const createModules = async () => {
     update: {},
     create: {
       id: 3,
-      name: 'Department',
-      icon: 'https://picsum.photos/200',
-      url: '/department',
-      accessToRoles: ['superadmin', 'admin', 'student', 'stuff', 'teacher'],
+      name: 'Transports',
+      icon: 'transports.webp',
+      url: '/transports',
+      accessToRoles: [
+        'superadmin',
+        'admin',
+        'student',
+        'stuff',
+        'teacher',
+        'alumni',
+      ],
       parentUrl: null,
     },
   });
