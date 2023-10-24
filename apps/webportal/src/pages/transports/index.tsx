@@ -1,11 +1,10 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC, Fragment, ReactNode } from 'react';
 import { Box, Container, Typography } from '@mui/material';
 import Head from 'next/head';
 import { api } from '@webportal/services';
 import { ModuleRegistry } from 'database';
 import { GetServerSideProps } from 'next';
 import { useAppTheme } from '@webportal/libs/hooks';
-import { Spacer } from '@webportal/components';
 import { ArrowRight } from '@mui/icons-material';
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
@@ -56,7 +55,7 @@ export default function Transports(props: { modules: ModuleRegistry[] }) {
             {stoppages.map((st, i) => {
               const isActive = st === 'Terminal';
               return (
-                <>
+                <Fragment key={i}>
                   <Typography
                     color={isActive ? 'green' : undefined}
                     fontSize={isActive ? 24 : undefined}
@@ -64,7 +63,7 @@ export default function Transports(props: { modules: ModuleRegistry[] }) {
                     {st}
                   </Typography>
                   {i < stoppages.length - 1 ? <ArrowRight /> : null}
-                </>
+                </Fragment>
               );
             })}
           </Box>

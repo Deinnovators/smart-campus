@@ -1,7 +1,7 @@
 import { PageWrapper } from '@webportal/components';
 import { AppThemeProvider } from '@webportal/libs/providers/theme.provider';
 import '@webportal/styles/globals.css';
-import { Inter } from '@next/font/google';
+import { Inter } from 'next/font/google';
 import { ReactElement, ReactNode, useEffect } from 'react';
 import App, { AppInitialProps, AppProps } from 'next/app';
 import { AppThemeMode } from '@webportal/libs/contexts/theme.context';
