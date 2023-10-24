@@ -21,7 +21,7 @@
     "cz-conventional-changelog": "^3.3.0",
     "husky": "^8.0.3",
     "lint-staged": "^13.1.0",
-    "turbo": "^1.7.4"
+    "turbo": "^1.10.16"
   },
   "engines": {
     "node": ">=14.0.0"
