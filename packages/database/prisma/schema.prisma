@@ -238,3 +238,45 @@ enum CourseType {
   sessional
   others
 }
+
+enum TransportStoppages {
+  Campus
+  College_Mor
+  Terminal
+  Moharaja_Mor
+  Shahi_Mosjid_Mor
+  Shahid_Minar_Mor
+  Sadar_Hospital
+  Boro_Math
+  Suihari
+}
+
+model Transport {
+  id        Int                 @id @default(autoincrement())
+  busNumber Int                 @unique
+  schedules TransportSchedule[]
+  createdAt DateTime            @default(now())
+  updatedAt DateTime            @default(now()) @updatedAt
+}
+
+enum TripName {
+  Students
+  Teachers_Officers
+  Employees
+  Teachers
+  Officers
+}
+
+model TransportSchedule {
+  id          Int                  @id @default(autoincrement())
+  tripName    TripName
+  tripKind    String
+  time        Int
+  currentLat  Int
+  currentLng  Int
+  stoppages   TransportStoppages[]
+  transport   Transport            @relation(fields: [transportId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  transportId Int
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @default(now()) @updatedAt
+}

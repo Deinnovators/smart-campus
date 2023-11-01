@@ -19,6 +19,7 @@ import { memoryStorage } from 'multer';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { uploadDir } from '@api/constants/path.constants';
+import { TransportsModule } from './modules/transports/transports.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { uploadDir } from '@api/constants/path.constants';
       rootPath: join(__dirname, '..', uploadDir),
       serveRoot: '/' + uploadDir,
     }),
+    TransportsModule,
   ],
   controllers: [AppController],
   providers: [
