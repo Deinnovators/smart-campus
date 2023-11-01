@@ -15,6 +15,21 @@ export class TransportsService {
     });
   }
 
+  getNextSchedule() {
+    const date = new Date();
+    const dateString = date.toISOString();
+    const finalDate = new Date(`1970-01-01T${dateString.split('T')[1]}`);
+
+    return this.prisma.transportSchedule.findMany({
+      include: { transport: true },
+      where: {
+        time: {
+          gte: finalDate,
+        },
+      },
+    });
+  }
+
   getAllDriverNumbers() {
     return this.prisma.driverNumbers.findMany();
   }
@@ -38,12 +53,12 @@ export class TransportsService {
 
     const upcoming = await this.prisma.transportSchedule.findMany({
       include: { transport: true },
-      where: {
-        time: {
-          gte: finalDate,
-        },
-      },
-      take: 8,
+      // where: {
+      //   time: {
+      //     gte: finalDate,
+      //   },
+      // },
+      // take: 8,
     });
     const ongoing = await this.getOngoingTrips();
 

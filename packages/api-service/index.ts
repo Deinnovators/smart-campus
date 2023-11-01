@@ -28,3 +28,5 @@ export class ApiService {
     this.transports = new TransportsApi(this.instance, this.endpoints);
   }
 }
+
+export { TransportsEvents } from './constants/events';

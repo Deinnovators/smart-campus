@@ -289,8 +289,8 @@ model TransportSchedule {
 
 model Trip {
   id          Int               @id @default(autoincrement())
-  currentLat  Int?
-  currentLng  Int?
+  currentLat  Float?
+  currentLng  Float?
   nextStop TransportStoppages?
   prevLeftAt  DateTime
   schedule    TransportSchedule @relation(fields: [scheduleId], references: [id], onDelete: Cascade, onUpdate: Cascade)

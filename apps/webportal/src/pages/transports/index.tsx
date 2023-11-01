@@ -1,7 +1,7 @@
-import React, { FC, ReactElement, ReactNode } from 'react';
+import React, { FC, ReactElement, ReactNode, useEffect } from 'react';
 import { Box, Container, Typography } from '@mui/material';
 import Head from 'next/head';
-import { api } from '@webportal/services';
+import { api, socket } from '@webportal/services';
 import { TransportSchedule, Trip } from 'database';
 import { GetServerSideProps } from 'next';
 import { useAppTheme } from '@webportal/libs/hooks';
@@ -27,7 +27,10 @@ export default function Transports({
 }: {
   data: { ongoing: Trip[]; upcoming: TransportSchedule[] };
 }) {
-  const { theme } = useAppTheme();
+  useEffect(() => {
+    socket.init();
+    // return socket.destroy;
+  }, []);
   return (
     <Box>
       <Head>

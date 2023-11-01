@@ -20,6 +20,11 @@ export class TransportsController {
     return this.service.getAllSchedule();
   }
 
+  @Get('/next-schedules')
+  getNextSchedules() {
+    return this.service.getNextSchedule();
+  }
+
   @Get('/drivers')
   getAllDriverNumbers() {
     return this.service.getAllDriverNumbers();
