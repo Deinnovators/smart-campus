@@ -27,8 +27,9 @@ export const TransportsLayout: React.FC<TransportsLayoutProps> = ({
           value={currentRoute}
           aria-label='basic tabs example'>
           <Tab value={authRoutes.transports} label='Ongoing & Upcoming' />
-          <Tab value={authRoutes.drivers} label='Drivers' />
-          <Tab label='Item Three' />
+          <Tab value={authRoutes.liveTracking} label='Live Tracking' />
+          <Tab value={authRoutes.fullSchedule} label='Full Schedule' />
+          <Tab value={authRoutes.drivers} label="Driver's numbers" />
         </Tabs>
       </Box>
       {children}

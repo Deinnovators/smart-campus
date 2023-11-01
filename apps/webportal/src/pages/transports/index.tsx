@@ -29,7 +29,7 @@ export default function Transports({
 }) {
   const { theme } = useAppTheme();
   return (
-    <Container>
+    <Box>
       <Head>
         <title>Transport::Ongoing & upcoming</title>
       </Head>
@@ -59,41 +59,7 @@ export default function Transports({
         </Box>
       </OutlineBox>
 
-      {/* <Box my={8}>
-        <Typography sx={{ my: 2 }} variant='h6'>
-          HSTU Driver&apos;s Number
-        </Typography>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell>Mobile</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {drivers.map((d, index) => {
-                return (
-                  <TableRow key={d.name + index}>
-                    <TableCell>{d.name}</TableCell>
-                    <TableCell align='center'>
-                      <Box
-                        component='a'
-                        href={`tel:${d.mobile}`}
-                        display='flex'
-                        alignItems='center'>
-                        <Call sx={{ mr: 1 }} />
-                        {d.mobile}
-                      </Box>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Box>
-
+      {/* 
       <Box>
         <Typography my={2} align='center' variant='h5'>
           Full Schedule
@@ -225,7 +191,7 @@ export default function Transports({
           <Map />
         </Box>
       </Box> */}
-    </Container>
+    </Box>
   );
 }
 
@@ -237,7 +203,7 @@ const OutlineBox: FC<{ title: string; children?: ReactNode }> = ({
   return (
     <Box
       position='relative'
-      mt={12}
+      mt={4}
       p={4}
       sx={{ border: '2px solid grey', borderRadius: 3 }}>
       <Box

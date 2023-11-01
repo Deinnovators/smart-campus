@@ -12,4 +12,6 @@ export const authRoutes = {
   profile: '/profile',
   transports: transports,
   drivers: transports + '/drivers',
+  liveTracking: transports + '/live-tracking',
+  fullSchedule: transports + '/full-schedule',
 };
