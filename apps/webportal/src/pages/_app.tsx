@@ -1,6 +1,9 @@
 import { PageWrapper } from '@webportal/components';
 import { AppThemeProvider } from '@webportal/libs/providers/theme.provider';
 import '@webportal/styles/globals.css';
+import '@webportal/styles/map.css';
+import '@webportal/styles/mapbox-gl.css';
+import '@webportal/styles/marker.css';
 import { Inter } from 'next/font/google';
 import { ReactElement, ReactNode, useEffect } from 'react';
 import App, { AppInitialProps, AppProps } from 'next/app';
