@@ -28,4 +28,22 @@ export class TransportsApi extends BaseHttp {
     });
     return res.data;
   }
+
+  async getOngoingTrips(config?: AxiosRequestConfig): Promise<Trip[]> {
+    const res = await this.get({
+      endpoint: this.endpoints.transports.trips,
+      config,
+    });
+    return res.data;
+  }
+
+  async getAllSchedules(
+    config?: AxiosRequestConfig,
+  ): Promise<TransportSchedule[]> {
+    const res = await this.get({
+      endpoint: this.endpoints.transports.schedules,
+      config,
+    });
+    return res.data;
+  }
 }

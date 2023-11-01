@@ -9,11 +9,26 @@ export class TransportsService {
   getAllSchedule() {
     return this.prisma.transportSchedule.findMany({
       include: { transport: true },
+      orderBy: {
+        time: 'asc',
+      },
     });
   }
 
   getAllDriverNumbers() {
     return this.prisma.driverNumbers.findMany();
+  }
+
+  async getOngoingTrips() {
+    return this.prisma.trip.findMany({
+      include: {
+        schedule: {
+          include: {
+            transport: true,
+          },
+        },
+      },
+    });
   }
 
   async getOngoingUpcoming() {
@@ -23,22 +38,14 @@ export class TransportsService {
 
     const upcoming = await this.prisma.transportSchedule.findMany({
       include: { transport: true },
-      // where: {
-      //   time: {
-      //     gte: finalDate,
-      //   },
-      // },
-      take: 8,
-    });
-    const ongoing = await this.prisma.trip.findMany({
-      include: {
-        schedule: {
-          include: {
-            transport: true,
-          },
+      where: {
+        time: {
+          gte: finalDate,
         },
       },
+      take: 8,
     });
+    const ongoing = await this.getOngoingTrips();
 
     return {
       ongoing,

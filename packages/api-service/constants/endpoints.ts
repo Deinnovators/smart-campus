@@ -26,6 +26,8 @@ export const endpoints = {
     base: TRANSPORTS,
     drivers: TRANSPORTS + '/drivers',
     ongoing: TRANSPORTS + '/ongoing-upcoming',
+    trips: TRANSPORTS + '/trips',
+    schedules: TRANSPORTS + '/schedules',
   },
 };
 

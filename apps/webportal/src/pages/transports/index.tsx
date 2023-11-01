@@ -54,7 +54,9 @@ export default function Transports({
         )}
         <Box display='flex' flexWrap='wrap'>
           {data.upcoming.map(up => {
-            return <UpcomingCard schedule={up} />;
+            return (
+              <UpcomingCard key={up.id.toString() + up.time} schedule={up} />
+            );
           })}
         </Box>
       </OutlineBox>

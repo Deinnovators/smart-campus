@@ -33,23 +33,6 @@ const schedules = [
     transportId: 17,
     scheduleDay: null,
   },
-  {
-    tripName: 'Teachers_Officials',
-    tripKind: 'Special',
-    time: '1970-01-01T03:00:00.000Z',
-    stoppages: [
-      'Campus',
-      'College_Mor',
-      'Terminal',
-      'Moharaja_Mor',
-      'Shahi_Mosjid_Mor',
-      'Shahid_Minar_Mor',
-      'Sadar_Hospital',
-      'Boro_Math',
-    ],
-    transportId: 5,
-    scheduleDay: 'Friday',
-  },
 ];
 
 module.exports = {

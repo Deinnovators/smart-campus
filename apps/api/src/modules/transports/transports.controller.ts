@@ -30,6 +30,11 @@ export class TransportsController {
     return this.service.getOngoingUpcoming();
   }
 
+  @Get('/trips')
+  getOngoingTrips() {
+    return this.service.getOngoingTrips();
+  }
+
   @Post('/trips')
   createTrip(@Body() data: Prisma.TripCreateInput) {
     return this.service.createTrip(data);

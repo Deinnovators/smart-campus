@@ -328,7 +328,7 @@ const createTransports = async () => {
       where: { id: i },
       update: {},
       create: {
-        busNumber: i,
+        busNumber: i.toString(),
       },
     });
   }

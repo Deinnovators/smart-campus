@@ -43,6 +43,9 @@ export const UpcomingCard: React.FC<UpcomingCardProps> = ({ schedule }) => {
               {getAndSeperatedName(schedule.tripName)}
             </Typography>
           </Typography>
+          {schedule.scheduleDay && (
+            <Typography variant='body2'>On: {schedule.scheduleDay}</Typography>
+          )}
         </Box>
       </Box>
     </Card>
