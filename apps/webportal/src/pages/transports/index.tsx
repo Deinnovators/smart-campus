@@ -1,288 +1,65 @@
-import React, { FC, Fragment, ReactNode } from 'react';
-import {
-  Box,
-  Card,
-  Container,
-  Grid,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-} from '@mui/material';
+import React, { FC, ReactElement, ReactNode } from 'react';
+import { Box, Container, Typography } from '@mui/material';
 import Head from 'next/head';
 import { api } from '@webportal/services';
-import { ModuleRegistry } from 'database';
+import { TransportSchedule, Trip } from 'database';
 import { GetServerSideProps } from 'next';
 import { useAppTheme } from '@webportal/libs/hooks';
-import {
-  ArrowForward,
-  ArrowRight,
-  ArrowRightOutlined,
-  Call,
-  PhoneAndroid,
-} from '@mui/icons-material';
-import Map from '@webportal/components/Map/Map';
-import { drivers } from '@webportal/constants/data.constants';
+import { TransportsLayout, UpcomingCard } from '@webportal/components';
+import { authRoutes } from '@webportal/constants/route.constants';
+import { OngoingCard } from '@webportal/components/OngoingCard';
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
-  const modules = await api.modules.getAllModules({
+  const data = await api.transports.getOngoingUpcoming({
     headers: {
       [api.authHeaderKey]: `${api.authTokenType} ${ctx.req.cookies.token}`,
     },
   });
   return {
     props: {
-      modules,
+      data,
     },
   };
 };
-const stoppages = [
-  'Campus',
-  'College Mor',
-  'Terminal',
-  'Moharaja Mor',
-  'Shahi Mosjid Mor',
-  'Shahid Minar Mor',
-  'Sadar Hospital',
-  'Boro Math',
-];
 
-export default function Transports(props: { modules: ModuleRegistry[] }) {
+export default function Transports({
+  data,
+}: {
+  data: { ongoing: Trip[]; upcoming: TransportSchedule[] };
+}) {
   const { theme } = useAppTheme();
   return (
     <Container>
       <Head>
-        <title>Transports</title>
+        <title>Transport::Ongoing & upcoming</title>
       </Head>
 
       <OutlineBox title='Ongoing'>
-        <Box display='flex' alignItems='center' mb={2}>
-          <Box
-            mr={2}
-            border={2}
-            height={38}
-            width={38}
-            borderRadius={19}
-            display='flex'
-            justifyContent='center'
-            alignItems='center'>
-            <Typography variant='h6'>13</Typography>
+        {!data?.ongoing?.length && (
+          <Box justifyContent='center' alignItems='center' display='flex'>
+            <Typography>No ongoing trip at this moment</Typography>
           </Box>
-          <Box display='flex' alignItems='center'>
-            {stoppages.map((st, i) => {
-              const isActive = st === 'Terminal';
-              return (
-                <Fragment key={i}>
-                  <Typography
-                    color={isActive ? 'green' : undefined}
-                    fontSize={isActive ? 18 : undefined}
-                    fontWeight={isActive ? 'bold' : undefined}>
-                    {st}
-                  </Typography>
-                  {i < stoppages.length - 1 ? <ArrowRight /> : null}
-                </Fragment>
-              );
-            })}
-          </Box>
-        </Box>
-        <Box display='flex' alignItems='center' mb={2}>
-          <Box
-            mr={2}
-            border={2}
-            height={38}
-            width={38}
-            borderRadius={19}
-            display='flex'
-            justifyContent='center'
-            alignItems='center'>
-            <Typography variant='h6'>09</Typography>
-          </Box>
-          <Box display='flex' alignItems='center'>
-            {stoppages.map((st, i) => {
-              const isActive = st === 'Moharaja Mor';
-              return (
-                <Fragment key={i}>
-                  <Typography
-                    color={isActive ? 'green' : undefined}
-                    fontSize={isActive ? 18 : undefined}
-                    fontWeight={isActive ? 'bold' : undefined}>
-                    {st}
-                  </Typography>
-                  {i < stoppages.length - 1 ? <ArrowRight /> : null}
-                </Fragment>
-              );
-            })}
-          </Box>
-        </Box>
-        <Box display='flex' alignItems='center' mb={2}>
-          <Box
-            mr={2}
-            border={2}
-            height={38}
-            width={38}
-            borderRadius={19}
-            display='flex'
-            justifyContent='center'
-            alignItems='center'>
-            <Typography variant='h6'>17</Typography>
-          </Box>
-          <Box display='flex' alignItems='center'>
-            {stoppages.reverse().map((st, i) => {
-              const isActive = st === 'College Mor';
-              return (
-                <Fragment key={i}>
-                  <Typography
-                    color={isActive ? 'green' : undefined}
-                    fontSize={isActive ? 18 : undefined}
-                    fontWeight={isActive ? 'bold' : undefined}>
-                    {st}
-                  </Typography>
-                  {i < stoppages.length - 1 ? <ArrowRight /> : null}
-                </Fragment>
-              );
-            })}
-          </Box>
-        </Box>
-        <Box display='flex' alignItems='center'>
-          <Box
-            mr={2}
-            border={2}
-            height={38}
-            width={38}
-            borderRadius={19}
-            display='flex'
-            justifyContent='center'
-            alignItems='center'>
-            <Typography variant='h6'>19</Typography>
-          </Box>
-          <Box display='flex' alignItems='center'>
-            {stoppages.map((st, i) => {
-              const isActive = st === 'Terminal';
-              return (
-                <Fragment key={i}>
-                  <Typography
-                    color={isActive ? 'green' : undefined}
-                    fontSize={isActive ? 18 : undefined}
-                    fontWeight={isActive ? 'bold' : undefined}>
-                    {st}
-                  </Typography>
-                  {i < stoppages.length - 1 ? <ArrowRight /> : null}
-                </Fragment>
-              );
-            })}
-          </Box>
+        )}
+        <Box display='flex' flexWrap='wrap'>
+          {data?.ongoing?.map(ong => {
+            return <OngoingCard key={ong.id} trip={ong} />;
+          })}
         </Box>
       </OutlineBox>
       <OutlineBox title='Upcoming'>
-        <Box display='flex'>
-          <Card sx={{ padding: 2 }}>
-            <Box display='flex' alignItems='center'>
-              <Box
-                mr={2}
-                border={2}
-                height={38}
-                width={38}
-                borderRadius={19}
-                display='flex'
-                justifyContent='center'
-                alignItems='center'>
-                <Typography variant='h6'>19</Typography>
-              </Box>
-              <Box>
-                <Typography variant='h6' color='green'>
-                  At 2:30 pm
-                </Typography>
-                <Box display='flex' alignItems='center'>
-                  <Typography variant='body2'>Boro Math</Typography>
-                  <ArrowForward fontSize='small' sx={{ mx: 1 }} />
-                  <Typography variant='body2'>Campus</Typography>
-                </Box>
-              </Box>
-            </Box>
-          </Card>
-          <Card sx={{ padding: 2, ml: 2 }}>
-            <Box display='flex' alignItems='center'>
-              <Box
-                mr={2}
-                border={2}
-                height={38}
-                width={38}
-                borderRadius={19}
-                display='flex'
-                justifyContent='center'
-                alignItems='center'>
-                <Typography variant='h6'>17</Typography>
-              </Box>
-              <Box>
-                <Typography variant='h6' color='green'>
-                  At 2:30 pm
-                </Typography>
-                <Box display='flex' alignItems='center'>
-                  <Typography variant='body2'>Boro Math</Typography>
-                  <ArrowForward fontSize='small' sx={{ mx: 1 }} />
-                  <Typography variant='body2'>Campus</Typography>
-                </Box>
-              </Box>
-            </Box>
-          </Card>
-          <Card sx={{ padding: 2, ml: 2 }}>
-            <Box display='flex' alignItems='center'>
-              <Box
-                mr={2}
-                border={2}
-                height={38}
-                width={38}
-                borderRadius={19}
-                display='flex'
-                justifyContent='center'
-                alignItems='center'>
-                <Typography variant='h6'>09</Typography>
-              </Box>
-              <Box>
-                <Typography variant='h6' color='green'>
-                  At 3:00 pm
-                </Typography>
-                <Box display='flex' alignItems='center'>
-                  <Typography variant='body2'>Campus</Typography>
-                  <ArrowForward fontSize='small' sx={{ mx: 1 }} />
-                  <Typography variant='body2'>Boro Math</Typography>
-                </Box>
-              </Box>
-            </Box>
-          </Card>
-          <Card sx={{ padding: 2, ml: 2 }}>
-            <Box display='flex' alignItems='center'>
-              <Box
-                mr={2}
-                border={2}
-                height={38}
-                width={38}
-                borderRadius={19}
-                display='flex'
-                justifyContent='center'
-                alignItems='center'>
-                <Typography variant='h6'>13</Typography>
-              </Box>
-              <Box>
-                <Typography variant='h6' color='green'>
-                  At 3:00 pm
-                </Typography>
-                <Box display='flex' alignItems='center'>
-                  <Typography variant='body2'>Campus</Typography>
-                  <ArrowForward fontSize='small' sx={{ mx: 1 }} />
-                  <Typography variant='body2'>Boro Math</Typography>
-                </Box>
-              </Box>
-            </Box>
-          </Card>
+        {!data?.upcoming?.length && (
+          <Box justifyContent='center' alignItems='center' display='flex'>
+            <Typography>No upcoming trip at this moment</Typography>
+          </Box>
+        )}
+        <Box display='flex' flexWrap='wrap'>
+          {data.upcoming.map(up => {
+            return <UpcomingCard schedule={up} />;
+          })}
         </Box>
       </OutlineBox>
 
-      <Box my={8}>
+      {/* <Box my={8}>
         <Typography sx={{ my: 2 }} variant='h6'>
           HSTU Driver&apos;s Number
         </Typography>
@@ -447,7 +224,7 @@ export default function Transports(props: { modules: ModuleRegistry[] }) {
         <Box height={500} width='100%'>
           <Map />
         </Box>
-      </Box>
+      </Box> */}
     </Container>
   );
 }
@@ -471,5 +248,13 @@ const OutlineBox: FC<{ title: string; children?: ReactNode }> = ({
       </Box>
       {children}
     </Box>
+  );
+};
+
+Transports.getLayout = (page: ReactElement) => {
+  return (
+    <TransportsLayout currentRoute={authRoutes.transports}>
+      {page}
+    </TransportsLayout>
   );
 };

@@ -1,3 +1,5 @@
+const TRANSPORTS = '/transports';
+
 export const endpoints = {
   auth: {
     base: '/auth',
@@ -19,6 +21,11 @@ export const endpoints = {
   },
   department: {
     base: '/departments',
+  },
+  transports: {
+    base: TRANSPORTS,
+    drivers: TRANSPORTS + '/drivers',
+    ongoing: TRANSPORTS + '/ongoing-upcoming',
   },
 };
 

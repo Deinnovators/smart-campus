@@ -12,3 +12,18 @@ export type User = Prisma.UserGetPayload<{
     dean: true;
   };
 }>;
+export type Trip = Prisma.TripGetPayload<{
+  include: {
+    schedule: {
+      include: {
+        transport: true;
+      };
+    };
+  };
+}>;
+
+export type TransportSchedule = Prisma.TransportScheduleGetPayload<{
+  include: {
+    transport: true;
+  };
+}>;

@@ -14,3 +14,10 @@ export const getUserImageUrl = (imageName: string | null | undefined) => {
   if (imageName.startsWith('http')) return imageName;
   return userImageDir + '/' + imageName;
 };
+
+export const getSpaceSeperatedName = (st: string = '') => {
+  return st.replaceAll('_', ' ');
+};
+export const getAndSeperatedName = (st: string = '') => {
+  return st.replaceAll('_', '&');
+};

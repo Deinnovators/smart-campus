@@ -23,14 +23,22 @@ export class TransportsService {
 
     const upcoming = await this.prisma.transportSchedule.findMany({
       include: { transport: true },
-      where: {
-        time: {
-          gte: finalDate,
-        },
-      },
+      // where: {
+      //   time: {
+      //     gte: finalDate,
+      //   },
+      // },
       take: 8,
     });
-    const ongoing = await this.prisma.trip.findMany();
+    const ongoing = await this.prisma.trip.findMany({
+      include: {
+        schedule: {
+          include: {
+            transport: true,
+          },
+        },
+      },
+    });
 
     return {
       ongoing,

@@ -7,7 +7,7 @@ import { useAppCurrentTheme } from '@webportal/libs/hooks';
 import { Box } from '@mui/material';
 import { ToastContainer } from 'react-toastify';
 
-interface PageWrapperProps extends NavbarProps {
+export interface PageWrapperProps extends NavbarProps {
   children?: ReactNode;
   containerProps?: ContainerProps;
 }

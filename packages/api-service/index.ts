@@ -5,6 +5,7 @@ import { ModulesApi } from './modules.api';
 import { UsersApi } from './users.api';
 import { FacultyApi } from './faculty.api';
 import { DepartmentApi } from './department.api';
+import { TransportsApi } from './transports.api';
 export class ApiService {
   private instance: AxiosInstance;
   auth: AuthApi;
@@ -15,6 +16,7 @@ export class ApiService {
   users: UsersApi;
   faculty: FacultyApi;
   department: DepartmentApi;
+  transports: TransportsApi;
 
   constructor(readonly axiosInstance: AxiosInstance) {
     this.instance = axiosInstance;
@@ -23,5 +25,6 @@ export class ApiService {
     this.users = new UsersApi(this.instance, this.endpoints);
     this.faculty = new FacultyApi(this.instance, this.endpoints);
     this.department = new DepartmentApi(this.instance, this.endpoints);
+    this.transports = new TransportsApi(this.instance, this.endpoints);
   }
 }
