@@ -2,6 +2,7 @@
 const { PrismaClient } = require('@prisma/client');
 const { faker } = require('@faker-js/faker');
 const { districts, divisions, unions, upazillas } = require('bd-geojs');
+const data = require('./data');
 
 const password = '$2b$10$y5BbyfeOzbJO/LmXgBQxbud8PlEv6jncXQwsqwHG4ONn2ZOmQaWvi'; // admin123
 
@@ -207,6 +208,13 @@ async function main() {
 
   console.log('creating modules...');
   await createModules();
+  console.log('creating drivers...');
+  await createDrivers();
+  console.log('creating transports...');
+  await createTransports();
+  console.log('creating schedules...');
+  await createSchedules();
+  console.log('🚀 finished seeding');
 }
 
 const createMyAccounts = async () => {
@@ -292,6 +300,38 @@ const createModules = async () => {
       parentUrl: null,
     },
   });
+};
+
+const createDrivers = async () => {
+  data.drivers.forEach(async (d, index) => {
+    await prisma.driverNumbers.upsert({
+      where: { id: index + 1 },
+      update: {},
+      create: d,
+    });
+  });
+};
+
+const createSchedules = async () => {
+  data.schedules.forEach(async (schedule, index) => {
+    await prisma.transportSchedule.upsert({
+      where: { id: index + 1 },
+      update: {},
+      create: schedule,
+    });
+  });
+};
+
+const createTransports = async () => {
+  for (let i = 1; i <= 20; i++) {
+    await prisma.transport.upsert({
+      where: { id: i },
+      update: {},
+      create: {
+        busNumber: i,
+      },
+    });
+  }
 };
 
 main()

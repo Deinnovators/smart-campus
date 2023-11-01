@@ -261,22 +261,43 @@ model Transport {
 
 enum TripName {
   Students
-  Teachers_Officers
+  Teachers_Officials
   Employees
   Teachers
-  Officers
+  Officials
+  General
+}
+
+enum TripKind {
+  Regular
+  Special
 }
 
 model TransportSchedule {
   id          Int                  @id @default(autoincrement())
   tripName    TripName
-  tripKind    String
-  time        Int
-  currentLat  Int
-  currentLng  Int
+  tripKind    TripKind
+  time        DateTime             @db.Time()
   stoppages   TransportStoppages[]
   transport   Transport            @relation(fields: [transportId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   transportId Int
+  trips       Trip[]
+  scheduleDay     String?
   createdAt   DateTime             @default(now())
   updatedAt   DateTime             @default(now()) @updatedAt
+}
+
+model Trip {
+  id          Int               @id @default(autoincrement())
+  currentLat  Int?
+  currentLng  Int?
+  currentStop String?
+  schedule    TransportSchedule @relation(fields: [scheduleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  scheduleId  Int
+}
+
+model DriverNumbers {
+  id    Int    @id @default(autoincrement())
+  name  String
+  mobile String
 }
