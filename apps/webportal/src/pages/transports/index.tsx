@@ -33,11 +33,6 @@ export default function Transports({
     socket.init();
     initTrips(data.ongoing);
 
-    return () => {
-      if (socket.io) {
-        socket.io.disconnect;
-      }
-    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initTrips]);
   return (
