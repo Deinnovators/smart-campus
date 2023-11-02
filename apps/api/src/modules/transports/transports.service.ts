@@ -34,6 +34,9 @@ export class TransportsService {
           gte: finalDate,
         },
       },
+      orderBy: {
+        time: 'asc',
+      },
     });
   }
 
@@ -59,7 +62,10 @@ export class TransportsService {
           gte: finalDate,
         },
       },
-      take: 8,
+      take: 6,
+      orderBy: {
+        time: 'asc',
+      },
     });
     const ongoing = await this.getOngoingTrips();
 
