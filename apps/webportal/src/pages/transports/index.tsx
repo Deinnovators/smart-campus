@@ -8,6 +8,7 @@ import { useAppTheme } from '@webportal/libs/hooks';
 import { TransportsLayout, UpcomingCard } from '@webportal/components';
 import { authRoutes } from '@webportal/constants/route.constants';
 import { OngoingCard } from '@webportal/components/OngoingCard';
+import useTripStore from '@webportal/zustores/trip.store';
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
   const data = await api.transports.getOngoingUpcoming({
@@ -27,10 +28,18 @@ export default function Transports({
 }: {
   data: { ongoing: Trip[]; upcoming: TransportSchedule[] };
 }) {
+  const { trips, initTrips } = useTripStore();
   useEffect(() => {
     socket.init();
-    // return socket.destroy;
-  }, []);
+    initTrips(data.ongoing);
+
+    return () => {
+      if (socket.io) {
+        socket.io.disconnect;
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initTrips]);
   return (
     <Box>
       <Head>
@@ -38,13 +47,13 @@ export default function Transports({
       </Head>
 
       <OutlineBox title='Ongoing'>
-        {!data?.ongoing?.length && (
+        {!trips.length && (
           <Box justifyContent='center' alignItems='center' display='flex'>
             <Typography>No ongoing trip at this moment</Typography>
           </Box>
         )}
         <Box display='flex' flexWrap='wrap'>
-          {data?.ongoing?.map(ong => {
+          {trips.map(ong => {
             return <OngoingCard key={ong.id} trip={ong} />;
           })}
         </Box>

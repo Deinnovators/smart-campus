@@ -21,14 +21,14 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
   };
 };
 
-export default function LiveTracking({}: { trips: Trip[] }) {
+export default function LiveTracking({ trips }: { trips: Trip[] }) {
   return (
     <Box mt={4}>
       <Head>
         <title>Transport::Live Tracking</title>
       </Head>
       <Box height={400} width='100%'>
-        <Map />
+        <Map trips={trips} />
       </Box>
     </Box>
   );

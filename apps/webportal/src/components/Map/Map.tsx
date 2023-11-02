@@ -1,80 +1,109 @@
 'use client';
-import React, { useState, useRef, useEffect } from 'react';
-import mapboxgl from 'mapbox-gl';
-import { useAppThemeMode } from '@webportal/libs/hooks';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import mapboxgl, { Marker } from 'mapbox-gl';
+import { Trip } from 'database';
+import { io } from 'socket.io-client';
+import { TransportsEvents } from 'api-service';
 
-const Map = () => {
-  const themeMode = useAppThemeMode();
+const markers = new Map<number, Marker>();
+
+const createMarker = (id: string) => {
+  const iconMarker = document.createElement('div');
+  iconMarker.className = 'marker';
+  iconMarker.innerHTML = `
+            ${id}
+        `;
+  const marker = new mapboxgl.Marker({
+    element: iconMarker,
+    draggable: false,
+  });
+  marker.setDraggable(false);
+  return marker;
+};
+
+const Mapbox = ({ trips }: { trips: Trip[] }) => {
   const [map, setMap] = useState<mapboxgl.Map | null>(null);
+
   const mapContainer = useRef<any>(null);
-  const [loading, setLoading] = useState(true);
-  const mapStyle =
-    themeMode === 'light'
-      ? 'mapbox://styles/afridi563/ck8ut3l0f1ok61in0thektj1u'
-      : 'mapbox://styles/afridi563/ck8useswq1nru1jqnhbhdt5tj';
 
   useEffect(() => {
-    const initializeMap = ({ setMap, mapContainer }: any) => {
-      mapboxgl.accessToken =
-        'pk.eyJ1IjoiYWZyaWRpNTYzIiwiYSI6ImNrYTBkb3VqODBmYXczbXJ0MXp0czdreHYifQ.5TJnOHd9PW9Hl8HPtzuUpw';
+    const initializeMap = () => {
+      mapboxgl.accessToken = process.env['NEXT_PUBLIC_MAP_KEY'] ?? '';
       const map = new mapboxgl.Map({
         container: mapContainer.current,
-        style: mapStyle,
+        style: 'mapbox://styles/afridi563/ck8useswq1nru1jqnhbhdt5tj',
         center: [88.6431059, 25.6210762],
         zoom: 10,
       });
 
       map.on('load', () => {
         setMap(map);
-        const iconMarker = document.createElement('div');
-        iconMarker.className = 'marker';
-        iconMarker.innerHTML = `
-            ${13}
-        `;
-        const iconMarker2 = document.createElement('div');
-        iconMarker2.className = 'marker';
-        iconMarker2.innerHTML = `
-            ${19}
-        `;
-        //   const popupHtml = `<span class='popup-content'>
-        //   <h2>${country}</h2>
-        //   <ul>
-        //     <li><strong>Infected:</strong><span> ${cases}</span></li>
-        //     <li><strong>Deaths:</strong><span style='color:red'> ${deaths}</span></li>
-        //     <li><strong>Recovered:</strong><span style='color:green'> ${recovered}</span></li>
-        //     <li><strong>Active:</strong><span style='color:orange'> ${active}</span></li>
-        //   </ul>
-        // </span>`;
-        const marker = new mapboxgl.Marker({
-          element: iconMarker,
-          draggable: false,
+        trips.forEach(tr => {
+          const marker = createMarker(tr.schedule.transport.busNumber);
+          marker
+            .setLngLat({ lat: tr.currentLat!, lng: tr.currentLng! })
+            .addTo(map);
+          markers.set(tr.id, marker);
         });
-        marker.setLngLat({ lng: 88.649986, lat: 25.634042 }).addTo(map);
-
-        const marker2 = new mapboxgl.Marker({
-          element: iconMarker2,
-          draggable: false,
-        });
-
-        marker2.setLngLat({ lng: 88.649858, lat: 25.633614 }).addTo(map);
-        setLoading(false);
       });
     };
-    if (!map) {
-      initializeMap({ setMap, mapContainer });
-    }
-
-    if (map) {
-      if (themeMode === 'light') {
-        map.setStyle('mapbox://styles/afridi563/ck8ut3l0f1ok61in0thektj1u');
-      } else {
-        map.setStyle('mapbox://styles/afridi563/ck8useswq1nru1jqnhbhdt5tj');
-      }
-    }
+    initializeMap();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [map, themeMode]);
+  }, []);
+
+  const startTrip = useCallback(
+    (tr: Trip) => {
+      if (!map) return;
+      const checkMarker = markers.get(tr.id);
+      if (checkMarker) {
+        return checkMarker.setLngLat({
+          lat: tr.currentLat!,
+          lng: tr.currentLng!,
+        });
+      }
+      const marker = createMarker(tr.schedule.transport.busNumber);
+      marker.setLngLat({ lat: tr.currentLat!, lng: tr.currentLng! }).addTo(map);
+      markers.set(tr.id, marker);
+    },
+    [map],
+  );
+
+  const updateTrip = useCallback(
+    (tr: Trip) => {
+      if (!map) return;
+      const checkMarker = markers.get(tr.id);
+      if (checkMarker) {
+        return checkMarker.setLngLat({
+          lat: tr.currentLat!,
+          lng: tr.currentLng!,
+        });
+      }
+      const marker = createMarker(tr.schedule.transport.busNumber);
+      marker.setLngLat({ lat: tr.currentLat!, lng: tr.currentLng! }).addTo(map);
+      markers.set(tr.id, marker);
+    },
+    [map],
+  );
+
+  useEffect(() => {
+    const socket = io(process.env['NEXT_PUBLIC_SOCKET_URL'] ?? '', {
+      transports: ['websocket'],
+    });
+    socket.on(TransportsEvents.start, startTrip);
+
+    socket.on(TransportsEvents.update, updateTrip);
+
+    socket.on(TransportsEvents.finish, (tr: Trip) => {
+      const checkMarker = markers.get(tr.id);
+      if (checkMarker) {
+        checkMarker.remove();
+        markers.delete(tr.id);
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return <div ref={el => (mapContainer.current = el)} className={'map'} />;
 };
 
-export default Map;
+export default Mapbox;
