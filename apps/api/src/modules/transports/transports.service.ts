@@ -5,6 +5,13 @@ import { Prisma } from 'database';
 @Injectable()
 export class TransportsService {
   constructor(private readonly prisma: PrismaService) {}
+  tripInclude = {
+    schedule: {
+      include: {
+        transport: true,
+      },
+    },
+  };
 
   getAllSchedule() {
     return this.prisma.transportSchedule.findMany({
@@ -36,13 +43,7 @@ export class TransportsService {
 
   async getOngoingTrips() {
     return this.prisma.trip.findMany({
-      include: {
-        schedule: {
-          include: {
-            transport: true,
-          },
-        },
-      },
+      include: this.tripInclude,
     });
   }
 
@@ -53,12 +54,12 @@ export class TransportsService {
 
     const upcoming = await this.prisma.transportSchedule.findMany({
       include: { transport: true },
-      // where: {
-      //   time: {
-      //     gte: finalDate,
-      //   },
-      // },
-      // take: 8,
+      where: {
+        time: {
+          gte: finalDate,
+        },
+      },
+      take: 8,
     });
     const ongoing = await this.getOngoingTrips();
 
@@ -69,14 +70,24 @@ export class TransportsService {
   }
 
   createTrip(data: Prisma.TripCreateInput) {
-    return this.prisma.trip.create({ data });
+    return this.prisma.trip.create({
+      data,
+      include: this.tripInclude,
+    });
   }
 
   updateTrip(id: number, data: Prisma.TripUpdateInput) {
-    return this.prisma.trip.update({ where: { id }, data });
+    return this.prisma.trip.update({
+      where: { id },
+      data,
+      include: this.tripInclude,
+    });
   }
 
   deleteTrip(id: number) {
-    return this.prisma.trip.delete({ where: { id } });
+    return this.prisma.trip.delete({
+      where: { id },
+      include: this.tripInclude,
+    });
   }
 }
