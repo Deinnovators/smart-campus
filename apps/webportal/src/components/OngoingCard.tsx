@@ -40,7 +40,7 @@ export const OngoingCard: React.FC<OngoingCardProps> = ({ trip }) => {
               trip.schedule.stoppages[currentStopIndex - 1],
             )}{' '}
             <Typography color='GrayText' variant='caption'>
-              (Left at: {dayjs(trip.prevLeftAt).format('HH:mma')})
+              (Left at: {dayjs(trip.prevLeftAt).format('hh:mma')})
             </Typography>
           </Typography>
           <Typography variant='body2'>

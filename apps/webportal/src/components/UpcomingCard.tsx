@@ -24,7 +24,7 @@ export const UpcomingCard: React.FC<UpcomingCardProps> = ({ schedule }) => {
         />
         <Box ml={2}>
           <Typography variant='h6' color='green'>
-            {dayjs(schedule.time).format('HH:mma')}
+            {dayjs(schedule.time).format('hh:mma')}
           </Typography>
           <Box display='flex' alignItems='center'>
             <Typography variant='body2'>
